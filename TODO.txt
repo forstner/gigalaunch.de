@@ -1,5 +1,7 @@
 ===== TODO ===== FEEL FREE TO PUT YOUR OWN REQUESTS HERE, ALSO FEEL FREE TO IMPLEMENT ANYTHING ON THAT LIST, PLEASE HELP!!! :-D (o = open, ok = done, higher priority is on top)
 
+o some changes in todo
+
 o separate login into login.html (frontend) login.php (backend) 
 
 o go through test-doc and release new release
