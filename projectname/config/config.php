@@ -1,0 +1,131 @@
+<?php
+/* ======================= DATABASE */
+/* here the database credentials are beeing stored */
+$settings_datasource = "mysql"; // right now can only be "mysql", could be postgress (not implemented) sqlite (not implemented)
+$settings_database_server = "localhost";
+$settings_database_name = "gigalaunch"; // wpt is not wordpress template, it's web platform template
+$settings_database_user = "root";
+$settings_database_pass = "root";
+$settings_database_auth_table = "passwd"; // what the table is called, where the users & passwords (md5 hashes) are stored
+
+/* ======================= USERS */
+/* ================ DEFAULTS */
+
+// $settings_default_home_after_login = "template.php"; // redirect all users, that have no home:somefile.php set in data field of passwd table, to this file after login
+$settings_default_home_after_login = "UserManagement.php"; // redirect all users, that have no home:somefile.php set in data field of passwd table, to this file after login
+
+/* ======================= OPTICS */
+/* ================ LOGO */
+$settings_logo = '<img id="logo" src="images/projectlogo.png" style="width:200px;"/>';
+
+/* ======================= UPLOADS */
+/* ================ GENERAL */
+$upload_allowedExtensions = array("gif", "jpeg", "jpg", "png");
+$upload_maximumFileSize = 2048;
+
+/* ================ PROFILE PICTURES */
+$settings_profilepicture_upload_dir = "images/profilepictures/";
+$settings_profilepicture_dimensions ="115x115"; // what resolution do you allow for profile pictures
+
+/* ======================= WHO IS THE ADMIN? WHO IS RESPONSIBLE? */
+$settings_email_activation = "admin@server.org"; // this will be the sender/return address for activation mails send to your user after successfull registration with activation link
+$settings_email_activation_subject = "Activation successfull!";
+$settings_email_activation_text = "Thank you for registering @ localhost.com";
+$settings_email_admin = "admin@server.org"; // not used yet
+$settings_login_session_timeout = "1800"; // 1800seconds = 30min, 0 = no timeout, amounts of seconds that login-cookies are valid, after login (time until user has to re-login)
+
+/* ======================= SINGLE/MULTIPLE PROJECTS? */
+/*
+ * personally i use /var/www/projectname as pdt/eclipse/aptana workspace
+*
+* 1x project: if you are only hosting one project: than you probably have this project structure
+* /var/www/index.php
+* /var/www/login.php
+* ...
+* /var/www/library <- library is located here
+*
+* multiple projects with virtualhosts in subdirectories of web-root
+* than your folder structure is probably like this:
+* /var/www/projectnamX/
+* /var/www/projectnamY/
+* /var/www/library/ <- library is still located here, and not redundant in projectnameX/library and projectnameY/library
+* so you need to update library in only one place
+*/
+$settings_multiple_projects = true;
+
+// automatically load filename.js
+$settings_current_filename = "filename.js";
+
+$url = $_SERVER['PHP_SELF']; // get filename of url called php file
+$filename_and_ending = explode('/', $url);
+$filename_and_ending = $filename_and_ending[count($filename_and_ending) - 1];
+$filename_and_ending = explode('.', $filename_and_ending);
+$settings_current_filename = $filename_and_ending[0];
+
+/* ======================= DEFAULT CSS/JS INCLUDES FOR ALL FILES */
+/* global (for all pages) meta informations */
+if($settings_multiple_projects)
+{
+	$parentfolder = "../";
+}
+else
+{
+	$parentfolder = "";
+}
+$settings_meta = '
+		<!-- meta -->
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- apple-iphone specific stuff -->
+		<meta name="apple-mobile-web-app-capable" content="yes"/>
+		<meta name="apple-mobile-web-app-status-bar-style" content="white">
+		<link rel="apple-touch-icon" href="images/opensource_icon.png"/>
+
+		<!-- credits: who made this world a better place? -->
+		<meta name="author" content="user">
+
+		<!-- tools: what was used to make this world a better place -->
+		<meta name="editor" content="pdt eclipse">
+
+		<!-- css valid for all projects, includes the default jquery mobile css -->
+		<link rel="stylesheet" type="text/css" href="'.$parentfolder.'library/css/jquery.mobile-1.3.0.min.css" />
+		<link rel="stylesheet" type="text/css" href="'.$parentfolder.'library/css/gigalaunch.css"/>
+
+		<!-- project wide css -->
+		<link rel="stylesheet" type="text/css" href="css/style.css"/>
+
+		<!-- file wide css -->
+		<link rel="stylesheet" type="text/css" href="css/'.$settings_current_filename.'.css"/>
+
+		<!-- project wide js libraries: jquery, jquery mobile -->
+		<script type="text/javascript" src="'.$parentfolder.'library/js/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="'.$parentfolder.'library/js/jquery.mobile-1.3.0.min.js"></script>
+
+		<!-- timer plugin -->
+		<script type="text/javascript" src="'.$parentfolder.'library/js/jquery.timer.js"></script>
+
+		<!-- js-client-side-md5, so that no password gets over network unencrypted, esp not during registration -->
+		<script type="text/javascript" src="'.$parentfolder.'library/js/webtoolkit.md5.js"></script>
+
+		<!-- nice input validation plugin -->
+		<script type="text/javascript" src="'.$parentfolder.'library/js/jquery.validate.js"></script>
+
+		<!--  provices conversion function -->
+		<script type="text/javascript" src="'.$parentfolder.'library/js/convert.js"></script>
+
+		<!--  provices string operation functions -->
+		<script type="text/javascript" src="'.$parentfolder.'library/js/strings.js"></script>
+
+		<!-- client side functions to process server response -->
+		<script type="text/javascript" src="'.$parentfolder.'library/js/gigalaunch.js"></script>
+
+		<!-- page specific js includes & custom js code -->
+		<script type="text/javascript" src="js/'.$settings_current_filename.'.js"></script>
+		';
+
+/* o detect mobile browser, if yes -> load different css do not paint a lot of blue stuff around the UI */
+// require ('../library/detectmobilebrowser.php');
+// $settings_detected_browser = 'desktop'; // is detected automatically/overwritten automatically, possible values are desktop,
+?>

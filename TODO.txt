@@ -1,0 +1,113 @@
+===== TODO ===== FEEL FREE TO PUT YOUR OWN REQUESTS HERE, ALSO FEEL FREE TO IMPLEMENT ANYTHING ON THAT LIST, PLEASE HELP!!! :-D (o = open, ok = done, higher priority is on top)
+
+o separate login into login.html (frontend) login.php (backend) 
+
+o go through test-doc and release new release
+
+o auth/register via facebook/badoo (chinese facebook!)
+... is there a russian facebook?
+
+o also on focusout validate username
+
+o display error messages when server/database/table is not available (is not displayed properly)
+(see test documentation)
+
+o implement paging (for up/downloading a lot of data... partial download/display data -> editable jquery datagrid?)
+2.1. write
+2.1.1. write A LOT (paging?)
+2.2. change
+2.2.1. change A LOT (paging?)
+2.3. read
+2.3.1. read A LOT (paging?)
+
+o file operations
+  - file upload
+      - upload with paging? ( i have no idea how this could be done )
+  - file download
+      - luckily this works without paging
+  - file change/update
+      - php timeout, could also be a problem with larger files
+  - file delete
+      - php timeout should be enough to delete almost any file of any size
+
+o as many cool widgets into demo content.php as possible
+1. chat
+2. comments
+3. wiki
+4. forum
+
+ok immediate feedback after user registration
+ook submit form via ajax
+
+ok problem:http://forum.jquery.com/topic/login-problems-with-redirects
+ href instead of change page... and <a href instead of button onclick -> change page, because otherwise jqmobile does not reinitialize the javascript includes (ARGH!)
+... last try with client side page transition. if that fails. (complete reload of all javascript resources of the page)
+the only option is either php->header->redirect or php->message-answer, but can not do both. (output message from server, wait 3 seconds, than load a new page)
+... same problem.
+
+						function refreshPage() {
+							  $.mobile.changePage(
+							    window.location.href,
+							    {
+							      allowSamePageTransition : true,
+							      transition              : 'none',
+							      showLoadMsg             : false,
+							      reloadPage              : true
+							    }
+							  );
+							}
+
+
+2013_04_01_TIME_13:20:39,developer212
+
+ok check username RIGHT after user has left the input field (and also after he hit submit)
+
+o trying to get mysqli to work
+oo setting up test-scenario
+
+2013_03_28_TIME_10:55:12
+
+o setup.php nice setup routine to create
+1. database
+2. test-data
+3. config/config.php
+
+ok setup online demo
+
+ok share code @ sourceforge.net
+o baumstruktur in datenbank abbilden
+... 1000 ansätze... mache jetzt doch custom database layout.
+oo diese als tree in jquery abbilden
+
+2013_03_26_TIME_16:47:04
+
+ok create example content.php
+ok pack, store away wpt
+ok sync into my project
+
+2013_03_25_TIME_14:20:47
+
+ok get login to work again
+ook register form
+oook get proper nice and clean status message when things go wrong
+ok simplify com with server
+ook redirect after successfull registration
+
+jquery mobile <-> form plugin beissen sich glaub.
+
+$().ready(function() {
+
+ok switching from svn to git
+ok trying to make git ignore .project files
+... i hope it is okay.
+
+ok switch from svn to git and hope that it will be better
+
+2013_03_12_TIME_15:19:00
+
+ok basic form
+... like register
+ook does register users work?
+ook is there a database?... now there is.
+
+ok if there is no user, automatically make the next user that registers to admin

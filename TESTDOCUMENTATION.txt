@@ -1,0 +1,91 @@
+===== TEST DOCUMENTATION =====
+... is a usefull beast that enshures quality. whenever you encounter an error-case, write it down here. before you release to the repository/your users, go over the WHOLE test-documentation and test, test test... this enshures high quality software and happy users in a solid working, reliable world.
+==== useradd.php ====
+
+o 0. select profile picture, click on upload
+-> should display smal version of profile picture (height: 115px; width: 115px;)
+
+ok 1. register without username -> should refuse registration
+
+ok 2. register without password -> should refuse registration
+
+o 3. register without password confirmation -> should refuse registration
+
+o 3.1. password confirmation does not match password -> should refuse registration
+o 4. register without email -> should refuse registration
+
+o 5. register without firstname -> could be optional, but should refuse registration
+
+o 6. register without secondname -> could be optional, should refuse registration
+
+ok 7. register same username twice -> refuse registration, display message "username is already registered"
+-> check via phpmyadmin that there are no records created in auth-table in database
+
+o 8. register with unique username
+-> hit enter (in any field)
+-> registration successfull
+-> if user is a guest (not logged in) display message & redirect to index.html -> which redirects to login
+-> if user is a admin (logged in) display message & go one page back
+
+o  9. register when table passwd not exists
+-> error message "database exists, but auth table is missing" or other meaningful message that can lead an administrator to the cause of the problem. 
+
+==== UserManagement.php ====
+
+1. view:
+o 1.1. login as an non-admin user
+o 1.2. go to usermanagement
+-> you should only see your own user
+o 1.3. login as an admin user
+o 1.4. go to usermanagement
+-> you should see all users
+
+6. delete:
+o 6.1. click on delete (without selecting any users)
+-> message should appear "no user was selected"
+o 6.2. select the smal checkbox next to user profile picture, click on delete
+-> popup should appear: showing selected user's profile pictures and names "do you really want to delete?"
+o 6.3. click delete
+-> should return to usermanagement screen, updating user list.
+
+7. edit:
+o 7.1. click on user to edit -> useredit.php
+=== useredit.php ===
+o 7.2. change profile picture
+o 7.3. select/deselect some groups, save
+-> check database
+o 7.4. change username, save
+-> check database
+o 7.5. change password, save
+-> check database
+o 7.6. change mail, save
+-> check database
+
+==== login.php ====
+
+o 1. login with not existing username
+-> after few seconds (while still in the input field)
+-> message needs to appear telling "username already taken"
+
+o 2. login with non-existing username / password
+-> message needs to appear telling "username or password wrong."
+
+o 3. login with existing username, wrong password
+-> message "username or password wrong."
+
+o 4. login with existing username, and correct password
+-> message "login successfull... you are logged in."
+... creating session coo ie.
+... then redirecting to content.php
+... content.php must check session cookie.
+
+==== general security checks ====
+
+o it should not be possible to pass a specificly crafted url to any any php script to
+1. view a user's password
+2. view settings of the system
+3. update/change user passwords or details 
+
+s.h. "fritzbox hacken"
+http://www.mengelke.de/Blog/GossipBox
+http://www.youtube.com/watch?v=85sCpNJkQtw
