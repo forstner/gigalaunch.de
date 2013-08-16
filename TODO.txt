@@ -1,6 +1,9 @@
 ===== TODO ===== FEEL FREE TO PUT YOUR OWN REQUESTS HERE, ALSO FEEL FREE TO IMPLEMENT ANYTHING ON THAT LIST, PLEASE HELP!!! :-D (o = open, ok = done, higher priority is on top)
 
-o some changes in todo
+o move the library one folder up, having library and projectname in the same folder.
+
+projectname beeing a test-dash, that allows to test all the functionalities
+oo client<->server communication (add, change, delete)
 
 o separate login into login.html (frontend) login.php (backend) 
 
