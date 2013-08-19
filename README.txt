@@ -174,6 +174,6 @@ if you created a new page/module you can test it without going through all the l
 
 by simply comment-out this line:
 
-// require('../library/lib_session.php');
+// require('lib_session.php');
 
 Questions? -> Message: https://sourceforge.net/sendmessage.php?touser=4169280

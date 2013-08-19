@@ -56,7 +56,7 @@ function generateServerMessage($message)
 	<!doctype html>
 	<html>
 	<head>
-	<meta http-equiv="refresh" content="99; URL=../frontend_frontend_login.php">
+	<meta http-equiv="refresh" content="99; URL=../frontend_login.php">
 	<title>redirect</title>
 	</head>
 	<body>

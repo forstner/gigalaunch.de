@@ -3,9 +3,9 @@
 error_reporting(E_ALL); // turn the reporting of php errors on
 $allowed_users = "all logged in users"; // a list of userIDs that are allowed to access this page
 $allowed_groups = ""; // a list of groups, that are allowed to access this page
-require('../library/lib_security.php'); // will mysql-real-escape all input
+require('lib_security.php'); // will mysql-real-escape all input
 include("config/config.php"); // load project-config file
-require('../library/lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
+require('lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
 /* ================= */
 
 // what list of users should be displayed right now?
@@ -65,7 +65,7 @@ else {
 
 
 echo '
-		<a href="backend_useradd.php" rel="external" data-ajax="false" class="nav_button home" data-theme="a" data-role="button" data-inline="true" data-mini="true" data-icon="plus">useradd</a>
+		<a href="frontend_useradd.php" rel="external" data-ajax="false" class="nav_button home" data-theme="a" data-role="button" data-inline="true" data-mini="true" data-icon="plus">useradd</a>
 	</div>
 </div>
 <div data-role="content">
@@ -103,7 +103,7 @@ echo '<!-- where errors are displayed (put it directly next to the interactive e
 							<a data-icon="minus" href="#" onclick="openDialogDelete();">DELETE</a>
 						</li>
 						<li>
-							<a data-icon="plus" href="backend_useradd.php" rel="external" data-ajax="false">ADD</a>
+							<a data-icon="plus" href="frontend_useradd.php" rel="external" data-ajax="false">ADD</a>
 						</li>
 		<!--
 						<li>

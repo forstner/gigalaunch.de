@@ -6,11 +6,11 @@
 
 if(!class_exists("mysqli_custom"))
 {
-	require ('../library/lib_mysqli_custom.php');
+	require ('lib_mysqli_custom.php');
 }
 if(!function_exists("string2array"))
 {
-	require ('../library/lib_convert.php');
+	require ('lib_convert.php');
 }
 
 // init database object

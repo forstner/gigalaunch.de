@@ -4,8 +4,8 @@
 error_reporting(E_ALL); // turn the reporting of php errors on
 $allowed_users = "*"; // a list of userids that are allowed to access this page
 $allowed_groups = "*"; // a list of groups, that are allowed to access this page
-require('../library/lib_security.php'); // will mysql-real-escape all input
-require('../library/lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired
+require('lib_security.php'); // will mysql-real-escape all input
+require('lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired
 
 // is it a username-taken test?
 /* ================= */

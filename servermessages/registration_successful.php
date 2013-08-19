@@ -4,7 +4,7 @@ require("../config/config.php");
 <!doctype html>
 <html>
 <head>
-<meta http-equiv="refresh" content="10; URL=../backend_useradd.php">
+<meta http-equiv="refresh" content="10; URL=../frontend_useradd.php">
 <title>redirect</title>
 </head>
 <body>
@@ -16,7 +16,7 @@ require("../config/config.php");
 				<div id="details">
 				Thank you for registering!
 				<br>
-				You will be redirected to the <a href="../frontend_frontend_login.php">login</a> page... in 10 seconds.
+				You will be redirected to the <a href="../frontend_login.php">login</a> page... in 10 seconds.
 				</p>
 			</fieldset>
 			</form>

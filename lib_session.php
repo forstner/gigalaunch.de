@@ -19,7 +19,7 @@ if($settings_datasource == "mysql")
 	global $mysqli_object;
 	if(!class_exists("mysqli"))
 	{
-		require ('../library/mysqli.php');
+		require ('mysqli.php');
 	};
 }
 
@@ -72,7 +72,7 @@ if(!$open_to_all) // no further check if you shall pass
 	if (!isset($_SESSION['session']))
 	{
 		// no session is set, redirect to login
-		header("Location: frontend_frontend_login.php");
+		header("Location: frontend_login.php");
 		exit;
 	}
 	else

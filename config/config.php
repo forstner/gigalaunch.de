@@ -40,7 +40,7 @@ $settings_login_session_timeout = "1800"; // 1800seconds = 30min, 0 = no timeout
 *
 * 1x project: if you are only hosting one project: than you probably have this project structure
 * /var/www/index.php
-* /var/www/frontend_frontend_login.php
+* /var/www/frontend_login.php
 * ...
 * /var/www/library <- library is located here
 *
@@ -62,16 +62,6 @@ $filename_and_ending = $filename_and_ending[count($filename_and_ending) - 1];
 $filename_and_ending = explode('.', $filename_and_ending);
 $settings_current_filename = $filename_and_ending[0];
 
-/* ======================= DEFAULT CSS/JS INCLUDES FOR ALL FILES */
-/* global (for all pages) meta informations */
-if($settings_multiple_projects)
-{
-	$parentfolder = "../";
-}
-else
-{
-	$parentfolder = "";
-}
 $settings_meta = '
 		<!-- meta -->
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -90,8 +80,8 @@ $settings_meta = '
 		<meta name="editor" content="pdt eclipse">
 
 		<!-- css valid for all projects, includes the default jquery mobile css -->
-		<link rel="stylesheet" type="text/css" href="'.$parentfolder.'library/css/jquery.mobile-1.3.0.min.css" />
-		<link rel="stylesheet" type="text/css" href="'.$parentfolder.'library/css/global.css"/>
+		<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.3.0.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/global.css"/>
 
 		<!-- project wide css -->
 		<link rel="stylesheet" type="text/css" href="css/projectWide.css"/>
@@ -100,32 +90,32 @@ $settings_meta = '
 		<link rel="stylesheet" type="text/css" href="css/'.$settings_current_filename.'.css"/>
 
 		<!-- project wide js libraries: jquery, jquery mobile -->
-		<script type="text/javascript" src="'.$parentfolder.'library/js/jquery-1.9.1.min.js"></script>
-		<script type="text/javascript" src="'.$parentfolder.'library/js/jquery.mobile-1.3.0.min.js"></script>
+		<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="js/jquery.mobile-1.3.0.min.js"></script>
 
 		<!-- timer plugin -->
-		<script type="text/javascript" src="'.$parentfolder.'library/js/jquery.timer.js"></script>
+		<script type="text/javascript" src="js/lib_jquery.timer.js"></script>
 
 		<!-- js-client-side-md5, so that no password gets over network unencrypted, esp not during registration -->
-		<script type="text/javascript" src="'.$parentfolder.'library/js/webtoolkit.md5.js"></script>
+		<script type="text/javascript" src="js/lib_webtoolkit.md5.js"></script>
 
 		<!-- nice input validation plugin -->
-		<script type="text/javascript" src="'.$parentfolder.'library/js/jquery.validate.js"></script>
+		<script type="text/javascript" src="js/lib_jquery.validate.js"></script>
 
 		<!--  provices conversion function -->
-		<script type="text/javascript" src="'.$parentfolder.'library/js/convert.js"></script>
+		<script type="text/javascript" src="js/lib_convert.js"></script>
 
 		<!--  provices string operation functions -->
-		<script type="text/javascript" src="'.$parentfolder.'library/js/strings.js"></script>
+		<script type="text/javascript" src="js/lib_strings.js"></script>
 
 		<!-- client side functions to process server response -->
-		<script type="text/javascript" src="'.$parentfolder.'library/js/gigalaunch.js"></script>
+		<script type="text/javascript" src="js/lib_general.js"></script>
 
 		<!-- page specific js includes & custom js code -->
 		<script type="text/javascript" src="js/'.$settings_current_filename.'.js"></script>
 		';
 
 /* o detect mobile browser, if yes -> load different css do not paint a lot of blue stuff around the UI */
-// require ('../library/detectmobilebrowser.php');
+// require ('detectmobilebrowser.php');
 // $settings_detected_browser = 'desktop'; // is detected automatically/overwritten automatically, possible values are desktop,
 ?>

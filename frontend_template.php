@@ -3,7 +3,7 @@
 error_reporting(E_ALL); // turn the reporting of php errors on
 $allowed_users = "1,2,3,4,5,"; // a list of userIDs that are allowed to access this page
 include("config/config.php");
-require('../library/lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
+// require('lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
 /* ================= */
 
 // footer used for every div subpage
@@ -17,7 +17,7 @@ $footer = '<div data-role="footer">
 							<a data-icon="bars" rel="external" href="frontend_template.php#subpage2" tooltip="load link via ajax into this page (js of page to load will">link to subdivpage2</a>
 						</li>
 						<li>
-							<a data-icon="forward" rel="external" href="backend_useradd.php" data-role="button" data-inline="true" data-mini="true" tooltip="this will completely load/go to an external page, initializing all the javascript of this external page, which is good if you plan to do modular web applications">go to external page</a>
+							<a data-icon="forward" rel="external" href="frontend_useradd.php" data-role="button" data-inline="true" data-mini="true" tooltip="this will completely load/go to an external page, initializing all the javascript of this external page, which is good if you plan to do modular web applications">go to external page</a>
 						</li>
 					</ul>
 				</div>
@@ -32,7 +32,7 @@ $header = '
 				<a href="#" onclick="window.history.back();" data-role="button" data-inline="true" data-mini="true" data-icon="back">Back</a>
 				<a class="nav_button subpage1" href="#subpage1" data-role="button" data-theme="a" data-inline="true" data-mini="true" data-icon="grid">subpage1</a>
 				<a class="nav_button subpage2" href="#subpage2" data-role="button" data-theme="a" data-inline="true" data-mini="true" data-icon="bars">subpage2</a>
-				<a class="nav_button home" data-theme="e" href="backend_useradd.php" data-role="button" data-inline="true" data-mini="true" data-icon="plus" rel="external" data-ajax="false">useradd</a>
+				<a class="nav_button home" data-theme="e" href="frontend_useradd.php" data-role="button" data-inline="true" data-mini="true" data-icon="plus" rel="external" data-ajax="false">useradd</a>
 			</div>
 		</div>
 		';
@@ -41,6 +41,7 @@ $header = '
 <html>
 <head> 
 	<title><?php global $settings_current_filename; echo $settings_current_filename; ?></title>
+	
 	<?php global $settings_meta; echo $settings_meta; ?>
 	<?php global $settings_current_filename; echo $settings_current_filename; ?></title>
 </head> 
@@ -54,15 +55,15 @@ $header = '
 			<br>
 			but i recommend building/testing programs/websites on a modular basis.
 			<br>
-			meaning: instead of putting everything inside one page, there are components (backend_useradd.php)
+			meaning: instead of putting everything inside one page, there are components (frontend_useradd.php)
 			that you want to reuse.
 			<br>
 			jqm can also blend/slide smoothly to external pages.
 			<br>
 			meaning:
 			<br>
-			frontend_frontend_login.php -> does login, nothing else<br>
-			backend_useradd.php -> allows you to add users (this dialog can be reused)<br>
+			frontend_login.php -> does login, nothing else<br>
+			frontend_useradd.php -> allows you to add users (this dialog can be reused)<br>
 			<br>
 			testing:
 			<br>
