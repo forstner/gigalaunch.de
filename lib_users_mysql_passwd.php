@@ -592,7 +592,7 @@ function generateUserList($group = "*")
 				echo '
 				<li>
 					<input type="checkbox" class="checkbox" name="checkbox_'.$user->username.'" id="checkbox_'.$user->username.'" data-mini="true" value="0" userid="'.$user->id.'"/>
-					<a href="useredit.php?selectUserId='.$user->id.'" rel="external" data-ajax="false">
+					<a href="frontend_useredit.php?selectUserId='.$user->id.'" rel="external" data-ajax="false">
 						<img id="profilepicture'.$user->id.'" src="'.$data['profilepicture'].'" class="profilepicture"/>
 						<h3 id="username'.$user->id.'">'.$user->username.'</h3>
 						<p>UserID:'.$user->id.','.$user->data.'</p>

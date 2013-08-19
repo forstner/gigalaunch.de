@@ -5,9 +5,9 @@
 o 0. select profile picture, click on upload
 -> should display smal version of profile picture (height: 115px; width: 115px;)
 
-ok 1. register without username -> should refuse registration
+o 1. register without username -> should refuse registration
 
-ok 2. register without password -> should refuse registration
+o 2. register without password -> should refuse registration
 
 o 3. register without password confirmation -> should refuse registration
 
@@ -18,7 +18,7 @@ o 5. register without firstname -> could be optional, but should refuse registra
 
 o 6. register without secondname -> could be optional, should refuse registration
 
-ok 7. register same username twice -> refuse registration, display message "username is already registered"
+o 7. register same username twice -> refuse registration, display message "username is already registered"
 -> check via phpmyadmin that there are no records created in auth-table in database
 
 o 8. register with unique username
@@ -49,8 +49,10 @@ o 6.3. click delete
 -> should return to usermanagement screen, updating user list.
 
 7. edit:
-o 7.1. click on user to edit -> useredit.php
-=== useredit.php ===
+o 7.1. click on user to edit -> frontend_useredit.php
+
+=== frontend_useredit.php ===
+
 o 7.2. change profile picture
 o 7.3. select/deselect some groups, save
 -> check database

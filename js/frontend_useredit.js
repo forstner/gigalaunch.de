@@ -46,7 +46,7 @@ $(document).ready(function() {
 		    	
 				var jqxhr = $.ajax({
 					type: 'POST',
-		    		url: 'useredit.php',
+		    		url: 'frontend_useredit.php',
 		    		data: question,
 		    		success: function(response, responseText, jqXHR)
 		    		{

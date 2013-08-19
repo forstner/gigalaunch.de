@@ -5,7 +5,7 @@ $allowed_users = "all users including guests"; // a list of userIDs that are all
 $allowed_groups = "all groups including guests"; // a list of groups, that are allowed to access this page
 require('lib_security.php'); // will mysql-real-escape all input
 include("config/config.php"); // load project-config file
-// require('lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
+// // login needs to be open for all in order to login! require('lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
 /* ================= */
 
 require ('lib_users_mysql_passwd.php');

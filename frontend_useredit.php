@@ -144,7 +144,7 @@ if(!empty($_REQUEST['editUserId'])) /* is it an change user action? */
 		}
 		require ("lib_upload.php");
 	?>
-		<form id="usereditForm" class="usereditForm" action="useredit.php" method="post" accept-charset="UTF-8">
+		<form id="usereditForm" class="usereditForm" action="frontend_useredit.php" method="post" accept-charset="UTF-8">
 			<h4>Edit User:</h4>
 			<!-- credentials -->
 			<label for="username">UserName*:</label>
