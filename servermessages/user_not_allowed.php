@@ -4,7 +4,7 @@ require("../config/config.php");
 <!doctype html>
 <html>
 <head>
-<meta http-equiv="refresh" content="10; URL=../login.php">
+<meta http-equiv="refresh" content="10; URL=../frontend_frontend_login.php">
 <title>redirect</title>
 </head>
 <body>
@@ -17,7 +17,7 @@ require("../config/config.php");
 				your user does not have the apropriate access rights for this page.
 				<br>
 				<br>If you think this is a error/mistake: please contact the <a href="mailto:<?php global $settings_email_admin; echo $settings_email_admin; ?>">administrator</a>. </div>
-				... you will be taken back to <a href="../login.php">login</a>. in 10 seconds.
+				... you will be taken back to <a href="../frontend_frontend_login.php">login</a>. in 10 seconds.
 				</p>
 			</fieldset>
 			</form>

@@ -1,6 +1,6 @@
 ===== TEST DOCUMENTATION =====
 ... is a usefull beast that enshures quality. whenever you encounter an error-case, write it down here. before you release to the repository/your users, go over the WHOLE test-documentation and test, test test... this enshures high quality software and happy users in a solid working, reliable world.
-==== useradd.php ====
+==== backend_useradd.php ====
 
 o 0. select profile picture, click on upload
 -> should display smal version of profile picture (height: 115px; width: 115px;)
@@ -30,7 +30,7 @@ o 8. register with unique username
 o  9. register when table passwd not exists
 -> error message "database exists, but auth table is missing" or other meaningful message that can lead an administrator to the cause of the problem. 
 
-==== UserManagement.php ====
+==== frontend_UserManagement.php ====
 
 1. view:
 o 1.1. login as an non-admin user
@@ -61,7 +61,7 @@ o 7.5. change password, save
 o 7.6. change mail, save
 -> check database
 
-==== login.php ====
+==== frontend_frontend_login.php ====
 
 o 1. login with not existing username
 -> after few seconds (while still in the input field)

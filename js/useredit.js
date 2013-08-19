@@ -22,7 +22,7 @@ $(document).ready(function() {
 					window.clearInterval(activeTimer);
 			    	data = { username: username };
 
-					var jqxhr = $.post("username_available.php", data, function(response, responseText, jqXHR) {
+					var jqxhr = $.post("backend_username_available.php", data, function(response, responseText, jqXHR) {
 						  if(response)
 						  {
 							  displayServerError(response, responseText, jqXHR);

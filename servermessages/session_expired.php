@@ -4,7 +4,7 @@ require("../config/config.php");
 <!doctype html>
 <html>
 <head>
-<meta http-equiv="refresh" content="3; URL=../login.php">
+<meta http-equiv="refresh" content="3; URL=../frontend_frontend_login.php">
 <title>redirect</title>
 </head>
 <body>
@@ -14,7 +14,7 @@ require("../config/config.php");
 				<h3>ERROR: SESSION EXPIRED</h3>
 				<p>
 				<div id="details">
-				please relogin, you will be automatically taken back to <a href="../login.php">login</a> in 3 seconds...
+				please relogin, you will be automatically taken back to <a href="../frontend_frontend_login.php">login</a> in 3 seconds...
 				</p>
 			</fieldset>
 			</form>

@@ -33,8 +33,8 @@ $(document).ready(function() {
 	    					window.clearInterval(activeTimer);
 	    					data = { username: username };
 	    					
-	    					// should not be username_available.php, because this is only working for logged in users (not guests that want to register)
-	    					var jqxhr = $.post("useradd.php", data, function(response, responseText, jqXHR) {
+	    					// should not be backend_username_available.php, because this is only working for logged in users (not guests that want to register)
+	    					var jqxhr = $.post("backend_useradd.php", data, function(response, responseText, jqXHR) {
 	    						if(response)
 	    						{
 	    							displayServerError(response, responseText, jqXHR);
@@ -59,7 +59,7 @@ $(document).ready(function() {
 		    	
 				var jqxhr = $.ajax({
 					type: 'POST',
-		    		url: 'useradd.php',
+		    		url: 'backend_useradd.php',
 		    		data: question,
 		    		success: function(response, responseText, jqXHR)
 		    		{

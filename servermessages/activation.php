@@ -4,7 +4,7 @@ require("../config/config.php");
 <!doctype html>
 <html>
 <head>
-<meta http-equiv="refresh" content="3; URL=../login.php">
+<meta http-equiv="refresh" content="3; URL=../frontend_frontend_login.php">
 <title>redirect</title>
 </head>
 <body>
@@ -15,7 +15,7 @@ require("../config/config.php");
 				<p>
 				<div id="details">You are now registered.
 				<br>
-				You will be redirected to the <a href="../login.php">login</a> page... in 3 seconds. 
+				You will be redirected to the <a href="../frontend_frontend_login.php">login</a> page... in 3 seconds. 
 				</p>
 			</fieldset>
 			</form>

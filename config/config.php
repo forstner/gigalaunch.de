@@ -11,8 +11,8 @@ $settings_database_auth_table = "passwd"; // what the table is called, where the
 /* ======================= USERS */
 /* ================ DEFAULTS */
 
-// $settings_default_home_after_login = "template.php"; // redirect all users, that have no home:somefile.php set in data field of passwd table, to this file after login
-$settings_default_home_after_login = "UserManagement.php"; // redirect all users, that have no home:somefile.php set in data field of passwd table, to this file after login
+// $settings_default_home_after_login = "frontend_template.php"; // redirect all users, that have no home:somefile.php set in data field of passwd table, to this file after login
+$settings_default_home_after_login = "frontend_UserManagement.php"; // redirect all users, that have no home:somefile.php set in data field of passwd table, to this file after login
 
 /* ======================= OPTICS */
 /* ================ LOGO */
@@ -40,7 +40,7 @@ $settings_login_session_timeout = "1800"; // 1800seconds = 30min, 0 = no timeout
 *
 * 1x project: if you are only hosting one project: than you probably have this project structure
 * /var/www/index.php
-* /var/www/login.php
+* /var/www/frontend_frontend_login.php
 * ...
 * /var/www/library <- library is located here
 *
@@ -91,10 +91,10 @@ $settings_meta = '
 
 		<!-- css valid for all projects, includes the default jquery mobile css -->
 		<link rel="stylesheet" type="text/css" href="'.$parentfolder.'library/css/jquery.mobile-1.3.0.min.css" />
-		<link rel="stylesheet" type="text/css" href="'.$parentfolder.'library/css/gigalaunch.css"/>
+		<link rel="stylesheet" type="text/css" href="'.$parentfolder.'library/css/global.css"/>
 
 		<!-- project wide css -->
-		<link rel="stylesheet" type="text/css" href="css/style.css"/>
+		<link rel="stylesheet" type="text/css" href="css/projectWide.css"/>
 
 		<!-- file wide css -->
 		<link rel="stylesheet" type="text/css" href="css/'.$settings_current_filename.'.css"/>

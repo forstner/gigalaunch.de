@@ -72,10 +72,10 @@ function deleteUser()
 		}
 	});
 	
-	// backend in php/ruby/python/java needs to implement this command: userdel.php
+	// backend in php/ruby/python/java needs to implement this command: backend_backend_useredit.php
 	if(data2server)
 	{
-		var jqxhr = $.post("userdel.php", data2server, function(response, responseText, jqXHR) {
+		var jqxhr = $.post("backend_backend_useredit.php", data2server, function(response, responseText, jqXHR) {
 			if(response)
 			{
 				displayServerError(response, responseText, jqXHR);

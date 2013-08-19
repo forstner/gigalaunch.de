@@ -1,11 +1,20 @@
 ===== TODO ===== FEEL FREE TO PUT YOUR OWN REQUESTS HERE, ALSO FEEL FREE TO IMPLEMENT ANYTHING ON THAT LIST, PLEASE HELP!!! :-D (o = open, ok = done, higher priority is on top)
 
-o move the library one folder up, having library and projectname in the same folder.
+ok move the library one folder up, having library and projectname in the same folder.
+
+#CONVENTION:1
+oo call all webbrowser-usable-php files frontend_Something.php
+oo call all backend-serverside-endpoints files backend_Something.php
+oo call all library functions lib_Seomthing.php
+
+o created editable list, vorting feature
+
+o automated database installation
 
 projectname beeing a test-dash, that allows to test all the functionalities
 oo client<->server communication (add, change, delete)
 
-o separate login into login.html (frontend) login.php (backend) 
+o separate login into login.html (frontend) frontend_frontend_login.php (backend) 
 
 o go through test-doc and release new release
 
