@@ -23,7 +23,7 @@
 
 if(!class_exists("mysqli_custom"))
 {
-	require ('lib_mysqli_custom.php');
+	require ('lib_mysqli_interface.php');
 }
 
 // init database

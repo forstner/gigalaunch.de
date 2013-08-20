@@ -2,10 +2,24 @@
 
 ok move the library one folder up, having library and projectname in the same folder.
 
+Tue Aug 20 10:51:46 CEST 2013	
+ok add
+
 #CONVENTION:1
 ook call all webbrowser-usable-php files frontend_Something.php
 ook call all backend-serverside-endpoints files backend_Something.php
 ook call all library functions lib_Seomthing.php
+
+#CONVENTION:2 table languages
+... that keeps all the text-translations, there will be a function translate("keyword"); that outputs the translation, depending on the detected browser/os language.
+
+#CONVENTION:3 connecting different databases
+to connect a different database, you need to write two files:
+
+1. lib_mysqli_interface.php -> that implements the connection buildup/setup/auth for your favourite database.
+2. lib_mysqli_commands.php -> that implements the available commands (login, register, adduser...) that gigalaunch.de needs to work with your favourite database.
+
+if($settings_datasource == "mysql") 
 
 o test the system according to test-documentation
 oo login

@@ -6,7 +6,7 @@
 
 if(!class_exists("mysqli_custom"))
 {
-	require ('lib_mysqli_custom.php');
+	require ('lib_mysqli_interface.php');
 }
 if(!function_exists("string2array"))
 {
@@ -101,6 +101,23 @@ function getUserByUsername($username)
 	}
 	return $result;
 }
+
+/* get $user as assoc-array by mail-address
+ */
+function getUserByMail($mail)
+{
+	$result = null;
+	global $mysqli_object;
+	global $settings_database_auth_table;
+	global $settings_database_name;
+	$user_array = $mysqli_object->query("SELECT * FROM `".$settings_database_auth_table."` WHERE `mail` = '".$mail."'");
+	if(isset($user_array[0]))
+	{
+		$result = $user_array[0];
+	}
+	return $result;
+}
+
 /* returns an array of the data-details field of this user from database->passwd table
  */
 function getDataOfUsername($username)

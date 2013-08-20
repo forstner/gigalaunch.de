@@ -1,5 +1,17 @@
 ===== TEST DOCUMENTATION =====
+
 ... is a usefull beast that enshures quality. whenever you encounter an error-case, write it down here. before you release to the repository/your users, go over the WHOLE test-documentation and test, test test... this enshures high quality software and happy users in a solid working, reliable world.
+
+==== frontend_login.php ====
+
+o type in an non-existing username and a random password
+-> error credentials wrong...
+
+o click on button password forgotten?
+oo -> frontend_forgottenPassword.php -> enter e-mail and captcha
+
+o 
+
 ==== frontend_useradd.php ====
 
 o 0. select profile picture, click on upload

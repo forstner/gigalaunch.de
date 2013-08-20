@@ -8,57 +8,54 @@ include("config/config.php"); // load project-config file
 // // login needs to be open for all in order to login! require('lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
 /* ================= */
 
-require ('lib_users_mysql_passwd.php');
+require ('lib_mysqli_commands.php');
 require('lib_general.php');
 
 if(!empty($_REQUEST['username']) && !empty($_REQUEST['password_encrypted']))
 {
 	require ('config/config.php');
 	
-	if($settings_datasource == "mysql")
+	$user = getUserByUsername($_REQUEST['username']);
+	
+	if(does_user_exist($_REQUEST['username'],null,$user)) // check if username exists
 	{
-		$user = getUserByUsername($_REQUEST['username']);
-		
-		if(does_user_exist($_REQUEST['username'],null,$user)) // check if username exists
+		// at this point we know the username exists
+		// let's compare the submitted password_encrypted to value of the array key (the right password)
+		if(does_user_exist($_REQUEST['username'],$_REQUEST['password_encrypted'],$user)) // check if username with that password exists
 		{
-			// at this point we know the username exists
-			// let's compare the submitted password_encrypted to value of the array key (the right password)
-			if(does_user_exist($_REQUEST['username'],$_REQUEST['password_encrypted'],$user)) // check if username with that password exists
+			// password is correct
+			session_start();
+			setSession($_REQUEST['username'],$_REQUEST['password_encrypted']);
+			
+			$data = getDataOfUsername($_REQUEST['username']);
+			if($settings_login_session_timeout > 0)
 			{
-				// password is correct
-				session_start();
-				setSession($_REQUEST['username'],$_REQUEST['password_encrypted']);
-				
-				$data = getDataOfUsername($_REQUEST['username']);
-				if($settings_login_session_timeout > 0)
+				// echo('type:success,id:login successful,details:you have now access for '.seconds2minutes($settings_login_session_timeout).' minutes');
+				// sleep(3);
+				if(isset($data['home']))
 				{
-					// echo('type:success,id:login successful,details:you have now access for '.seconds2minutes($settings_login_session_timeout).' minutes');
-					// sleep(3);
-					if(isset($data['home']))
-					{
-						header("Location: ".$data['home']);
-					}
-					else
-					{
-						header("Location: ".$settings_default_home_after_login);
-					}
+					header("Location: ".$data['home']);
 				}
 				else
 				{
-					// echo('type:success,id:login successful,details:you have now access. live long and prosper! :)');
-					// sleep(3);
-					header("Location: servermessages/session_expired.php");
+					header("Location: ".$settings_default_home_after_login);
 				}
 			}
 			else
 			{
-				// exit('type:error,id:username or password wrong,details:Either username or password did not match. ');
-				header("Location: servermessages/wrong_username_or_password.php");
+				// echo('type:success,id:login successful,details:you have now access. live long and prosper! :)');
+				// sleep(3);
+				header("Location: servermessages/session_expired.php");
 			}
-		} else {
+		}
+		else
+		{
 			// exit('type:error,id:username or password wrong,details:Either username or password did not match. ');
 			header("Location: servermessages/wrong_username_or_password.php");
 		}
+	} else {
+		// exit('type:error,id:username or password wrong,details:Either username or password did not match. ');
+		header("Location: servermessages/wrong_username_or_password.php");
 	}
 }	
 ?>

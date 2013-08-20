@@ -14,7 +14,7 @@ include("config/config.php");
 global $settings_datasource;
 if($settings_datasource == "mysql")
 {
-	require('lib_users_mysql_passwd.php');
+	require('lib_mysqli_commands.php');
 
 	global $mysqli_object;
 	if(!class_exists("mysqli"))

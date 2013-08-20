@@ -69,7 +69,7 @@ CREATE TABLE `passwd` (
 
 LOCK TABLES `passwd` WRITE;
 /*!40000 ALTER TABLE `passwd` DISABLE KEYS */;
-INSERT INTO `passwd` VALUES (1,'username','username,admins,','5f4dcc3b5aa765d61d8327deb882cf99','cb83bed80cd958ceb24f50604a0ed965','127.0.0.1','1376924188','1378724188','7d2ac9703d62e4d7f48b09be7bc3688d','firstname:firstname,lastname:lastname,email:mail@mail.de,ip_during_registration:192.168.1.45,port_during_registration:49434,device_during_registration:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/534.59.8 (KHTML- like Gecko) Version/5.1.9 Safari/534.59.8,home:UserManagement.php,profilepicture:images/profilepictures/Dandelion.gif,',''),(3,'username2','username2,','5f4dcc3b5aa765d61d8327deb882cf99','','','','','f8586a0ce14689a5b6d582f6dc814aca','firstname:firstname,lastname:lastname,email:mail@mail.de,ip_during_registration:192.168.1.45,port_during_registration:49449,device_during_registration:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/534.59.8 (KHTML- like Gecko) Version/5.1.9 Safari/534.59.8,home:UserManagement.php,profilepicture:images/profilepictures/Sunflower.gif,','');
+INSERT INTO `passwd` VALUES (1,'username','username,admins,','5f4dcc3b5aa765d61d8327deb882cf99','90abd85df1620eec78ce8e049e06c0ac','127.0.0.1','1376925119','1378725119','7d2ac9703d62e4d7f48b09be7bc3688d','firstname:firstname,lastname:lastname,email:mail@mail.de,ip_during_registration:192.168.1.45,port_during_registration:49434,device_during_registration:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/534.59.8 (KHTML- like Gecko) Version/5.1.9 Safari/534.59.8,home:frontend_UserManagement.php,profilepicture:images/profilepictures/Dandelion.gif,',''),(3,'username2','username2,','5f4dcc3b5aa765d61d8327deb882cf99','','','','','f8586a0ce14689a5b6d582f6dc814aca','firstname:firstname,lastname:lastname,email:mail@mail.de,ip_during_registration:192.168.1.45,port_during_registration:49449,device_during_registration:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/534.59.8 (KHTML- like Gecko) Version/5.1.9 Safari/534.59.8,home:frontend_UserManagement.php,profilepicture:images/profilepictures/Sunflower.gif,','');
 /*!40000 ALTER TABLE `passwd` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -81,11 +81,14 @@ DROP TABLE IF EXISTS `translations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `translations` (
-  `id` bigint(20) NOT NULL,
-  `deutsch` text NOT NULL,
-  `russisch` text NOT NULL,
-  `spanisch` text NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `keyword` text NOT NULL,
+  `en` text NOT NULL,
+  `de` text NOT NULL,
+  `ru` text NOT NULL,
+  `es` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -94,7 +97,7 @@ CREATE TABLE `translations` (
 
 LOCK TABLES `translations` WRITE;
 /*!40000 ALTER TABLE `translations` DISABLE KEYS */;
-INSERT INTO `translations` VALUES (0,'hallo','nastrovie','!ola');
+INSERT INTO `translations` VALUES (1,'hello','hello','hallo','nastrovie','!ola'),(2,'password forgotten?','password forgotten?','Passwort vergessen?','забыли пароль?','¿Olvidó su contraseña?');
 /*!40000 ALTER TABLE `translations` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -107,4 +110,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-08-19 17:04:29
+-- Dump completed on 2013-08-20 11:03:12

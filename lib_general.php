@@ -107,4 +107,3 @@ function salt()
 	$salt = substr(md5(time()), 8); // date("F")
 	return $salt;
 }
-?>

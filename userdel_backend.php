@@ -11,7 +11,7 @@ require('lib_session.php'); // will immediately exit and redirect to login if th
 
 /* is it an activation ? */
 $received_activation = "";
-// require ("lib_users_mysql_passwd.php");
+// require ("lib_mysqli_commands.php");
 require('lib_general.php');
 // loads require ("lib_security.php");
 
