@@ -16,7 +16,7 @@ require_once("../config/config.php");
 				<div id="details">Sorry, but the given username+password combination was not valid.
 				<br>
 				<h3>not your fault?</hr>
-				Contact the <a href="mailto:<?php global $settings_email_admin; echo $settings_email_admin; ?>">administrator</a>. </div>
+				Contact the <a href="mailto:<?php global $settings_mail_admin; echo $settings_mail_admin; ?>">administrator</a>. </div>
 				<br>
 				You will be redirected to the <a href="../frontend_login.php">login</a> page... in 3 seconds. 
 				</p>

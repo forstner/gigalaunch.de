@@ -30,7 +30,7 @@ email = email
 * ... if you want to replace mysql with postgress,
 * there needs to be a postgress.php which similar structure than this one.
 */
-class lib_mysqli_interface {
+class class_mysqli_interface {
 
 	/* constructor */
 	function __construct()

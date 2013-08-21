@@ -1,7 +1,7 @@
 <?php
 /* =============== about:
  * this should allow a simple file/picture upload, no ajax, no progress bar, just keep it simple style
- * variables needs to be set in the file.php that includes lib_upload.php like this: (example frontend_useradd.php)
+ * variables needs to be set in the file.php that includes ./lib/php/lib_upload.php like this: (example frontend_useradd.php)
 
  * =============== usage:
 	<?php
@@ -17,7 +17,7 @@
 		// specify a path where your users may store their profile pictures (is set in config.php)
 		$settings_profilepicture_upload_dir = "images/profilepictures/";
 		
-		require ("lib_upload.php");
+		require ("./lib/php/lib_upload.php");
 	?>
 
 WARNING: DO NOT PASS uploadDirectory parameters as url?uploadTo=thisDir

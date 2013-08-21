@@ -3,9 +3,9 @@
 error_reporting(E_ALL); // turn the reporting of php errors on
 $allowed_users = "all logged in users"; // a list of userIDs that are allowed to access this page
 $allowed_groups = ""; // a list of groups, that are allowed to access this page
-require_once('lib_security.php'); // will mysql-real-escape all input
+require_once('./lib/php/lib_security.php'); // will mysql-real-escape all input
 require_once("config/config.php"); // load project-config file
-require_once('lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
+require_once('./lib/php/lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
 /* ================= */
 
 // what list of users should be displayed right now?

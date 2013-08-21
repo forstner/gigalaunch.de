@@ -1,6 +1,6 @@
 <?php
-require_once("lib_translations.php");
-require_once("lib_detectLang.php");
+require_once("./lib/php/lib_translations.php");
+require_once("./lib/php/lib_detectLang.php");
 /* receives ajax/javascript-post-requests with hash#separated#keywords of translations
  * returns the translated texts again #hash#separated
  */ 

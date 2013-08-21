@@ -1,22 +1,41 @@
 <?php
 /*
  * this file handles all sorts of user-database-operations, it can not be called directly via url?parameter=evil
- * so it does not need all the lib_session.php/lib_security.php, but the parent.php does!
+ * so it does not need all the ./lib/php/lib_session.php/./lib/php/lib_security.php, but the parent.php does!
 */
 
-if(!class_exists("lib_mysqli_interface"))
+if(!class_exists("./class/php/class_mysqli_interface"))
 {
-	require ('lib_mysqli_interface.php');
+	require_once('./class/php/class_mysqli_interface.php');
 }
 if(!function_exists("string2array"))
 {
-	require ('lib_convert.php');
+	require_once('./lib/php/lib_convert.php');
 }
 
 // init database object
-$mysqli_object = new lib_mysqli_interface();
+$mysqli_object = new class_mysqli_interface();
 
 /* ============ USERS */
+
+/* create a new user-teamplate from database */
+function newUser()
+{
+	$newUser = array();
+	global $mysqli_object;
+	global $settings_database_auth_table;
+	global $settings_database_name;
+	$tableDefinition = $mysqli_object->query("DESCRIBE ".$settings_database_auth_table);
+
+	$target = count($tableDefinition);
+	for($i=0;$i<$target;$i++)
+	{
+		$key = $tableDefinition[$i]->Field;
+		$newUser[$key] = "";
+	}
+
+	return $newUser;
+}
 
 /* get all users that belong to that $groupname
  */
@@ -357,11 +376,26 @@ function userdel($userID = null,$user = null)
 
 /* add/register a new user
  * $groups = a,comma,separated,list,of,groupnames
- * 
+ *
+ * a User has currently these properties:
+ 
+	id	
+	username	
+	mail	
+	groups	
+	password	
+	session	
+	ip_login	
+	logintime	
+	loginexpires	
+	activation	
+	data	
+	status	
+
  * // arbitrary additional data about the user
  * $data = "key:value,key:value,"
  * */
-function useradd($requested_username = "",$requested_password = "",$groups = "",$data = "")
+function useradd($user) // $requested_username = "",$requested_password = "",$groups = "",$data = ""
 {
 	global $activation;
 	global $mysqli_object;
@@ -423,9 +457,8 @@ function useradd($requested_username = "",$requested_password = "",$groups = "",
  * arbitrary additional details data about the user
  * data -> $data = "key:value,key:value,"
  */
-function useredit($userID, $requested_username = "",$requested_password = "",$groups = "",$data = "")
+function useredit($user2edit) // $userID, $requested_username = "",$requested_password = "",$groups = "",$data = ""
 {
-	global $activation;
 	global $mysqli_object;
 	global $settings_database_auth_table;
 	global $settings_database_name;
@@ -433,34 +466,33 @@ function useredit($userID, $requested_username = "",$requested_password = "",$gr
 
 	// under linux, when creating users there is always a a group created with the same name, that per default this user belongs to (it's "his" group)
 	// search for username in groups, if not found add.
-	if(strpos($data,"home:") !== false)
+	if(strpos($user2edit->data,"home:") !== false)
 	{
 		// allready contains home informations
 	}
 	else
 	{
-		$data .= ",home:".$settings_default_home_after_login.",";
+		$user2edit->data .= ",home:".$settings_default_home_after_login.",";
 	}
-
-	// Create a unique  activation code:
-	$activation = md5(uniqid(rand(), true));
 
 	// under linux, when creating users there is always a a group created with the same name, that per default this user belongs to (it's "his" group)
 	// search for username in groups, if not found add.
-	if(strpos($groups,$requested_username) !== false)
+	if(strpos($user2edit->groups,$requested_username) !== false)
 	{
 		// allready contains username in group-list
 	}
 	else
 	{
-		$groups .= $requested_username.",";
+		$user2edit->groups .= $requested_username.",";
 	}
 
 	// return data = false, return errors = true
-	$output = $mysqli_object -> query("UPDATE  `".$settings_database_name."`.`".$settings_database_auth_table."` SET  `username` =  '".$requested_username."',
+	$query = "UPDATE  `".$settings_database_name."`.`".$settings_database_auth_table."` SET  `username` =  '".$requested_username."',
 	`groups` =  '".$groups."',
 	`password` =  '".$requested_password."',
-	`data` = '".$data."' WHERE `".$settings_database_auth_table."`.`id` = '".$userID."';",false,true);
+	`data` = '".$data."' WHERE `".$settings_database_auth_table."`.`id` = '".$user2edit->id."';";
+	
+	$output = $mysqli_object -> query($query,false,true);
 
 	// SET  `username` =  'username123' WHERE  `passwd`.`id` =1;
 

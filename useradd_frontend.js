@@ -170,13 +170,4 @@ $(document).ready(function() {
 				email: "Please enter a valid email address"
 			}
 		});
-
-		// propose username by combining first- and lastname
-		$("#username").focus(function() {
-			var firstname = $("#firstname").val();
-			var lastname = $("#lastname").val();
-			if(firstname && lastname && !this.value) {
-				this.value = firstname + "." + lastname;
-			}
-		});
 });

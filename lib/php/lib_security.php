@@ -21,13 +21,13 @@
 * per default all incoming arguments are mysql-real-escaped, so this should prevent an sql injection input form.
  */
 
-if(!class_exists("lib_mysqli_interface"))
+if(!class_exists("./class/php/class_mysqli_interface"))
 {
-	require ('lib_mysqli_interface.php');
+	require_once('./class/php/class_mysqli_interface.php');
 }
 
 // init database
-$mysqli_object = new lib_mysqli_interface();
+$mysqli_object = new class_mysqli_interface();
 
 // escape everything
 foreach ($_REQUEST as $key => $value)

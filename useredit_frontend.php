@@ -3,19 +3,19 @@
 error_reporting(E_ALL); // turn the reporting of php errors on
 $allowed_users = "1,2,3,4,5"; // a list of userids that are allowed to access this page
 $allowed_groups = "admin,admins"; // a list of groups, that are allowed to access this page
-require_once('lib_security.php'); // will mysql-real-escape all input
+require_once('./lib/php/lib_security.php'); // will mysql-real-escape all input
 require_once("config/config.php"); // load project-config file
-require_once('lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
+require_once('./lib/php/lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
 /* ================= */
 
 /* handle user-registeration */
 /* is it an activation ? */
 $received_activation = "";
-require_once('lib_general.php');
-// loads require ("lib_security.php");
+require_once('./lib/php/lib_general.php');
+// loads require ("./lib/php/lib_security.php");
 
 // init database
-$mysqli_object = new lib_mysqli_interface();
+$mysqli_object = new class_mysqli_interface();
 
 // 1. get user
 if(isset($_REQUEST['selectUserId']))
@@ -83,7 +83,6 @@ if(!empty($_REQUEST['editUserId'])) /* is it an change user action? */
 		{
 			$data['profilepicture'] = $_REQUEST['profilepicture'];
 		}
-
 		$userdata = array2string($data);
 
 		// get informations about groups
@@ -99,9 +98,15 @@ if(!empty($_REQUEST['editUserId'])) /* is it an change user action? */
 				$groups_string .= $substring.",";
 			}
 		}
-	
-		// EDIT THE USER
-		$output = useredit($_REQUEST['editUserId'],$_REQUEST['username'],$_REQUEST['password'],$groups_string,$userdata);
+
+		// overwrite properties of the instance
+		$user2edit->data = $userdata;
+		$user2edit->username = $_REQUEST['username'];
+		$user2edit->password = $_REQUEST['password'];
+		$user2edit->groups = $groups_string;
+		
+		// CHANGE/UPDATE/EDIT THE USER
+		$output = useredit($user2edit);
 	
 		// check if any error
 		if(!$output)
@@ -142,7 +147,7 @@ if(!empty($_REQUEST['editUserId'])) /* is it an change user action? */
 				$showImage = $data['profilepicture'];
 			}
 		}
-		require ("lib_upload.php");
+		require ("./lib/php/lib_upload.php");
 	?>
 		<form id="usereditForm" class="usereditForm" action="frontend_useredit.php" method="post" accept-charset="UTF-8">
 			<h4>Edit User:</h4>

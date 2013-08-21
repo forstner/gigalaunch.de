@@ -15,7 +15,7 @@ require_once("../config/config.php");
 				<p>
 				<div id="details">User was registered, but server could not send the activation mail.
 				<br>
-				please contact the <a href="mailto:<?php global $settings_email_admin; echo $settings_email_admin; ?>">administrator</a>. </div>
+				please contact the <a href="mailto:<?php global $settings_mail_admin; echo $settings_mail_admin; ?>">administrator</a>. </div>
 				<br>
 				You will be redirected to the <a href="../frontend_login.php">login</a> page... in 30 seconds. 
 				</p>

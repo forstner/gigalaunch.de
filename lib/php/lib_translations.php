@@ -2,7 +2,7 @@
 /* ================= please put this on top of every page, modify the allowed users/groups entries to manage access per page. */
 error_reporting(E_ALL); // turn the reporting of php errors on
 require_once("config/config.php"); // load project-config file
-require_once("lib_detectLang.php");
+require_once("./lib/php/lib_detectLang.php");
 /* ================= */
 /* get appropriate translation for the $keyword */
 function translate($keyword,$lang)
@@ -13,9 +13,9 @@ function translate($keyword,$lang)
 	}
 	$result_database = null;
 	$result_string = "";
-	require_once 'lib_mysqli_interface.php';
+	require_once './class/php/class_mysqli_interface.php';
 	// init database object
-	$mysqli_object = new lib_mysqli_interface();
+	$mysqli_object = new class_mysqli_interface();
 
 	global $mysqli_object;
 	global $settings_database_auth_table;

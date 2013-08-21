@@ -16,7 +16,7 @@ require_once("../config/config.php");
 				<div id="details">Check your mails, you should have gotten an activation link in your mail.
 				Please click that link to validate your email address.
 				<br>
-				If you have not gotten an activation mail soon, please contact the <a href="mailto:<?php global $settings_email_admin; echo $settings_email_admin; ?>">administrator</a>. </div>
+				If you have not gotten an activation mail soon, please contact the <a href="mailto:<?php global $settings_mail_admin; echo $settings_mail_admin; ?>">administrator</a>. </div>
 				<br>
 				You will be redirected to the <a href="../frontend_login.php">login</a> page... in 30 seconds. 
 				</p>

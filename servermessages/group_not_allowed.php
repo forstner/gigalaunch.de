@@ -16,7 +16,7 @@ require_once("../config/config.php");
 				<div id="details">
 				your user is not in a group that has access rights to this page.
 				<br>
-				<br>If you think this is a error/mistake: please contact the <a href="mailto:<?php global $settings_email_admin; echo $settings_email_admin; ?>">administrator</a>. </div>
+				<br>If you think this is a error/mistake: please contact the <a href="mailto:<?php global $settings_mail_admin; echo $settings_mail_admin; ?>">administrator</a>. </div>
 				... you will be taken back to <a href="../frontend_login.php">login</a>. in 10 seconds.
 				</p>
 			</fieldset>

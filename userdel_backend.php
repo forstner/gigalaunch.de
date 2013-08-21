@@ -4,19 +4,19 @@
 error_reporting(E_ALL); // turn the reporting of php errors on
 $allowed_users = "all users including guests"; // a list of userIDs that are allowed to access this page
 $allowed_groups = "all groups including guests"; // a list of groups, that are allowed to access this page
-require_once('lib_security.php'); // will mysql-real-escape all input
+require_once('./lib/php/lib_security.php'); // will mysql-real-escape all input
 require_once("config/config.php"); // load project-config file
-require_once('lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
+require_once('./lib/php/lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
 /* ================= */
 
 /* is it an activation ? */
 $received_activation = "";
-// require ("lib_mysqli_commands.php");
-require_once('lib_general.php');
-// loads require ("lib_security.php");
+// require ("./lib/php/lib_mysqli_commands.php");
+require_once('./lib/php/lib_general.php');
+// loads require ("./lib/php/lib_security.php");
 
 // init database
-$mysqli_object = new lib_mysqli_interface();
+$mysqli_object = new class_mysqli_interface();
 $result = "";
 
 if(!empty($_REQUEST['user2delete0']))

@@ -1,5 +1,7 @@
 ===== TODO ===== FEEL FREE TO PUT YOUR OWN REQUESTS HERE, ALSO FEEL FREE TO IMPLEMENT ANYTHING ON THAT LIST, PLEASE HELP!!! :-D (o = open, ok = done, higher priority is on top)
 
+o step through lib_mysqli_commands.test.php
+
 ok move the library one folder up, having library and projectname in the same folder.
 
 Tue Aug 20 10:51:46 CEST 2013	
@@ -8,7 +10,7 @@ ok add
 #CONVENTION:1
 ook call all webbrowser-usable-php files frontend_Something.php
 ook call all backend-serverside-endpoints files backend_Something.php
-ook call all library functions lib_Seomthing.php
+ook call all library functions ./lib/php/lib_Seomthing.php
 
 #CONVENTION:2 table languages
 ... that keeps all the text-translations, there will be a function translate("keyword"); that outputs the translation, depending on the detected browser/os language.
@@ -21,11 +23,18 @@ right now it seems like the "easiest"/most transparent way of client-server-com 
 4.1. that the client transmits a custom forged query string ("backend.php?key1=value1&key2=value2")
 ...so you know what is going on/transmitted and how it is transmitted.
 
+#CONVENTION:5 database objects e.g. user
+what if you want to add additional info to the passwd table?
+e.g. newProperty
+no problem!
+just add it in the database, and the getUser(); functions will (hopefully) return an appropriate stdClass object,
+you can access your newProperty via $user->newProperty; 
+
 4.2. the server responds with an json_encoded array from database (echo json_encode($result_array);)
 ...because it is easy to process such objects in javascript.
 
-1. lib_mysqli_interface.php -> that implements the connection buildup/setup/auth for your favourite database.
-2. lib_mysqli_commands.php -> that implements the available commands (login, register, adduser...) that gigalaunch.de needs to work with your favourite database.
+1. ./class/php/class_mysqli_interface.php -> that implements the connection buildup/setup/auth for your favourite database.
+2. ./lib/php/lib_mysqli_commands.php -> that implements the available commands (login, register, adduser...) that gigalaunch.de needs to work with your favourite database.
 
 if($settings_datasource == "mysql") 
 

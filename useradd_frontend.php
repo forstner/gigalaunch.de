@@ -5,18 +5,18 @@
 error_reporting(E_ALL); // turn the reporting of php errors on
 $allowed_users = "all users including guests"; // a list of userIDs that are allowed to access this page
 $allowed_groups = "all groups including guests"; // a list of groups, that are allowed to access this page
-require_once('lib_security.php'); // will mysql-real-escape all input
+require_once('./lib/php/lib_security.php'); // will mysql-real-escape all input
 require_once("config/config.php"); // load project-config file
-require_once('lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
+require_once('./lib/php/lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
 /* ================= */
 
 /* is it an activation ? */
 $received_activation = "";
-require_once('lib_general.php');
-// loads require ("lib_security.php");
+require_once('./lib/php/lib_general.php');
+// loads require ("./lib/php/lib_security.php");
 
 // init database
-$mysqli_object = new lib_mysqli_interface();
+$mysqli_object = new class_mysqli_interface();
 
 if(!empty($_REQUEST['activation']))
 {
@@ -100,43 +100,16 @@ else if(!empty($_REQUEST['username']) && !empty($_REQUEST['password'])) /* is it
 		// check if any error
 		if(!$output)
 		{
-			global $settings_email_activation;
-			
+			global $settings_mail_activation;
+
 			// send activation code
 			// what will be in that e-mail
-			$from = $settings_email_activation;
+			$from = $settings_mail_activation;
 			$to = $_REQUEST['email'];
-			$subject = $settings_email_activation_subject;
-			$text = $settings_email_activation_text." Please click : <a href='frontend_login.php?activation=".$activation."'>this link to activate your account</a>";
-			
-			// assemble header utf8
-			$header = ('From: ' . $from . '\r\n');
-			$header .= ('Reply-To: ' . $from . '\r\n');
-			$header .= ('Bcc: '.$from.'\r\n');
-			$header .= ('Return-Path: ' . $from . '\r\n');
-			$header .= ('X-Mailer: PHP/' . phpversion() . '\r\n');
-			$header .= ('X-Sender-IP: ' . $_SERVER['REMOTE_ADDR'] . '\r\n');
-			$header .= ('Content-type: text/html\r\n');
-			$header .= ("MIME-Version: 1.0\r\n");
-			$header .= ("Content-Type: text/html; charset=utf-8\r\n");
-			$header .= ("Content-Transfer-Encoding: 8bit\r\n\r\n");
-			$valid_sender = '-f '.$settings_email_activation;
-			
-			/* Verschicken der Mail */
-			if(mail($to, $subject, $text, $header, $valid_sender))
-			{
-				// 	echo "Mail sent successfully!";
-				exit ('type:success,id:registration successfull;sending activation mail successfull!,details:Thank you for registering :) You should receive an registration mail soon.');
-				// sleep(3);
-				// header("Location: servermessages/activation_send.php");
-			}
-			else
-			{
-				// echo"Mail not sent!";
-				exit('type:success,id:registration successfull;sending activation mail failed!,details:Thank you for registering :) You should receive an registration mail soon.');
-				// sleep(3);
-				header("Location: servermessages/activation_mail_failed.php");
-			}
+			$subject = $settings_mail_activation_subject;
+			$text = $settings_mail_activation_text." Please click : <a href='frontend_login.php?activation=".$activation."'>this link to activate your account</a>";
+
+			sendMail($from,$to,$subjet,$text);
 		}
 		else
 		{
@@ -174,7 +147,7 @@ else if(!empty($_REQUEST['username']) && !empty($_REQUEST['password'])) /* is it
 		// include upload form
 		$category = "profilepicture";
 		$upload_dir = "images/profilepictures/";
-		require ("lib_upload.php");
+		require ("./lib/php/lib_upload.php");
 	?>
 		<form id="useraddForm" class="useraddForm" action="frontend_useradd.php" method="post" accept-charset="UTF-8">
 			<h4>Register New User:</h4>
