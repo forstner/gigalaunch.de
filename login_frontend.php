@@ -3,13 +3,13 @@
 error_reporting(E_ALL); // turn the reporting of php errors on
 $allowed_users = "all users including guests"; // a list of userIDs that are allowed to access this page 
 $allowed_groups = "all groups including guests"; // a list of groups, that are allowed to access this page
-require('lib_security.php'); // will mysql-real-escape all input
-include("config/config.php"); // load project-config file
-// // login needs to be open for all in order to login! require('lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
+require_once('lib_security.php'); // will mysql-real-escape all input
+require_once("config/config.php"); // load project-config file
+// // login needs to be open for all in order to login! require_once('lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
 /* ================= */
 
-require ('lib_mysqli_commands.php');
-require('lib_general.php');
+require_once('lib_mysqli_commands.php');
+require_once('lib_general.php');
 
 if(!empty($_REQUEST['username']) && !empty($_REQUEST['password_encrypted']))
 {

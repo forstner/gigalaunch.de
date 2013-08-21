@@ -13,6 +13,8 @@ $settings_database_auth_table = "passwd"; // what the table is called, where the
 
 // $settings_default_home_after_login = "frontend_template.php"; // redirect all users, that have no home:somefile.php set in data field of passwd table, to this file after login
 $settings_default_home_after_login = "frontend_UserManagement.php"; // redirect all users, that have no home:somefile.php set in data field of passwd table, to this file after login
+require_once('lib_detectLang.php'); // will detect the currently used language
+$settings_lang = detectLang();
 
 /* ======================= OPTICS */
 /* ================ LOGO */
@@ -111,9 +113,15 @@ $settings_meta = '
 		<!-- client side functions to process server response -->
 		<script type="text/javascript" src="js/lib_general.js"></script>
 
+		<!-- translations -->
+		<script type="text/javascript" src="js/lib_translate.js"></script>
+				
 		<!-- page specific js includes & custom js code -->
 		<script type="text/javascript" src="js/'.$settings_current_filename.'.js"></script>
+				
 		';
+		// if lang needs to be available in javascript, uncomment the following line and move it 2 lines up
+		// <script>var lang = "'.$settings_lang.'";</script>
 
 /* o detect mobile browser, if yes -> load different css do not paint a lot of blue stuff around the UI */
 // require ('detectmobilebrowser.php');

@@ -10,11 +10,11 @@
  */
 
 // 0. init database
-include("config/config.php");
+require_once("config/config.php");
 global $settings_datasource;
 if($settings_datasource == "mysql")
 {
-	require('lib_mysqli_commands.php');
+	require_once('lib_mysqli_commands.php');
 
 	global $mysqli_object;
 	if(!class_exists("mysqli"))

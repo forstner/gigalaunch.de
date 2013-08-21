@@ -1,28 +1,30 @@
 <?php
-/* receives ajax/javascript-post-requests with hash#separated#keywords of translations
- * returns the translated texts again #hash#separated
- */ 
-if(isset($_REQUEST["translations"]))
-{
-	$result = "";
-	$translations = $_REQUEST["translations"];
-	$translations_array = explode('#',$translations);
-	
-	$translations_array_count = count($translations_array);
-	for($i = 0;$i < $translations_array_count;$i++)
-	{
-		translate($translations_array[$i]);
-	}
-}
+/* ================= please put this on top of every page, modify the allowed users/groups entries to manage access per page. */
+error_reporting(E_ALL); // turn the reporting of php errors on
+require_once("config/config.php"); // load project-config file
+require_once("lib_detectLang.php");
+/* ================= */
 /* get appropriate translation for the $keyword */
-function translate($keyword)
+function translate($keyword,$lang)
 {
-	$result = null;
+	if(empty($lang))
+	{
+		$lang = detectLang();
+	}
+	$result_database = null;
+	$result_string = "";
+	require_once 'lib_mysqli_interface.php';
+	// init database object
+	$mysqli_object = new lib_mysqli_interface();
+
 	global $mysqli_object;
 	global $settings_database_auth_table;
 	global $settings_database_name;
-	$result = $mysqli_object->query("SELECT * FROM `translations` WHERE `keyword` = '".$keyword."'");
+	$result_database = $mysqli_object->query("SELECT * FROM `translations` WHERE `keyword` = '".$keyword."'");
+	
+	$ClassObject = $result_database[0];
+	$result_string = $ClassObject->$lang;
 
-	return $result;
+	return $result_string;
 }
 ?>

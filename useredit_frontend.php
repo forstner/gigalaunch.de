@@ -3,19 +3,19 @@
 error_reporting(E_ALL); // turn the reporting of php errors on
 $allowed_users = "1,2,3,4,5"; // a list of userids that are allowed to access this page
 $allowed_groups = "admin,admins"; // a list of groups, that are allowed to access this page
-require('lib_security.php'); // will mysql-real-escape all input
-include("config/config.php"); // load project-config file
-require('lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
+require_once('lib_security.php'); // will mysql-real-escape all input
+require_once("config/config.php"); // load project-config file
+require_once('lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
 /* ================= */
 
 /* handle user-registeration */
 /* is it an activation ? */
 $received_activation = "";
-require('lib_general.php');
+require_once('lib_general.php');
 // loads require ("lib_security.php");
 
 // init database
-$mysqli_object = new mysqli_custom();
+$mysqli_object = new lib_mysqli_interface();
 
 // 1. get user
 if(isset($_REQUEST['selectUserId']))

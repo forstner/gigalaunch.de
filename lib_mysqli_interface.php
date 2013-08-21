@@ -1,5 +1,5 @@
 <?php
-require("config/config.php");
+require_once("config/config.php");
 global $errors;
 $mysqli_link = null;
 global $mysqli_link; // a pointer symbolizing the connection to the mysql database
@@ -30,7 +30,7 @@ email = email
 * ... if you want to replace mysql with postgress,
 * there needs to be a postgress.php which similar structure than this one.
 */
-class mysqli_custom {
+class lib_mysqli_interface {
 
 	/* constructor */
 	function __construct()

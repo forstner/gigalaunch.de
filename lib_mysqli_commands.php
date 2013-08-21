@@ -4,7 +4,7 @@
  * so it does not need all the lib_session.php/lib_security.php, but the parent.php does!
 */
 
-if(!class_exists("mysqli_custom"))
+if(!class_exists("lib_mysqli_interface"))
 {
 	require ('lib_mysqli_interface.php');
 }
@@ -14,7 +14,7 @@ if(!function_exists("string2array"))
 }
 
 // init database object
-$mysqli_object = new mysqli_custom();
+$mysqli_object = new lib_mysqli_interface();
 
 /* ============ USERS */
 

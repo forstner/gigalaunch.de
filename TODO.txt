@@ -16,6 +16,14 @@ ook call all library functions lib_Seomthing.php
 #CONVENTION:3 connecting different databases
 to connect a different database, you need to write two files:
 
+#CONVENTION:4 client<->server communication
+right now it seems like the "easiest"/most transparent way of client-server-com to
+4.1. that the client transmits a custom forged query string ("backend.php?key1=value1&key2=value2")
+...so you know what is going on/transmitted and how it is transmitted.
+
+4.2. the server responds with an json_encoded array from database (echo json_encode($result_array);)
+...because it is easy to process such objects in javascript.
+
 1. lib_mysqli_interface.php -> that implements the connection buildup/setup/auth for your favourite database.
 2. lib_mysqli_commands.php -> that implements the available commands (login, register, adduser...) that gigalaunch.de needs to work with your favourite database.
 

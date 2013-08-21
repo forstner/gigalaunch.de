@@ -106,36 +106,50 @@ function displayServerError(response, responseText, jqXHR, outputIDNumber)
  */
 
 function analyseServerResponse(response) {
-	var string_array = response.split(",");
 	
 	var result = [];
 
-	string_sub_array = string_array[0];
-	string_sub_array = string_sub_array.split(":");
-	result["type"] = string_sub_array[1];
+	if(jQuery.isArray(response))
+	{
+		if(response.length > 0)
+		{
+			if(response["error"] != undefined)
+			{
+				// process json-array-response
+			}
+		}
+	}
+	else
+	{
+		var string_array = response.split(",");
 
-	string_sub_array = string_array[1];
-	string_sub_array = string_sub_array.split(":");
-	result["id"] = string_sub_array[1];
-	
-	string_sub_array = string_array[2];
-	string_sub_array = string_sub_array.split(":");
-	result["details"] = "";
-	if(string_sub_array[1])
-	{
-		result["details"] += string_sub_array[1]+":";
-	}
-	if(string_sub_array[2])
-	{
-		result["details"] += string_sub_array[2]+":";
-	}
-	if(string_sub_array[3])
-	{
-		result["details"] += string_sub_array[3]+":";
-	}
-	if(string_sub_array[4])
-	{
-		result["details"] += string_sub_array[4]+":";
+		string_sub_array = string_array[0];
+		string_sub_array = string_sub_array.split(":");
+		result["type"] = string_sub_array[1];
+		
+		string_sub_array = string_array[1];
+		string_sub_array = string_sub_array.split(":");
+		result["id"] = string_sub_array[1];
+		
+		string_sub_array = string_array[2];
+		string_sub_array = string_sub_array.split(":");
+		result["details"] = "";
+		if(string_sub_array[1])
+		{
+			result["details"] += string_sub_array[1]+":";
+		}
+		if(string_sub_array[2])
+		{
+			result["details"] += string_sub_array[2]+":";
+		}
+		if(string_sub_array[3])
+		{
+			result["details"] += string_sub_array[3]+":";
+		}
+		if(string_sub_array[4])
+		{
+			result["details"] += string_sub_array[4]+":";
+		}
 	}
 
 	return result;
@@ -172,4 +186,29 @@ function createDialogDoYouReallyWantTo(title, text, executeFunction)
             }
         }
     });
+}
+
+/* converts a form into a json compatible javascript object */
+$.fn.serializeObject = function()
+{
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
+
+/* change the label of a jQM button */
+function buttonChangeLabel(button,value)
+{
+	$(button).prev('span').find('span.ui-btn-text').text(value);
+	$(button).prop('value', value);
 }

@@ -1,3 +1,428 @@
-[19-Aug-2013 16:55:08] PHP Fatal error:  Cannot redeclare getUsersByGroup() (previously declared in /var/www/hausautomation/gigalaunch.de/lib_users_mysql_passwd.php:23) in /var/www/hausautomation/gigalaunch.de/lib_users_mysql_passwd.php on line 43
-[19-Aug-2013 16:55:08] PHP Stack trace:
-[19-Aug-2013 16:55:08] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/frontend_login.php:0
+[20-Aug-2013 13:09:45] PHP Warning:  require(/var/www/hausautomation/gigalaunch.de/lib_detectLang.php) [<a href='function.require'>function.require</a>]: failed to open stream: Permission denied in /var/www/hausautomation/gigalaunch.de/config/config.php on line 16
+[20-Aug-2013 13:09:45] PHP Stack trace:
+[20-Aug-2013 13:09:45] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:0
+[20-Aug-2013 13:09:45] PHP   2. require() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:6
+[20-Aug-2013 13:09:45] PHP   3. require() /var/www/hausautomation/gigalaunch.de/lib_security.php:26
+[20-Aug-2013 13:09:45] PHP   4. require() /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:2
+[20-Aug-2013 13:09:45] PHP Fatal error:  require() [<a href='function.require'>function.require</a>]: Failed opening required 'lib_detectLang.php' (include_path='.:/usr/share/php:/usr/share/pear') in /var/www/hausautomation/gigalaunch.de/config/config.php on line 16
+[20-Aug-2013 13:09:45] PHP Stack trace:
+[20-Aug-2013 13:09:45] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:0
+[20-Aug-2013 13:09:45] PHP   2. require() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:6
+[20-Aug-2013 13:09:45] PHP   3. require() /var/www/hausautomation/gigalaunch.de/lib_security.php:26
+[20-Aug-2013 13:09:45] PHP   4. require() /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:2
+[20-Aug-2013 13:12:31] PHP Warning:  require(/var/www/hausautomation/gigalaunch.de/lib_detectLang.php) [<a href='function.require'>function.require</a>]: failed to open stream: Permission denied in /var/www/hausautomation/gigalaunch.de/config/config.php on line 16
+[20-Aug-2013 13:12:31] PHP Stack trace:
+[20-Aug-2013 13:12:31] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:0
+[20-Aug-2013 13:12:31] PHP   2. require() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:6
+[20-Aug-2013 13:12:31] PHP   3. require() /var/www/hausautomation/gigalaunch.de/lib_security.php:26
+[20-Aug-2013 13:12:31] PHP   4. require() /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:2
+[20-Aug-2013 13:12:31] PHP Fatal error:  require() [<a href='function.require'>function.require</a>]: Failed opening required 'lib_detectLang.php' (include_path='.:/usr/share/php:/usr/share/pear') in /var/www/hausautomation/gigalaunch.de/config/config.php on line 16
+[20-Aug-2013 13:12:31] PHP Stack trace:
+[20-Aug-2013 13:12:31] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:0
+[20-Aug-2013 13:12:31] PHP   2. require() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:6
+[20-Aug-2013 13:12:31] PHP   3. require() /var/www/hausautomation/gigalaunch.de/lib_security.php:26
+[20-Aug-2013 13:12:31] PHP   4. require() /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:2
+[20-Aug-2013 13:12:53] PHP Warning:  require(/var/www/hausautomation/gigalaunch.de/lib_detectLang.php) [<a href='function.require'>function.require</a>]: failed to open stream: Permission denied in /var/www/hausautomation/gigalaunch.de/config/config.php on line 16
+[20-Aug-2013 13:12:53] PHP Stack trace:
+[20-Aug-2013 13:12:53] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:0
+[20-Aug-2013 13:12:53] PHP   2. require() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:6
+[20-Aug-2013 13:12:53] PHP   3. require() /var/www/hausautomation/gigalaunch.de/lib_security.php:26
+[20-Aug-2013 13:12:53] PHP   4. require() /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:2
+[20-Aug-2013 13:12:53] PHP Fatal error:  require() [<a href='function.require'>function.require</a>]: Failed opening required 'lib_detectLang.php' (include_path='.:/usr/share/php:/usr/share/pear') in /var/www/hausautomation/gigalaunch.de/config/config.php on line 16
+[20-Aug-2013 13:12:53] PHP Stack trace:
+[20-Aug-2013 13:12:53] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:0
+[20-Aug-2013 13:12:53] PHP   2. require() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:6
+[20-Aug-2013 13:12:53] PHP   3. require() /var/www/hausautomation/gigalaunch.de/lib_security.php:26
+[20-Aug-2013 13:12:53] PHP   4. require() /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:2
+[20-Aug-2013 13:13:15] PHP Warning:  require(../lib_detectLang.php) [<a href='function.require'>function.require</a>]: failed to open stream: No such file or directory in /var/www/hausautomation/gigalaunch.de/config/config.php on line 16
+[20-Aug-2013 13:13:15] PHP Stack trace:
+[20-Aug-2013 13:13:15] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:0
+[20-Aug-2013 13:13:15] PHP   2. require() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:6
+[20-Aug-2013 13:13:15] PHP   3. require() /var/www/hausautomation/gigalaunch.de/lib_security.php:26
+[20-Aug-2013 13:13:15] PHP   4. require() /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:2
+[20-Aug-2013 13:13:15] PHP Fatal error:  require() [<a href='function.require'>function.require</a>]: Failed opening required '../lib_detectLang.php' (include_path='.:/usr/share/php:/usr/share/pear') in /var/www/hausautomation/gigalaunch.de/config/config.php on line 16
+[20-Aug-2013 13:13:15] PHP Stack trace:
+[20-Aug-2013 13:13:15] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:0
+[20-Aug-2013 13:13:15] PHP   2. require() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:6
+[20-Aug-2013 13:13:15] PHP   3. require() /var/www/hausautomation/gigalaunch.de/lib_security.php:26
+[20-Aug-2013 13:13:15] PHP   4. require() /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:2
+[20-Aug-2013 13:13:51] PHP Warning:  require(/var/www/hausautomation/gigalaunch.de/lib_detectLang.php) [<a href='function.require'>function.require</a>]: failed to open stream: Permission denied in /var/www/hausautomation/gigalaunch.de/config/config.php on line 16
+[20-Aug-2013 13:13:51] PHP Stack trace:
+[20-Aug-2013 13:13:51] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:0
+[20-Aug-2013 13:13:51] PHP   2. require() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:6
+[20-Aug-2013 13:13:51] PHP   3. require() /var/www/hausautomation/gigalaunch.de/lib_security.php:26
+[20-Aug-2013 13:13:51] PHP   4. require() /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:2
+[20-Aug-2013 13:13:51] PHP Fatal error:  require() [<a href='function.require'>function.require</a>]: Failed opening required 'lib_detectLang.php' (include_path='.:/usr/share/php:/usr/share/pear') in /var/www/hausautomation/gigalaunch.de/config/config.php on line 16
+[20-Aug-2013 13:13:51] PHP Stack trace:
+[20-Aug-2013 13:13:51] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:0
+[20-Aug-2013 13:13:51] PHP   2. require() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:6
+[20-Aug-2013 13:13:51] PHP   3. require() /var/www/hausautomation/gigalaunch.de/lib_security.php:26
+[20-Aug-2013 13:13:51] PHP   4. require() /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:2
+[20-Aug-2013 13:14:01] PHP Warning:  require(/var/www/hausautomation/gigalaunch.de/lib_detectLang.php) [<a href='function.require'>function.require</a>]: failed to open stream: Permission denied in /var/www/hausautomation/gigalaunch.de/config/config.php on line 16
+[20-Aug-2013 13:14:01] PHP Stack trace:
+[20-Aug-2013 13:14:01] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:0
+[20-Aug-2013 13:14:01] PHP   2. require() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:6
+[20-Aug-2013 13:14:01] PHP   3. require() /var/www/hausautomation/gigalaunch.de/lib_security.php:26
+[20-Aug-2013 13:14:01] PHP   4. require() /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:2
+[20-Aug-2013 13:14:01] PHP Fatal error:  require() [<a href='function.require'>function.require</a>]: Failed opening required 'lib_detectLang.php' (include_path='.:/usr/share/php:/usr/share/pear') in /var/www/hausautomation/gigalaunch.de/config/config.php on line 16
+[20-Aug-2013 13:14:01] PHP Stack trace:
+[20-Aug-2013 13:14:01] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:0
+[20-Aug-2013 13:14:01] PHP   2. require() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:6
+[20-Aug-2013 13:14:01] PHP   3. require() /var/www/hausautomation/gigalaunch.de/lib_security.php:26
+[20-Aug-2013 13:14:01] PHP   4. require() /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:2
+[20-Aug-2013 13:14:12] PHP Warning:  require(/var/www/hausautomation/gigalaunch.de/lib_detectLang.php) [<a href='function.require'>function.require</a>]: failed to open stream: Permission denied in /var/www/hausautomation/gigalaunch.de/config/config.php on line 16
+[20-Aug-2013 13:14:12] PHP Stack trace:
+[20-Aug-2013 13:14:12] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:0
+[20-Aug-2013 13:14:12] PHP   2. require() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:6
+[20-Aug-2013 13:14:12] PHP   3. require() /var/www/hausautomation/gigalaunch.de/lib_security.php:26
+[20-Aug-2013 13:14:12] PHP   4. require() /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:2
+[20-Aug-2013 13:14:12] PHP Fatal error:  require() [<a href='function.require'>function.require</a>]: Failed opening required 'lib_detectLang.php' (include_path='.:/usr/share/php:/usr/share/pear') in /var/www/hausautomation/gigalaunch.de/config/config.php on line 16
+[20-Aug-2013 13:14:12] PHP Stack trace:
+[20-Aug-2013 13:14:12] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:0
+[20-Aug-2013 13:14:12] PHP   2. require() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:6
+[20-Aug-2013 13:14:12] PHP   3. require() /var/www/hausautomation/gigalaunch.de/lib_security.php:26
+[20-Aug-2013 13:14:12] PHP   4. require() /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:2
+[20-Aug-2013 13:18:28] PHP Warning:  require_once(/var/www/hausautomation/gigalaunch.de/lib_detectLang.php) [<a href='function.require-once'>function.require-once</a>]: failed to open stream: Permission denied in /var/www/hausautomation/gigalaunch.de/config/config.php on line 16
+[20-Aug-2013 13:18:28] PHP Stack trace:
+[20-Aug-2013 13:18:28] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:0
+[20-Aug-2013 13:18:28] PHP   2. require_once() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:6
+[20-Aug-2013 13:18:28] PHP   3. require() /var/www/hausautomation/gigalaunch.de/lib_security.php:26
+[20-Aug-2013 13:18:28] PHP   4. require_once() /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:2
+[20-Aug-2013 13:18:28] PHP Fatal error:  require_once() [<a href='function.require'>function.require</a>]: Failed opening required 'lib_detectLang.php' (include_path='.:/usr/share/php:/usr/share/pear') in /var/www/hausautomation/gigalaunch.de/config/config.php on line 16
+[20-Aug-2013 13:18:28] PHP Stack trace:
+[20-Aug-2013 13:18:28] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:0
+[20-Aug-2013 13:18:28] PHP   2. require_once() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:6
+[20-Aug-2013 13:18:28] PHP   3. require() /var/www/hausautomation/gigalaunch.de/lib_security.php:26
+[20-Aug-2013 13:18:28] PHP   4. require_once() /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:2
+[20-Aug-2013 13:18:36] PHP Warning:  require_once(/var/www/hausautomation/gigalaunch.de/lib_detectLang.php) [<a href='function.require-once'>function.require-once</a>]: failed to open stream: Permission denied in /var/www/hausautomation/gigalaunch.de/config/config.php on line 16
+[20-Aug-2013 13:18:36] PHP Stack trace:
+[20-Aug-2013 13:18:36] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:0
+[20-Aug-2013 13:18:36] PHP   2. require_once() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:6
+[20-Aug-2013 13:18:36] PHP   3. require() /var/www/hausautomation/gigalaunch.de/lib_security.php:26
+[20-Aug-2013 13:18:36] PHP   4. require_once() /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:2
+[20-Aug-2013 13:18:36] PHP Fatal error:  require_once() [<a href='function.require'>function.require</a>]: Failed opening required 'lib_detectLang.php' (include_path='.:/usr/share/php:/usr/share/pear') in /var/www/hausautomation/gigalaunch.de/config/config.php on line 16
+[20-Aug-2013 13:18:36] PHP Stack trace:
+[20-Aug-2013 13:18:36] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:0
+[20-Aug-2013 13:18:36] PHP   2. require_once() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:6
+[20-Aug-2013 13:18:36] PHP   3. require() /var/www/hausautomation/gigalaunch.de/lib_security.php:26
+[20-Aug-2013 13:18:36] PHP   4. require_once() /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:2
+[20-Aug-2013 13:19:22] PHP Notice:  Undefined index: lang in /var/www/hausautomation/gigalaunch.de/lib_detectLang.php on line 48
+[20-Aug-2013 13:19:22] PHP Stack trace:
+[20-Aug-2013 13:19:22] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:0
+[20-Aug-2013 13:19:22] PHP   2. require_once() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:6
+[20-Aug-2013 13:19:22] PHP   3. require() /var/www/hausautomation/gigalaunch.de/lib_security.php:26
+[20-Aug-2013 13:19:22] PHP   4. require_once() /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:2
+[20-Aug-2013 13:19:22] PHP   5. detectLang($verbose = *uninitialized*) /var/www/hausautomation/gigalaunch.de/config/config.php:17
+[20-Aug-2013 13:19:53] PHP Notice:  Undefined index: lang in /var/www/hausautomation/gigalaunch.de/lib_detectLang.php on line 48
+[20-Aug-2013 13:19:53] PHP Stack trace:
+[20-Aug-2013 13:19:53] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:0
+[20-Aug-2013 13:19:53] PHP   2. require_once() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:6
+[20-Aug-2013 13:19:53] PHP   3. require() /var/www/hausautomation/gigalaunch.de/lib_security.php:26
+[20-Aug-2013 13:19:53] PHP   4. require_once() /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:2
+[20-Aug-2013 13:19:53] PHP   5. detectLang() /var/www/hausautomation/gigalaunch.de/config/config.php:17
+[20-Aug-2013 13:34:44] PHP Notice:  Undefined index: lang in /var/www/hausautomation/gigalaunch.de/lib_detectLang.php on line 48
+[20-Aug-2013 13:34:44] PHP Stack trace:
+[20-Aug-2013 13:34:44] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:0
+[20-Aug-2013 13:34:44] PHP   2. require_once() /var/www/hausautomation/gigalaunch.de/forgottenPassword_frontend.php:6
+[20-Aug-2013 13:34:44] PHP   3. require() /var/www/hausautomation/gigalaunch.de/lib_security.php:26
+[20-Aug-2013 13:34:44] PHP   4. require_once() /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:2
+[20-Aug-2013 13:34:44] PHP   5. detectLang() /var/www/hausautomation/gigalaunch.de/config/config.php:17
+[20-Aug-2013 13:39:18] PHP Fatal error:  Call to a member function query() on a non-object in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 9
+[20-Aug-2013 13:39:18] PHP Stack trace:
+[20-Aug-2013 13:39:18] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 13:39:18] PHP   2. translate() /var/www/hausautomation/gigalaunch.de/translations_backend.php:17
+[20-Aug-2013 13:42:09] PHP Fatal error:  Call to a member function query() on a non-object in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 9
+[20-Aug-2013 13:42:09] PHP Stack trace:
+[20-Aug-2013 13:42:09] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 13:42:09] PHP   2. translate($keyword = *uninitialized*, *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:17
+[20-Aug-2013 13:42:33] PHP Fatal error:  Call to a member function query() on a non-object in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 9
+[20-Aug-2013 13:42:33] PHP Stack trace:
+[20-Aug-2013 13:42:33] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 13:42:33] PHP   2. translate($keyword = *uninitialized*, *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:25
+[20-Aug-2013 13:45:48] PHP Fatal error:  Call to a member function query() on a non-object in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 9
+[20-Aug-2013 13:45:48] PHP Stack trace:
+[20-Aug-2013 13:45:48] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 13:45:48] PHP   2. translate($keyword = *uninitialized*, *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:25
+[20-Aug-2013 13:52:03] PHP Fatal error:  Call to a member function query() on a non-object in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 9
+[20-Aug-2013 13:52:03] PHP Stack trace:
+[20-Aug-2013 13:52:03] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 13:52:03] PHP   2. translate($keyword = *uninitialized*, *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:33
+[20-Aug-2013 13:52:22] PHP Fatal error:  Call to a member function query() on a non-object in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 9
+[20-Aug-2013 13:52:22] PHP Stack trace:
+[20-Aug-2013 13:52:22] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 13:52:22] PHP   2. translate($keyword = *uninitialized*, *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:33
+[20-Aug-2013 13:53:05] PHP Fatal error:  Call to a member function query() on a non-object in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 9
+[20-Aug-2013 13:53:05] PHP Stack trace:
+[20-Aug-2013 13:53:05] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 13:53:05] PHP   2. translate($keyword = *uninitialized*, *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:33
+[20-Aug-2013 13:54:14] PHP Fatal error:  Call to a member function query() on a non-object in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 9
+[20-Aug-2013 13:54:14] PHP Stack trace:
+[20-Aug-2013 13:54:14] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 13:54:14] PHP   2. translate($keyword = *uninitialized*, *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:25
+[20-Aug-2013 14:12:26] PHP Fatal error:  Call to a member function query() on a non-object in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 9
+[20-Aug-2013 14:12:26] PHP Stack trace:
+[20-Aug-2013 14:12:26] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 14:12:26] PHP   2. translate() /var/www/hausautomation/gigalaunch.de/translations_backend.php:25
+[20-Aug-2013 14:13:10] PHP Fatal error:  Call to a member function query() on a non-object in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 9
+[20-Aug-2013 14:13:10] PHP Stack trace:
+[20-Aug-2013 14:13:10] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 14:13:10] PHP   2. translate($keyword = *uninitialized*, *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:25
+[20-Aug-2013 14:13:41] PHP Fatal error:  Call to a member function query() on a non-object in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 9
+[20-Aug-2013 14:13:41] PHP Stack trace:
+[20-Aug-2013 14:13:41] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 14:13:41] PHP   2. translate($keyword = *uninitialized*, *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[20-Aug-2013 14:18:14] PHP Fatal error:  Call to a member function query() on a non-object in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 9
+[20-Aug-2013 14:18:14] PHP Stack trace:
+[20-Aug-2013 14:18:14] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 14:18:14] PHP   2. translate($keyword = *uninitialized*, *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[20-Aug-2013 14:18:39] PHP Fatal error:  Call to a member function query() on a non-object in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 14
+[20-Aug-2013 14:18:39] PHP Stack trace:
+[20-Aug-2013 14:18:39] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 14:18:39] PHP   2. translate($keyword = *uninitialized*, *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[20-Aug-2013 14:18:55] PHP Fatal error:  Call to a member function query() on a non-object in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 14
+[20-Aug-2013 14:18:55] PHP Stack trace:
+[20-Aug-2013 14:18:55] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 14:18:55] PHP   2. translate($keyword = *uninitialized*, *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[20-Aug-2013 14:19:00] PHP Warning:  mysqli_connect() [<a href='function.mysqli-connect'>function.mysqli-connect</a>]: (28000/1045): Access denied for user 'www-data'@'localhost' (using password: NO) in /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php on line 50
+[20-Aug-2013 14:19:00] PHP Stack trace:
+[20-Aug-2013 14:19:00] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 14:19:00] PHP   2. translate($keyword = *uninitialized*, *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[20-Aug-2013 14:19:00] PHP   3. lib_mysqli_interface->__construct() /var/www/hausautomation/gigalaunch.de/lib_translations.php:8
+[20-Aug-2013 14:19:00] PHP   4. mysqli_connect(*uninitialized*, *uninitialized*, *uninitialized*, *uninitialized*) /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:50
+[20-Aug-2013 14:20:24] PHP Fatal error:  Call to a member function query() on a non-object in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 17
+[20-Aug-2013 14:20:24] PHP Stack trace:
+[20-Aug-2013 14:20:24] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 14:20:24] PHP   2. translate($keyword = *uninitialized*, *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[20-Aug-2013 14:20:27] PHP Warning:  mysqli_connect() [<a href='function.mysqli-connect'>function.mysqli-connect</a>]: (28000/1045): Access denied for user 'www-data'@'localhost' (using password: NO) in /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php on line 50
+[20-Aug-2013 14:20:27] PHP Stack trace:
+[20-Aug-2013 14:20:27] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 14:20:27] PHP   2. translate($keyword = *uninitialized*, *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[20-Aug-2013 14:20:27] PHP   3. lib_mysqli_interface->__construct() /var/www/hausautomation/gigalaunch.de/lib_translations.php:8
+[20-Aug-2013 14:20:27] PHP   4. mysqli_connect(*uninitialized*, *uninitialized*, *uninitialized*, *uninitialized*) /var/www/hausautomation/gigalaunch.de/lib_mysqli_interface.php:50
+[20-Aug-2013 14:20:32] PHP Fatal error:  Call to a member function query() on a non-object in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 17
+[20-Aug-2013 14:20:32] PHP Stack trace:
+[20-Aug-2013 14:20:32] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 14:20:32] PHP   2. translate($keyword = *uninitialized*, *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[20-Aug-2013 14:20:52] PHP Fatal error:  Call to a member function query() on a non-object in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 17
+[20-Aug-2013 14:20:52] PHP Stack trace:
+[20-Aug-2013 14:20:52] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 14:20:52] PHP   2. translate($keyword = *uninitialized*, *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[20-Aug-2013 14:21:15] PHP Fatal error:  Call to a member function query() on a non-object in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 17
+[20-Aug-2013 14:21:15] PHP Stack trace:
+[20-Aug-2013 14:21:15] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 14:21:15] PHP   2. translate($keyword = *uninitialized*, *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[20-Aug-2013 14:22:30] PHP Fatal error:  Unsupported operand types in /var/www/hausautomation/gigalaunch.de/translations_backend.php on line 27
+[20-Aug-2013 14:22:30] PHP Stack trace:
+[20-Aug-2013 14:22:30] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 14:24:44] PHP Fatal error:  Unsupported operand types in /var/www/hausautomation/gigalaunch.de/translations_backend.php on line 27
+[20-Aug-2013 14:24:44] PHP Stack trace:
+[20-Aug-2013 14:24:44] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 14:26:00] PHP Notice:  Undefined index: de in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 24
+[20-Aug-2013 14:26:00] PHP Stack trace:
+[20-Aug-2013 14:26:00] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 14:26:00] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[20-Aug-2013 14:26:04] PHP Notice:  Undefined index: de in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 24
+[20-Aug-2013 14:26:04] PHP Stack trace:
+[20-Aug-2013 14:26:04] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 14:26:04] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[20-Aug-2013 14:26:05] PHP Fatal error:  Unsupported operand types in /var/www/hausautomation/gigalaunch.de/translations_backend.php on line 27
+[20-Aug-2013 14:26:05] PHP Stack trace:
+[20-Aug-2013 14:26:05] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 14:26:21] PHP Notice:  Undefined index: de in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 24
+[20-Aug-2013 14:26:21] PHP Stack trace:
+[20-Aug-2013 14:26:21] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 14:26:21] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[20-Aug-2013 15:04:19] PHP Notice:  Undefined index: de in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 24
+[20-Aug-2013 15:04:19] PHP Stack trace:
+[20-Aug-2013 15:04:19] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 15:04:19] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[20-Aug-2013 15:05:00] PHP Notice:  Undefined index: de in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 24
+[20-Aug-2013 15:05:00] PHP Stack trace:
+[20-Aug-2013 15:05:00] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 15:05:00] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[20-Aug-2013 15:05:05] PHP Fatal error:  Cannot use object of type stdClass as array in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 24
+[20-Aug-2013 15:05:05] PHP Stack trace:
+[20-Aug-2013 15:05:05] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 15:05:05] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[20-Aug-2013 15:05:30] PHP Fatal error:  Cannot use object of type stdClass as array in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 24
+[20-Aug-2013 15:05:30] PHP Stack trace:
+[20-Aug-2013 15:05:30] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 15:05:30] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[20-Aug-2013 15:05:35] PHP Notice:  Undefined property: stdClass::$lang in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 24
+[20-Aug-2013 15:05:35] PHP Stack trace:
+[20-Aug-2013 15:05:35] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 15:05:35] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[20-Aug-2013 15:06:55] PHP Fatal error:  Cannot use object of type stdClass as array in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 25
+[20-Aug-2013 15:06:55] PHP Stack trace:
+[20-Aug-2013 15:06:55] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 15:06:55] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[20-Aug-2013 15:18:06] PHP Notice:  Trying to get property of non-object in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 25
+[20-Aug-2013 15:18:06] PHP Stack trace:
+[20-Aug-2013 15:18:06] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[20-Aug-2013 15:18:06] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[21-Aug-2013 14:00:16] PHP Notice:  Undefined property: stdClass::$undefined in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:00:16] PHP Stack trace:
+[21-Aug-2013 14:00:16] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:00:16] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[21-Aug-2013 14:00:26] PHP Notice:  Undefined property: stdClass::$undefined in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:00:26] PHP Stack trace:
+[21-Aug-2013 14:00:26] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:00:26] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[21-Aug-2013 14:00:46] PHP Notice:  Undefined property: stdClass::$undefined in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:00:46] PHP Stack trace:
+[21-Aug-2013 14:00:46] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:00:46] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[21-Aug-2013 14:05:55] PHP Notice:  Undefined property: stdClass::$undefined in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:05:55] PHP Stack trace:
+[21-Aug-2013 14:05:55] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:05:55] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[21-Aug-2013 14:06:14] PHP Notice:  Undefined property: stdClass::$undefined in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:06:14] PHP Stack trace:
+[21-Aug-2013 14:06:14] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:06:14] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[21-Aug-2013 14:06:14] PHP Notice:  Undefined property: stdClass::$undefined in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:06:14] PHP Stack trace:
+[21-Aug-2013 14:06:14] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:06:14] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[21-Aug-2013 14:06:18] PHP Notice:  Undefined property: stdClass::$undefined in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:06:18] PHP Stack trace:
+[21-Aug-2013 14:06:18] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:06:18] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[21-Aug-2013 14:06:18] PHP Notice:  Undefined property: stdClass::$undefined in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:06:18] PHP Stack trace:
+[21-Aug-2013 14:06:18] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:06:18] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[21-Aug-2013 14:06:21] PHP Notice:  Undefined property: stdClass::$undefined in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:06:21] PHP Stack trace:
+[21-Aug-2013 14:06:21] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:06:21] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[21-Aug-2013 14:06:38] PHP Notice:  Undefined property: stdClass::$undefined in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:06:38] PHP Stack trace:
+[21-Aug-2013 14:06:38] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:06:38] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[21-Aug-2013 14:06:40] PHP Notice:  Undefined property: stdClass::$undefined in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:06:40] PHP Stack trace:
+[21-Aug-2013 14:06:40] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:06:40] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[21-Aug-2013 14:06:56] PHP Notice:  Undefined property: stdClass::$undefined in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:06:56] PHP Stack trace:
+[21-Aug-2013 14:06:56] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:06:56] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[21-Aug-2013 14:06:56] PHP Notice:  Undefined property: stdClass::$undefined in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:06:56] PHP Stack trace:
+[21-Aug-2013 14:06:56] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:06:56] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[21-Aug-2013 14:07:09] PHP Notice:  Undefined property: stdClass::$undefined in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:07:09] PHP Stack trace:
+[21-Aug-2013 14:07:09] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:07:09] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[21-Aug-2013 14:07:09] PHP Notice:  Undefined property: stdClass::$undefined in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:07:09] PHP Stack trace:
+[21-Aug-2013 14:07:09] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:07:09] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[21-Aug-2013 14:07:23] PHP Notice:  Undefined property: stdClass::$undefined in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:07:23] PHP Stack trace:
+[21-Aug-2013 14:07:23] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:07:23] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[21-Aug-2013 14:07:23] PHP Notice:  Undefined property: stdClass::$undefined in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:07:23] PHP Stack trace:
+[21-Aug-2013 14:07:23] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:07:23] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[21-Aug-2013 14:07:40] PHP Notice:  Undefined property: stdClass::$undefined in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:07:40] PHP Stack trace:
+[21-Aug-2013 14:07:40] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:07:40] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[21-Aug-2013 14:07:40] PHP Notice:  Undefined property: stdClass::$undefined in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:07:40] PHP Stack trace:
+[21-Aug-2013 14:07:40] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:07:40] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[21-Aug-2013 14:09:41] PHP Notice:  Undefined property: stdClass::$undefined in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:09:41] PHP Stack trace:
+[21-Aug-2013 14:09:41] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:09:41] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[21-Aug-2013 14:09:41] PHP Notice:  Undefined property: stdClass::$undefined in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:09:41] PHP Stack trace:
+[21-Aug-2013 14:09:41] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:09:41] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:27
+[21-Aug-2013 14:13:05] PHP Notice:  Undefined property: stdClass::$us in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:13:05] PHP Stack trace:
+[21-Aug-2013 14:13:05] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:13:05] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:28
+[21-Aug-2013 14:13:16] PHP Notice:  Undefined property: stdClass::$us in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:13:16] PHP Stack trace:
+[21-Aug-2013 14:13:16] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:13:16] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:28
+[21-Aug-2013 14:13:48] PHP Notice:  Undefined property: stdClass::$us in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:13:48] PHP Stack trace:
+[21-Aug-2013 14:13:48] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:13:48] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:28
+[21-Aug-2013 14:13:48] PHP Notice:  Undefined property: stdClass::$us in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:13:48] PHP Stack trace:
+[21-Aug-2013 14:13:48] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:13:48] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:28
+[21-Aug-2013 14:15:02] PHP Notice:  Undefined property: stdClass::$us in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:15:02] PHP Stack trace:
+[21-Aug-2013 14:15:02] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:15:02] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:28
+[21-Aug-2013 14:15:03] PHP Notice:  Undefined property: stdClass::$us in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:15:03] PHP Stack trace:
+[21-Aug-2013 14:15:03] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:15:03] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:28
+[21-Aug-2013 14:16:58] PHP Notice:  Undefined property: stdClass::$us in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:16:58] PHP Stack trace:
+[21-Aug-2013 14:16:58] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:16:58] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:28
+[21-Aug-2013 14:16:58] PHP Notice:  Undefined property: stdClass::$us in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:16:58] PHP Stack trace:
+[21-Aug-2013 14:16:58] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:16:58] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:28
+[21-Aug-2013 14:17:25] PHP Notice:  Undefined variable: lang in /var/www/hausautomation/gigalaunch.de/lib_detectLang.php on line 12
+[21-Aug-2013 14:17:25] PHP Stack trace:
+[21-Aug-2013 14:17:25] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:17:25] PHP   2. require_once() /var/www/hausautomation/gigalaunch.de/translations_backend.php:2
+[21-Aug-2013 14:17:25] PHP   3. require_once() /var/www/hausautomation/gigalaunch.de/lib_translations.php:4
+[21-Aug-2013 14:17:25] PHP   4. detectLang($verbose = *uninitialized*) /var/www/hausautomation/gigalaunch.de/config/config.php:17
+[21-Aug-2013 14:17:36] PHP Notice:  Undefined property: stdClass::$us in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:17:36] PHP Stack trace:
+[21-Aug-2013 14:17:36] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:17:36] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:28
+[21-Aug-2013 14:17:36] PHP Notice:  Undefined property: stdClass::$us in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:17:36] PHP Stack trace:
+[21-Aug-2013 14:17:36] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:17:36] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:28
+[21-Aug-2013 14:17:42] PHP Notice:  Undefined property: stdClass::$us in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:17:42] PHP Stack trace:
+[21-Aug-2013 14:17:42] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:17:42] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:28
+[21-Aug-2013 14:17:42] PHP Notice:  Undefined property: stdClass::$us in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:17:42] PHP Stack trace:
+[21-Aug-2013 14:17:42] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:17:42] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:28
+[21-Aug-2013 14:17:43] PHP Notice:  Undefined variable: lang in /var/www/hausautomation/gigalaunch.de/lib_detectLang.php on line 12
+[21-Aug-2013 14:17:43] PHP Stack trace:
+[21-Aug-2013 14:17:43] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:17:43] PHP   2. detectLang($verbose = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:17
+[21-Aug-2013 14:17:44] PHP Notice:  Undefined property: stdClass::$us in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:17:44] PHP Stack trace:
+[21-Aug-2013 14:17:44] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:17:44] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:28
+[21-Aug-2013 14:17:44] PHP Notice:  Undefined property: stdClass::$us in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:17:44] PHP Stack trace:
+[21-Aug-2013 14:17:44] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:17:44] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:28
+[21-Aug-2013 14:19:18] PHP Notice:  Undefined property: stdClass::$us in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:19:18] PHP Stack trace:
+[21-Aug-2013 14:19:18] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:19:18] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:28
+[21-Aug-2013 14:19:18] PHP Notice:  Undefined property: stdClass::$us in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:19:18] PHP Stack trace:
+[21-Aug-2013 14:19:18] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:19:18] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:28
+[21-Aug-2013 14:20:44] PHP Notice:  Undefined property: stdClass::$us in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:20:44] PHP Stack trace:
+[21-Aug-2013 14:20:44] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:20:44] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:28
+[21-Aug-2013 14:20:44] PHP Notice:  Undefined property: stdClass::$us in /var/www/hausautomation/gigalaunch.de/lib_translations.php on line 26
+[21-Aug-2013 14:20:44] PHP Stack trace:
+[21-Aug-2013 14:20:44] PHP   1. {main}() /var/www/hausautomation/gigalaunch.de/translations_backend.php:0
+[21-Aug-2013 14:20:44] PHP   2. translate($keyword = *uninitialized*, $lang = *uninitialized*) /var/www/hausautomation/gigalaunch.de/translations_backend.php:28
