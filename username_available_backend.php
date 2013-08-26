@@ -12,7 +12,7 @@ require_once('./lib/php/lib_session.php'); // will immediately exit and redirect
 
 if(isset($_REQUEST['username']) && (!empty($_REQUEST['username']))) // if parameter is given and not empty
 {
-	if(does_user_exist($_REQUEST['username'],null,null))
+	if(userexist($_REQUEST['username'],null,null))
 	{
 		exit('type:error,id:Username already taken,details:Username already taken. Please choose different one.');
 	}

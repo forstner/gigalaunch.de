@@ -1,0 +1,19 @@
+====== general ======
+
+o linux-style commands of user management. (useradd, userdel, useredit)
+
+====== dynamic database defined user object ====== 
+
+oo does the user/group/data management
+... when it comes to defining properties of your user, all you have to do is setup the table passwd to your liking (add columns).
+
+so a user's property are defined by the table-layout of your passwd-table, effectively syncing your user objects with the database.
+
+if you need additional fields... just add them and they will be available via a
+
+$user = userget($username);
+
+echo $user->yourProperty;
+
+------ examples: lib_mysqli_commands.test.php
+------ files involved: lib_mysqli_commands.php

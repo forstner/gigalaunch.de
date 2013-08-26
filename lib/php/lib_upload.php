@@ -7,7 +7,7 @@
 	<?php
 		// include upload form
  	 	// 1. get user
-		$user = getUserByid($_REQUEST['selectUserId']);
+		$user = getUser($_REQUEST['selectUserId']);
 		// 2. get data-details of user as array
 		$data = getDataOfUserID(null,$user);
 

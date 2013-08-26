@@ -17,17 +17,17 @@ if(!empty($_REQUEST['username']) && !empty($_REQUEST['password_encrypted']))
 	
 	$user = getUserByUsername($_REQUEST['username']);
 	
-	if(does_user_exist($_REQUEST['username'],null,$user)) // check if username exists
+	if(userexist($_REQUEST['username'],null,$user)) // check if username exists
 	{
 		// at this point we know the username exists
 		// let's compare the submitted password_encrypted to value of the array key (the right password)
-		if(does_user_exist($_REQUEST['username'],$_REQUEST['password_encrypted'],$user)) // check if username with that password exists
+		if(userexist($_REQUEST['username'],$_REQUEST['password_encrypted'],$user)) // check if username with that password exists
 		{
 			// password is correct
 			session_start();
 			setSession($_REQUEST['username'],$_REQUEST['password_encrypted']);
 			
-			$data = getDataOfUsername($_REQUEST['username']);
+			$data = userdata($_REQUEST['username']);
 			if($settings_login_session_timeout > 0)
 			{
 				// echo('type:success,id:login successful,details:you have now access for '.seconds2minutes($settings_login_session_timeout).' minutes');

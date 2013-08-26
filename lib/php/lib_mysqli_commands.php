@@ -18,14 +18,13 @@ $mysqli_object = new class_mysqli_interface();
 
 /* ============ USERS */
 
-/* create a new user-teamplate from database */
-function newUser()
+/* get table-definition (what keys does my table have) creates an example array-object */
+function describe($table)
 {
 	$newUser = array();
-	global $mysqli_object;
-	global $settings_database_auth_table;
+	global $mysqli_object; global $worked; $worked = false; global $worked;
 	global $settings_database_name;
-	$tableDefinition = $mysqli_object->query("DESCRIBE ".$settings_database_auth_table);
+	$tableDefinition = $mysqli_object->query("DESCRIBE ".$table);
 
 	$target = count($tableDefinition);
 	for($i=0;$i<$target;$i++)
@@ -37,41 +36,32 @@ function newUser()
 	return $newUser;
 }
 
-/* get all users that belong to that $groupname
- */
-function getUsersByGroup($groupname)
+/* create a new user-teamplate-array-object as defined in database */
+function newUser()
 {
-	$result = null;
-	global $mysqli_object;
-	global $settings_database_auth_table;
-	global $settings_database_name;
-	$users = $mysqli_object->query("SELECT * FROM  `".$settings_database_auth_table."` WHERE  `groups` LIKE  '%".$groupname."%'");
-
-	$target = count($users);
-	for($i=0;$i<$target;$i++)
-	{
-		$groups = string2array($users[$i]->groups,"");
-		
-		if(in_array($groupname, $groups))
-		{
-			$result[] = $users[$i];
-		}		
-	}
-	
-	return $result;
+	global $settings_database_auth_table; global $settings_database_groups_table;
+	return describe($settings_database_auth_table);
 }
 
-function getGroupByUserID($userid)
+/* create a new goup-teamplate-array-object as defined in database */
+function newGroup()
 {
-	$data = getDataOfUsername($userid);
+	global $settings_database_groups_table;
+	return describe($settings_database_groups_table);
+}
+
+/* create a new record-teamplate-array-object as defined in database */
+function newRecord($tableName)
+{
+	return describe($tableName);
 }
 
 /* checks if the user exists */ 
-function does_user_exist($username,$password = "",$user = null)
+function userexist($username,$password = "",$user = null)
 {
 	$result = false; // default result value
-	global $mysqli_object;
-	global $settings_database_auth_table;
+	global $mysqli_object; global $worked; $worked = false;
+	global $settings_database_auth_table; global $settings_database_groups_table;
 	
 	if(!$user)
 	{
@@ -105,118 +95,64 @@ function does_user_exist($username,$password = "",$user = null)
 	return $result;
 }
 
+/* returns an array of all groups available (if no parameter given)
+ * if $user given -> returns a list of all groups of that user
+ * via $where you can filter the groups you want with your own sql query*/
+function groups($group = null,$where = "")
+{
+	$result = false; // default result value
+	global $mysqli_object; global $worked; $worked = false;
+	global $settings_database_auth_table; global $settings_database_groups_table;
+
+	$query = "";
+	if(empty($where))
+	{
+		$query = "SELECT * FROM `".$settings_database_groups_table."`";
+	}
+	else
+	{
+		$query = "SELECT * FROM `".$settings_database_groups_table."` ".$where;
+	}
+
+	$result = $mysqli_object->query($query);
+
+	return $result;
+}
+
 /* get $user as assoc-array
+ * by id/Username/Mail (in this order, if no $uniqueKey is given)
  */ 
-function getUserByUsername($username)
+function userget($user,$uniqueKey = "")
 {
 	$result = null;
-	global $mysqli_object;
-	global $settings_database_auth_table;
+
+	global $mysqli_object; global $worked; $worked = false;
 	global $settings_database_name;
-	$user_array = $mysqli_object->query("SELECT * FROM `".$settings_database_auth_table."` WHERE `username` = '".$username."'");
-	if(isset($user_array[0]))
+	global $settings_database_auth_table; global $settings_database_groups_table;
+	$query = "";
+	if($user)
 	{
-		$result = $user_array[0];
+		// filter list
+		$query = "SELECT * FROM `".$settings_database_auth_table."` WHERE `".$uniqueKey."` = '".$user[$uniqueKey]."'";
 	}
-	return $result;
-}
-
-/* get $user as assoc-array by mail-address
- */
-function getUserByMail($mail)
-{
-	$result = null;
-	global $mysqli_object;
-	global $settings_database_auth_table;
-	global $settings_database_name;
-	$user_array = $mysqli_object->query("SELECT * FROM `".$settings_database_auth_table."` WHERE `mail` = '".$mail."'");
-	if(isset($user_array[0]))
+	else
 	{
-		$result = $user_array[0];
+		// return all users
+		$query = "SELECT * FROM `".$settings_database_auth_table."`";
 	}
-	return $result;
-}
-
-/* returns an array of the data-details field of this user from database->passwd table
- */
-function getDataOfUsername($username)
-{
-	$result = null;
-	global $mysqli_object;
-	global $settings_database_auth_table;
-	global $settings_database_name;
-	$user_array = $mysqli_object->query("SELECT * FROM `".$settings_database_auth_table."` WHERE `username` = '".$username."'");
-	$result = $user_array[0];
-	
-	$result = string2array($result->data);
-	
-	return $result;
-}
-
-/* returns an array of the data-details field of this user from database->passwd table
- */
-function getDataOfUserID($userID,$user = null)
-{
-	$result = null;
-	if(!$user)
+	$user_array = $mysqli_object->query($query);
+	if(isset($user_array))
 	{
-		global $mysqli_object;
-		global $settings_database_auth_table;
-		global $settings_database_name;
-		$user_array = $mysqli_object->query("SELECT * FROM `".$settings_database_auth_table."` WHERE `id` = '".$userID."'");
-		if(isset($user_array))
+		if(count($user_array) <= 1)
 		{
 			if(isset($user_array[0]))
 			{
 				$result = $user_array[0];
 			}
 		}
-
-		$data = $result->data;
-	}
-	else
-	{
-		$data = $user->data;
-	}
-
-	$result = string2array($data);
-
-	return $result;
-}
-
-/* returns an array of all groups that the userID belongs to */
-function getGroupsOfUser($user = null,$username = "")
-{
-	$result = null; 
-	
-	if(!$user)
-	{
-		if(!$username)
+		else
 		{
-			$user = getUserByUsername($username);
-		}
-	}
-
-	$result = string2array($user->groups,"");
-
-	return $result;
-}
-
-/* get $user as assoc-array
- */ 
-function getUserByid($userid)
-{
-	$result = null;
-
-	global $mysqli_object;
-	global $settings_database_name;
-	global $settings_database_auth_table;
-	$user_array = $mysqli_object->query("SELECT * FROM `".$settings_database_auth_table."` WHERE `id` = '".$userid."'");
-	if(isset($user_array))
-	{
-		if(isset($user_array[0]))
-		{
-			$result = $user_array[0];
+			$result = $user_array; // multiple records returned
 		}
 	}
 	
@@ -233,41 +169,41 @@ function getUserByid($userid)
 	you can specify a filter 
 	$where = " WHERE `group` = 'groupadmin'"
  */ 
-function getUsers($where = "")
+function users($where = "")
 {
-	global $mysqli_object;
+	global $mysqli_object; global $worked; $worked = false;
 	global $settings_database_name;
-	global $settings_database_auth_table;
+	global $settings_database_auth_table; global $settings_database_groups_table;
 	return $mysqli_object->query("SELECT * FROM `".$settings_database_auth_table."` ".$where);
 }
 function getDevices($where = "")
 {
-	global $mysqli_object;
+	global $mysqli_object; global $worked; $worked = false;
 	// global $settings_database_name;
 	return $mysqli_object->query("SELECT * FROM `devices` ".$where);
 }
 function getDeviceByMac($mac = "")
 {
-	global $mysqli_object;
+	global $mysqli_object; global $worked; $worked = false;
 	// global $settings_database_name;
 	return $mysqli_object->query("SELECT * FROM `devices` WHERE `mac` = '".$mac."';");
 }
 function getButtons($where = "")
 {
-	global $mysqli_object;
+	global $mysqli_object; global $worked; $worked = false;
 	global $settings_database_name;
 	return $mysqli_object->query("SELECT * FROM `buttons` ".$where);
 }
 function getOutputs($where = "")
 {
-	global $mysqli_object;
+	global $mysqli_object; global $worked; $worked = false;
 	global $settings_database_name;
 	
 	return $mysqli_object->query("SELECT * FROM `outputs` ".$where);
 }
 function getInputs($where = "")
 {
-	global $mysqli_object;
+	global $mysqli_object; global $worked; $worked = false;
 	global $settings_database_name;
 	
 	return $mysqli_object->query("SELECT * FROM `inputs` ".$where);
@@ -301,10 +237,10 @@ function getSessionExpiration($session,$user)
  */ 
 function setSession($username,$password)
 {
-	global $mysqli_object;
+	global $mysqli_object; global $worked; $worked = false;
 	global $settings_database_name;
 	
-	global $settings_database_auth_table;
+	global $settings_database_auth_table; global $settings_database_groups_table;
 	global $settings_login_session_timeout;
 
 
@@ -331,10 +267,10 @@ function setSession($username,$password)
  */
 function getUserBySession($session)
 {
-	global $mysqli_object;
+	global $mysqli_object; global $worked; $worked = false;
 	global $settings_database_name;
 	
-	global $settings_database_auth_table;
+	global $settings_database_auth_table; global $settings_database_groups_table;
 	$result = "";
 	if($session)
 	{
@@ -352,21 +288,29 @@ function getUserBySession($session)
 }
 
 /* delete user */
-function userdel($userID = null,$user = null)
+function userdel($user)
 {
-	global $mysqli_object;
-	global $settings_database_auth_table;
-	global $settings_database_name;
-
-	if(!isset($userID))
+	if(!is_array($user))
 	{
-		if(!empty($userID))
+		error("function userdel: expected input to be array");
+		$worked = false;
+		return $worked;
+	}
+	global $mysqli_object; global $worked; $worked = false;
+	global $settings_database_auth_table; global $settings_database_groups_table;
+	global $settings_database_name;
+	$worked = false;
+
+	$userID = "";
+	if(isset($user))
+	{
+		if(!empty($user))
 		{
-			$userID = $user->id;
+			$userID = $user["id"];
 		}
 	}
 
-	if(!empty($userID))
+	if(!is_null($userID))
 	{
 		$output = $mysqli_object->query("DELETE FROM  `".$settings_database_name."`.`".$settings_database_auth_table."` WHERE `".$settings_database_auth_table."`.`id` = ".$userID.";");
 	}
@@ -375,80 +319,73 @@ function userdel($userID = null,$user = null)
 }
 
 /* add/register a new user
- * $groups = a,comma,separated,list,of,groupnames
- *
- * a User has currently these properties:
- 
-	id	
-	username	
-	mail	
-	groups	
-	password	
-	session	
-	ip_login	
-	logintime	
-	loginexpires	
-	activation	
-	data	
-	status	
-
- * // arbitrary additional data about the user
- * $data = "key:value,key:value,"
+ * 
+ * the properties a $user-array-object can have is defined through the database
+ * (table defined in config/config.php -> $settings_database_auth_table e.g. passwd)
+ * 
+ * add a column there, and you have a new property attached to $user.
+ * 
+ * To create/add a $user you first need to get this database-defined-layout
+ * 
+ * $user = newUser();
+ * 
+ * Then you modify the array: username is required, anything else is optional.
+ * 
+ * $user["username"]= "user";
+ * 
+ * adduser($user);
+ * 
+ * That's it!
  * */
 function useradd($user) // $requested_username = "",$requested_password = "",$groups = "",$data = ""
 {
+	if(!is_array($user))
+	{
+		error("function useradd: expected input to be array");
+		$worked = false;
+		return $worked;
+	}
+	if(empty($user["username"]))
+	{
+		error("function useradd: can not continue, \$user has no username");
+		$worked = false;
+		return $worked;
+	}
+	
 	global $activation;
-	global $mysqli_object;
-	global $settings_database_auth_table;
+	global $mysqli_object; global $worked; $worked = false;
+	global $settings_database_auth_table; global $settings_database_groups_table;
 	global $settings_database_name;
 	global $settings_default_home_after_login;
-	
+
 	// under linux, when creating users there is always a a group created with the same name, that per default this user belongs to (it's "his" group)
 	// search for username in groups, if not found add.
-	if(strpos($data,"home:") !== false)
+	if(empty($user["home"]))
 	{
-		// allready contains home informations
-	}
-	else
-	{
-		$data .= ",home:".$settings_default_home_after_login.",";
+		$user["home"] = $settings_default_home_after_login;
 	}
 
 	// Create a unique  activation code:
-	$activation = md5(uniqid(rand(), true));
+	$user["activation"] = md5(uniqid(rand(), true));
 	
 	// under linux, when creating users there is always a a group created with the same name, that per default this user belongs to (it's "his" group)
+	// check if given groups already exist, if not add
+	if(!groupexist($user["username"]))
+	{
+		$groups["groupname"] = $user["username"];
+		groupadd($groups);
+	}
+
 	// search for username in groups, if not found add.
-	if(strpos($groups,$requested_username) !== false)
-	{
-	    // allready contains username in group-list
-	}
-	else
-	{
-		$groups .= $requested_username.",";
-	}
+	// allready contains username in group-list
+	$user["id"] = ""; // id will always be automatically set by database/backend/autoincrement, or things will become chaotic
+
+	$query = "INSERT INTO `".$settings_database_name."`.`".$settings_database_auth_table."` ".array2sql($user);
 
 	// return data = false, return errors = true
-	$output = $mysqli_object -> query("INSERT INTO `".$settings_database_name."`.`".$settings_database_auth_table."` (`id`, `username`, `password`, `activation`, `data`, `groups`) VALUES (NULL, '" . $requested_username . "', '" . $requested_password . "', '" . $activation . "', '" . $data . "', '" . $groups . "');",false,true);
+	$output = $mysqli_object -> query($query,false,true);
+	$worked = true;
 	
-	// check if given groups already exist, if not add
-	if($groups)
-	{
-		$groups = string2array($groups, "");
-		
-		foreach ($groups as $key => $value)
-		{
-			if($value)
-			{
-				if(!does_group_exist($value))
-				{
-					$query = "INSERT INTO `".$settings_database_name."`.`groups` ( `id` , `groupname` ) VALUES ( NULL , '".$value."' );";
-					$output = $mysqli_object -> query($query,false,true);
-				}
-			}
-		}
-	}
-
 	return $output;
 }
 
@@ -459,8 +396,10 @@ function useradd($user) // $requested_username = "",$requested_password = "",$gr
  */
 function useredit($user2edit) // $userID, $requested_username = "",$requested_password = "",$groups = "",$data = ""
 {
-	global $mysqli_object;
-	global $settings_database_auth_table;
+	// check if user with this username allready exists -> warn
+	
+	global $mysqli_object; global $worked; $worked = false;
+	global $settings_database_auth_table; global $settings_database_groups_table;
 	global $settings_database_name;
 	global $settings_default_home_after_login;
 
@@ -488,7 +427,7 @@ function useredit($user2edit) // $userID, $requested_username = "",$requested_pa
 
 	// return data = false, return errors = true
 	$query = "UPDATE  `".$settings_database_name."`.`".$settings_database_auth_table."` SET  `username` =  '".$requested_username."',
-	`groups` =  '".$groups."',
+	`".$settings_database_groups_table."` =  '".$groups."',
 	`password` =  '".$requested_password."',
 	`data` = '".$data."' WHERE `".$settings_database_auth_table."`.`id` = '".$user2edit->id."';";
 	
@@ -505,9 +444,9 @@ function useredit($user2edit) // $userID, $requested_username = "",$requested_pa
 		{
 			if($value)
 			{
-				if(!does_group_exist($value))
+				if(!groupexist($value))
 				{
-					$query = "INSERT INTO `".$settings_database_name."`.`groups` ( `id` , `groupname` ) VALUES ( NULL , '".$value."' );";
+					$query = "INSERT INTO `".$settings_database_name."`.`".$settings_database_groups_table."` ( `id` , `groupname` ) VALUES ( NULL , '".$value."' );";
 					$output = $mysqli_object -> query($query,false,true);
 				}
 			}
@@ -518,6 +457,83 @@ function useredit($user2edit) // $userID, $requested_username = "",$requested_pa
 }
 
 /* ============ GROUP */
+/* add a group to the system (list of available groups) */
+function groupadd($group)
+{
+	if(!is_array($group))
+	{
+		error("function groupadd: expected input to be array");
+		$worked = false;
+		return $worked;
+	}
+
+	$result = null;
+	global $mysqli_object; global $worked; $worked = false;
+	global $settings_database_auth_table; global $settings_database_groups_table;
+	global $settings_database_name;
+
+	$query = "INSERT INTO `".$settings_database_name."`.`".$settings_database_groups_table."` ( `id` , `groupname` ) VALUES ( NULL , '".$group["groupname"]."' );";
+	$result = $mysqli_object -> query($query,false,true);
+	if($result)	$worked = true;
+	return $worked;
+}
+
+/* delete a group */
+function groupdel($group)
+{
+	if(!is_array($group))
+	{
+		error("function groupdel: expected input to be array");
+		$worked = false;
+		return $worked;
+	}
+
+	$result = null;
+	global $mysqli_object; global $worked; $worked = false;
+	global $settings_database_auth_table; global $settings_database_groups_table;
+	global $settings_database_name;
+
+	if(isset($group["groupname"]) && (!is_null($group["groupname"])))
+	{
+		// check out if there are still users in this group -> refuse to delete
+		$users = users();
+		
+		$group_in_use = false;
+		$count = count($users);
+		$username = "";
+		for($i=0;$i<$count;$i++)
+		{
+			$username = $users[$i]->username;
+			$groups = $users[$i]->groups;
+			$groups_array = explode(",",$groups);
+			$groupname = $group["groupname"];
+			if(in_array($groupname, $groups_array))
+			{
+				$group_in_use = true;
+				break;
+			}
+		}
+		
+		if($group_in_use)
+		{
+			error("function groupdel: can not delete group with name: ".$groupname." - the group is still in use by user ".$username);
+			$worked = false;
+			return $worked;
+		}
+		else
+		{
+			$query = "DELETE FROM `".$settings_database_name."`.`".$settings_database_groups_table."` WHERE `".$settings_database_groups_table."`.`groupname` = '".$groupname."';";
+			$result = $mysqli_object -> query($query,false,true);
+		}
+	}
+	else
+	{
+		error("function groupdel: given \$group has no groupname");
+	}
+
+	return $worked;
+}
+
 /* get a list of all available groups
  * $option = as array
 * $option = as object
@@ -525,10 +541,10 @@ function useredit($user2edit) // $userID, $requested_username = "",$requested_pa
 function getGroups($option = "as object")
 {
 	$result = null;
-	global $mysqli_object;
-	global $settings_database_auth_table;
+	global $mysqli_object; global $worked; $worked = false;
+	global $settings_database_auth_table; global $settings_database_groups_table;
 	global $settings_database_name;
-	$result = $mysqli_object->query("SELECT * FROM `groups`");
+	$result = $mysqli_object->query("SELECT * FROM `".$settings_database_groups_table."`");
 
 	if($option == "as array")
 	{
@@ -545,42 +561,21 @@ function getGroups($option = "as object")
 	return $result;
 }
 
-
-/* get a list of all system-default groups, that should never be deleted
- * $option = as array
- * $option = as object
- */
-function getSystemGroups($option = "as object")
-{
-	$result = null;
-	global $mysqli_object;
-	global $settings_database_auth_table;
-	global $settings_database_name;
-	$result = $mysqli_object->query("SELECT * FROM `groups` WHERE `system` = 1");
-
-	if($option == "as array")
-	{
-		$result_tmp = array();
-		$target = count($result);
-		for($i=0;$i<$target;$i++)
-		{
-			$result_tmp[] = $result[$i]->groupname;
-		}
-		
-		$result = $result_tmp;
-	}
-
-	return $result;
-}
-
-/* checks if a group exists */ 
-function does_group_exist($groupname)
+/* checks if a group exists
+ * 
+ * alternative version:
+ * 
+ * $groups = groups(null,"WHERE `groupname` = '".$user["username"]."'");
+ * -> then check if $groups array is empty.
+ * */ 
+function groupexist($groupname)
 {
 	$result = false; // default result value
-	global $mysqli_object;
-	global $settings_database_auth_table;
+	global $mysqli_object; global $worked; $worked = false;
+	global $settings_database_auth_table; global $settings_database_groups_table;
 	
-	$result_array = $mysqli_object->query("SELECT * FROM `groups` WHERE `groupname` LIKE '%".$groupname."%'");
+	$query = "SELECT * FROM `".$settings_database_groups_table."` WHERE `groupname` = '".$groupname."'";
+	$result_array = $mysqli_object->query($query);
 	
 	if($result_array)
 	{
@@ -600,7 +595,7 @@ function generateUserList($group = "*")
 {
 	if(($group == "*") || ($group == "users"))
 	{
-		$users = getUsers();
+		$users = users();
 	}
 	else if($group == "yourself")
 	{
@@ -652,4 +647,68 @@ function generateUserList($group = "*")
 		echo '
 				</ul>';
 }
+
+/* ========== LIBRARY ==========
+ * do not call this functions directly unless you know what you do
+ * the above functions use these functnios */
+
+/* build a query for inserting an array */
+function array2sql($array)
+{
+	global $settings_database_name;
+	global $settings_database_auth_table; global $settings_database_groups_table;
+
+	$query = "";
+	$count = count($user);
+	$columns = "";
+	$values = "";
+	foreach ($array as $key => $value)
+	{
+		if(!is_null($array[$key]))
+		{
+			if(($key == "id")||($key == "ID")) $value = "NULL";
+
+			if(empty($columns))
+			{
+				$columns = "`".$key."`";
+				$values = "'".$value."'";
+			}
+			else
+			{
+				$values = $values . "," . "'".$value."'";
+				$columns = $columns . ",`".$key."`";
+			}
+		}
+	}
+	$query = "($columns) VALUES ($values)";
+	
+	return $query;
+}
+
+/* outputs a warning and if $settings_log_errors == true, outputs to error.log */
+function error($message)
+{
+	trigger_error($message);
+
+	global $settings_log_errors;
+	if(!empty($settings_log_errors)){
+		log2file($settings_log_errors,$message);
+	}
+}
+
+/* outputs a warning and if $settings_log_errors == true, outputs to error.log */
+function operation($operation)
+{
+	global $settings_log_operations;
+	if(!empty($settings_log_operations)){
+		log2file($settings_log_operations,$operation);
+	}
+}
+
+/* write the error to a log file */
+function log2file($file,$this)
+{
+	file_put_contents($file, time().": ".$this."\n", FILE_APPEND);
+}
+?>
 ?>

@@ -29,6 +29,12 @@ demo: <http://gigalaunch.de>
 
 - watch passwords be client-side md5 encrypted BEFORE sending them over network (no matter if https or not)
 
+==== Group Management ====
+
+the database-concept behind groups is like this:
+1. there is a column in the passwd table which contains a comma-separated list of all groups that the user belongs to.
+2. the table groups contains all available groups, you can add your own column-properties.
+
 ====== GIT REPOSITORY ======
 
 you can get source-access only via git (sry)

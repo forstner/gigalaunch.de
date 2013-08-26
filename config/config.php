@@ -4,6 +4,9 @@ $settings_platform_name = "gigalaunch";
 $settings_platform_url = "http://gigalaunch.de";
 $settings_errorLog = $settings_platform_name."_error.log"; // if empty, no errors are logged to file
 
+$settings_log_errors = "log/error.log"; // if errors should be logged to file, if not leave this empty
+$settings_log_operations = "log/operations.log"; // if there should be a line written for every operation done (so you may be able to track problems)
+
 /* ======================= DATABASE */
 /* here the database credentials are beeing stored */
 $settings_datasource = "mysql"; // right now can only be "mysql", could be postgress (not implemented) sqlite (not implemented)
@@ -12,6 +15,8 @@ $settings_database_name = $settings_platform_name;
 $settings_database_user = "root";
 $settings_database_pass = "root";
 $settings_database_auth_table = "passwd"; // what the table is called, where the users & passwords (md5 hashes) are stored
+$settings_database_groups_table = "groups"; // what the table is called, where the groups are stored
+
 
 /* ======================= USERS */
 /* ================ DEFAULTS */

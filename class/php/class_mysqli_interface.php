@@ -77,6 +77,7 @@ class class_mysqli_interface {
 	*/
 	public static function query($query,$return_data = true)
 	{
+		global $worked;
 		global $mysqli_link;
 		global $mysqli_object;
 		global $settings_database_server;
@@ -91,6 +92,8 @@ class class_mysqli_interface {
 		if(!$result)
 		{
 			// 1. something went wrong
+			$worked = false;
+
 			// check if database exists
 			$query = "SHOW DATABASES";
 			$result = mysqli_query(query);
@@ -109,6 +112,7 @@ class class_mysqli_interface {
 
 			if(!$result)
 			{
+				$worked = false;
 				$error = $query." returns error: ".mysqli_errno($mysqli_link). ": ".mysqli_error($mysqli_link);
 				$error = str_replace(",", " ", $error);
 				$error = str_replace(":", " ", $error);
@@ -120,6 +124,7 @@ class class_mysqli_interface {
 
 			if($return_data)
 			{
+				$worked = true;
 				if(!is_bool($result)) // query(UPDATE) = returns true/false
 				{
 					while ($obj = $result->fetch_object()) {

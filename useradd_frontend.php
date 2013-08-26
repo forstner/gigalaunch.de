@@ -34,7 +34,7 @@ if(!empty($_REQUEST['activation']))
 else if(!empty($_REQUEST['username']) && empty($_REQUEST['password'])) /* is it a username-taken test? */
 {
 	$requested_username = $mysqli_object->escape($_REQUEST['username']);
-	if (does_user_exist($requested_username,null,null)) {
+	if (userexist($requested_username,null,null)) {
 		exit('type:error,id:Username already taken,details:Username already taken. Please choose different one.');
 	}
 	else
@@ -51,7 +51,7 @@ else if(!empty($_REQUEST['username']) && !empty($_REQUEST['password'])) /* is it
 	//sleep(2);
 	// usleep(150000); // why i do no know?
 
-	if (does_user_exist($requested_username,null,null)) {
+	if (userexist($requested_username,null,null)) {
 		exit('type:error,id:Username already taken,details:Username already taken. Please choose different one.');
 	}
 
@@ -180,7 +180,7 @@ else if(!empty($_REQUEST['username']) && !empty($_REQUEST['password'])) /* is it
 			 * only admins can add admins
 			 * UNLESS PASSWD table IS completely EMPTY (fresh install) = HE/SHE IS THE FIRST USER! then he/she needs be admin.
 			 */
-			$allUsers = getUsers();
+			$allUsers = users();
 			// is the only user of the system so far
 			if(!$allUsers)
 			{

@@ -18,7 +18,7 @@ function translate($keyword,$lang)
 	$mysqli_object = new class_mysqli_interface();
 
 	global $mysqli_object;
-	global $settings_database_auth_table;
+	global $settings_database_auth_table; global $settings_database_groups_table;
 	global $settings_database_name;
 	$result_database = $mysqli_object->query("SELECT * FROM `translations` WHERE `keyword` = '".$keyword."'");
 	

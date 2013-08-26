@@ -4,203 +4,145 @@ chdir('../../');
 include_once("./lib/php/lib_mysqli_commands.php");
 include_once("config/config.php");
 
-echo "<hr><h1 color='red'>test database user commands</h1><br>";
+echo "<hr><h1 color='red'>test database user management commands</h1><br>";
 
-comment("get definition of user");
+comment("get definition of user from database");
 $user = newUser();
 success($user);
 
+// userdel
+$user["id"] = 0;
+comment("delete User (if it exists)");
+userdel($user);
+success();
+
+// groupdel - delete a group ALSO UPDATE USER RECORDS!
+comment("groupdel - delete a group ALSO UPDATE USER RECORDS!");
+$group["groupname"] = "user";
+success(groupdel($group));
+
+// useradd
 comment("add user to database");
+$user["username"]= "user";
+$user["mail"] = "mail@mail.de";
+$user["firstname"] = "firstname";
+$user["lastname"] = "lastname";
 success(useradd($user));
 
-comment("getUsersByGroup");
-success(getUsersByGroup("user"));
+// userget by id/Mail/Username
+comment("get user by ID");
+$user["id"] = "1";
+success(userget($user,"id"));
 
-comment("copy database");
-success(copyDatabase("databaseTest1","databaseTest2"));
+// getUserByUsername
+comment("get User by Username");
+success(userget($user,"username"));
 
-comment("rename database");
-success(renameDatabase("databaseTest2","databaseTest3"));
+// getUserByMail
+comment("get User by Username");
+success(userget($user,"mail"));
 
-comment("delete database");
-success(delDatabase("databaseTest3"));
+// userget
+comment("get a list of all users");
+success(userget());
 
-echo "<hr><h1 color='red'>test table commands</h1><br>";
+// useredit
+comment("edit User (if it exists)");
+$user["mail"] = "new@mail.de";
+$user["username"] = "superuser";
+success(useredit($user));
 
-comment("create table");
-success(addTable("testTable1","databaseTest1",$accessRights));
+// userexist
+comment("userexist");
+success(userexist($user));
 
-comment("copy table");
-success(copyTable("testTable1","testTable2","databaseTest1",$accessRights));
+echo "<hr><h1 color='red'>test database Group management commands</h1><br>";
 
-comment("rename table");
-success(renameTable("testTable2","testTable3","databaseTest1"));
+// groupadd
+/* the database-concept behind groups is like this:
+ * 1. there is a column in the passwd table which contains a comma-separated list of all groups that the user belongs to.
+ * 2. the table groups contains all available groups, you can add your own column-properties.
+ */
+comment("get definition of group from database");
+$group = newGroup();
+$group["name"] = "test";
+success(groupadd($group));
 
-comment("delete table");
-success(delTable("testTable3"));
+// groupexist
+comment("groupexist - test if a group exists");
+success(groupexist($group));
 
-echo "<hr><h1 color='red'>test column commands</h1><br>";
+// groupchange, also update the name in all user records!!!
+comment("groupchange");
+$group["name"] = "changedTest";
+success(groupchange($group));
 
-comment("create column");
-success(addColumn("columnTest1","testTable1","databaseTest1",$accessRights));
+// get all available groups
+comment("get all available groups");
+success(groups());
 
-comment("create column");
-success(addColumn("columnTest2","testTable1","databaseTest1",$accessRights));
+// get groups with filter
+// get system groups
+comment("get groups of user");
+success(groups($user));
 
-comment("rename column");
-success(renameColumn("columnTest2","columnTest3","testTable1"));
+// get system groups
+comment("get groups of user");
+success(groups(null,"WHERE `system` = 1"));
 
-comment("delete column");
-success(delColumn("columnTest1"));
-success(delColumn("columnTest3"));
+// get all groups with this groupname
+$groupname = "user";
+comment("get groups of user");
+success(groups(null,"WHERE `".$settings_database_groups_table."` LIKE '%".$groupname."%'"));
 
-echo "<hr><h1 color='red'>test record management commands</h1><br>";
+// groupadduser - add user to a group
+comment("add user to a group");
+success(groupadduser($user,$group));
 
-success(addColumn("name","testTable1","databaseTest1",$accessRights));
-success(addColumn("street","testTable1","databaseTest1",$accessRights));
-success(addColumn("phone","testTable1","databaseTest1",$accessRights));
-success(addColumn("mail","testTable1","databaseTest1",$accessRights));
+// groupremuser - remove user from group
+comment("groupremuser - remove user from group");
+success(groupremuser($user,$group));
 
-comment("add record at end (no lineNumber given)");
-$name = "tom";
-success(add("name:".$name.";street:street;phone:+00981232112312;mail:".$name."@mail.com;"));
-$name = "jerry";
-success(add("name:".$name.";street:street;phone:+00981232112312;mail:".$name."@mail.com;"));
+// groupdel - delete a group ALSO UPDATE USER RECORDS!
+comment("groupdel - delete a group ALSO UPDATE USER RECORDS!");
+success(groupdel($group));
 
-comment("insert record at position (lineNumber given)");
-$name = "joe";
-success(insert(1,"name:".$name.";street:street;phone:+00981232112312;mail:".$name."@mail.com;"));
-$name = "jim";
-success(insert(3,"name:".$name.";street:street;phone:+00981232112312;mail:".$name."@mail.com;"));
-$name = "jeremy";
-success(insert(0,"name:".$name.";street:street;phone:+00981232112312;mail:".$name."@mail.com;"));
+// recordget
+comment("get definition of arbitrary record from database");
+$DataRecord = newRecord("tableName");
 
-comment("change/replace/update record");	
-success(change(2,"name:jill;phone:+12345;"));
+// recordadd
+comment("recordadd - add a arbitrary record to a arbitrary table");
+$DataRecord["id"] = "auto";
+$DataRecord["key1"] = "value1";
+$DataRecord["key2"] = "value2";
+$DataRecord["key3"] = "value3";
+success(recordadd($DataRecord));
 
-comment("change/replace/update multiple records");
-success(change(array(0,1,2),"name:jill;phone:+12345;"));
+// recordchange
+comment("change record");
+$DataRecord["key2"] = "newvalue2";
+$DataRecord["key3"] = "newvalue3";
+success(recordadd($DataRecord));
 
-comment("change/replace/update the all records where name = jill with joe");
-success(change(where("jill","name"),"name:joe;phone:+999999;"));
+// recorddel
+comment("del record");
+success(recorddel($DataRecord));
 
-echo "<hr><h1 color='red'>try read commands</h1><br>";
-
-comment("get one single record from table");
-print_r_html(read(0));
-success($worked);
-
-comment("get one mutliple record from a table");
-print_r_html(read(array(0,1,2)));
-success($worked);
-
-comment("get a range of records from a table");
-print_r_html(read("0-3"));
-success($worked);
-
-comment("get all records where name == 'jim' read(where('jim'));");
-print_r_html(read(where('jim','name')));
-success($worked);
-
-comment("get all records from a table, top-array-keys represent the columns");
-print_r_html(readTable("testTable1"));
-success($worked);
-
-/* CREATE MORE DATA */
-addTable("testTable2","databaseTest1",$accessRights);
-addColumn("name");
-addColumn("street");
-addColumn("phone");
-addColumn("mail");
-$name = "tom";
-add("name:".$name.";street:street;phone:+00981232112312;mail:".$name."@mail.com;");
-$name = "jerry";
-add("name:".$name.";street:street;phone:+00981232112312;mail:".$name."@mail.com;");
-addColumn("columnTest2");
-$name = "tom";
-add("name:".$name.";street:street;phone:+00981232112312;mail:".$name."@mail.com;");
-$name = "jerry";
-add("name:".$name.";street:street;phone:+00981232112312;mail:".$name."@mail.com;");
-addColumn("columnTest3");
-$name = "tom";
-add("name:".$name.";street:street;phone:+00981232112312;mail:".$name."@mail.com;");
-$name = "jerry";
-add("name:".$name.";street:street;phone:+00981232112312;mail:".$name."@mail.com;");
-/* CREATE MORE DATA FINISHED */
-
-comment("get whole database as a object-array with sub arrays");
-$result = readDatabase();
-print_r_html($result);
-success($worked);
-
-comment("add column to table where columns have content (needs to be all same linecount = insync)");
-addColumn("test","testTable1","databaseTest1");
-
-echo "<hr><h1 color='red'>try delete commands</h1><br>";
-
-comment("try to delete with problematic index, you should see an error following:");
-success(delete(null));
-
-comment("delete one record");
-success(delete(0));
-
-comment("delete multiple records");
-success(delete(array(0,1,2)));
-
-comment("add record at end (no lineNumber given)");
-$name = "tom";
-success(add("name:".$name.";street:street;phone:+00981232112312;mail:".$name."@mail.com;"));
-$name = "jerry";
-success(add("name:".$name.";street:street;phone:+00981232112312;mail:".$name."@mail.com;"));
-
-comment("delete range of records");
-success(delete(("0-2")));
-
-echo "<hr><h1 color='red'>import / export commands</h1><br>";
-
-// importMySQL($mysqldumb); // parses the mysqldumb and tries to create a file-based database
-
-// exportMySQL($dbName); // tries to create a MySQL-dumb of the file-based-database
-
-echo "<hr><h1 color='red'>DESTROY TEST DATABASE</h1><br>";
-
-comment("delete database");
-success(delDatabase("databaseTest1"));
-
-/*
-echo "<hr><h1 color='red'>test file operations command 'ls'</h1><br>";
-
-comment("read parent directory");
-print_r_html(ls(".."));
-comment("read absolute path");
-print_r_html(ls("/var/www"));
-
-comment("read current directory");
-print_r_html(ls("."));
-comment("0 = SORT_REGULAR - Default. Compare items normally (don't change types)");
-$sort = SORT_REGULAR;
-print_r_html(ls(".",$sort));
-
-comment("1 = SORT_NUMERIC - Compare items numerically");
-$sort = SORT_NUMERIC;
-print_r_html(ls(".",$sort));
-
-comment("2 = SORT_STRING - Compare items as strings");
-$sort = SORT_STRING;
-print_r_html(ls(".",$sort));
-
-comment("3 = SORT_LOCALE_STRING - Compare items as strings, based on current locale");
-$sort = SORT_LOCALE_STRING;
-print_r_html(ls(".",$sort));
-
-comment(" 4 = SORT_NATURAL - Compare items as strings using natural ordering");
-$sort = SORT_NATURAL;
-print_r_html(ls(".",$sort));
-
-comment("5 = SORT_FLAG_CASE -");
-$sort = SORT_FLAG_CASE;
-print_r_html(ls(".",$sort));
-*/
+// this functionalities need to be implemented with the very general functions above:
+// getDevices
+// getDeviceByMac
+// getButtons
+// getOutputs
+// getInputs
+// getSessionExpiration
+// setSession
+// getUserBySession
+// getGroups
+// getSystemGroups
+// groupexist
+// generateUserList
+// usersByGroup
 
 /* print an array or variable like print_r would do it but with browser readable <br> instead of \n linebreaks */
 function print_r_html($input)
@@ -214,8 +156,9 @@ function comment($input)
 	echo "<h3>".strval($input)."____________________________________________________________</h3><br>";
 }
 // colorful output about the outcomes of the functions
-function success($worked)
+function success()
 {
+	global $worked;
 	if($worked)
 	{
 		echo "<h3 style='color:green;'>worked</h3><br>";

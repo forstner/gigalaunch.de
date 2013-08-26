@@ -20,11 +20,11 @@ $mysqli_object = new class_mysqli_interface();
 // 1. get user
 if(isset($_REQUEST['selectUserId']))
 {
-	$user2edit = getUserByid($_REQUEST['selectUserId']);
+	$user2edit = getUser($_REQUEST['selectUserId']);
 }
 if(isset($_REQUEST['editUserId']))
 {
-	$user2edit = getUserByid($_REQUEST['editUserId']);
+	$user2edit = getUser($_REQUEST['editUserId']);
 }
 
 // 2. put all user's data into the input fields
