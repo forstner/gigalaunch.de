@@ -10,11 +10,17 @@ comment("get definition of user from database");
 $user = newUser();
 success($user);
 
-// userdel
+// userdel with id
 $user["id"] = 0;
+$user["username"] = 0;
 comment("delete User (if it exists)");
 userdel($user);
 success();
+
+// userdel with username
+$user["username"] = "user";
+comment("delete User (if it exists)");
+success(userdel($user,"username"));
 
 // groupdel - delete a group ALSO UPDATE USER RECORDS!
 comment("groupdel - delete a group ALSO UPDATE USER RECORDS!");
@@ -27,12 +33,12 @@ $user["username"]= "user";
 $user["mail"] = "mail@mail.de";
 $user["firstname"] = "firstname";
 $user["lastname"] = "lastname";
-success(useradd($user));
+$user = useradd($user); // returns the user-object from database, containing a new, database generated id, that is important for editing the user
+success();
 
 // userget by id/Mail/Username
 comment("get user by ID");
-$user["id"] = "1";
-success(userget($user,"id"));
+success(userget($user));
 
 // getUserByUsername
 comment("get User by Username");
@@ -45,7 +51,7 @@ success(userget($user,"mail"));
 // userget
 comment("get a list of all users");
 success(userget());
-
+	
 // useredit
 comment("edit User (if it exists)");
 $user["mail"] = "new@mail.de";
@@ -65,7 +71,7 @@ echo "<hr><h1 color='red'>test database Group management commands</h1><br>";
  */
 comment("get definition of group from database");
 $group = newGroup();
-$group["name"] = "test";
+$group["groupname"] = "test";
 success(groupadd($group));
 
 // groupexist

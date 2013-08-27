@@ -7,6 +7,9 @@ global $mysqli_link; // a pointer symbolizing the connection to the mysql databa
 $mysqli_object = null;
 global $mysqli_object; // this class, which contains functions and objects such as $mysqli_link
 
+$id_last = null;
+global $id_last; // the auto-increment id of the last record inserted 
+
 /* mysqli.php
  * 1. loads config.php (database credentials) per default
 * 2. establishes a link to the mysql database
@@ -78,6 +81,7 @@ class class_mysqli_interface {
 	public static function query($query,$return_data = true)
 	{
 		global $worked;
+		global $id_last;
 		global $mysqli_link;
 		global $mysqli_object;
 		global $settings_database_server;
@@ -97,6 +101,7 @@ class class_mysqli_interface {
 			// check if database exists
 			$query = "SHOW DATABASES";
 			$result = mysqli_query(query);
+			$id_last = mysqli_insert_id($mysqli_link);
 
 			$error_details = " Selecting database failed: ".mysqli_connect_error();
 
@@ -109,6 +114,7 @@ class class_mysqli_interface {
 		{
 			// 2. execute query, check for query errors
 			$result = mysqli_query($mysqli_link,$query);
+			$id_last = mysqli_insert_id($mysqli_link);
 
 			if(!$result)
 			{

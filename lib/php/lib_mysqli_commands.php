@@ -4,14 +4,9 @@
  * so it does not need all the ./lib/php/lib_session.php/./lib/php/lib_security.php, but the parent.php does!
 */
 
-if(!class_exists("./class/php/class_mysqli_interface"))
-{
-	require_once('./class/php/class_mysqli_interface.php');
-}
-if(!function_exists("string2array"))
-{
-	require_once('./lib/php/lib_convert.php');
-}
+require_once('./class/php/class_mysqli_interface.php');
+require_once('./lib/php/lib_convert.php');
+require_once('./lib/php/lib_general.php');
 
 // init database object
 $mysqli_object = new class_mysqli_interface();
@@ -57,39 +52,46 @@ function newRecord($tableName)
 }
 
 /* checks if the user exists */ 
-function userexist($username,$password = "",$user = null)
+function userexist($user,$uniqueKey = "id")
 {
-	$result = false; // default result value
+	$result = null;
+
 	global $mysqli_object; global $worked; $worked = false;
+	global $settings_database_name;
 	global $settings_database_auth_table; global $settings_database_groups_table;
-	
-	if(!$user)
-	{
-		$user = getUserByUsername($username);
-	}
-	
+	$query = "";
 	if($user)
 	{
-		if(!$password) // is there a password passed? or do we ask only for username? (password null or "")
+		// filter list
+		if(isset($user[$uniqueKey]))
 		{
-			/* check if there is already a user with that name and password */
-			
-			if($user->username == $username)
+			if(!empty($user[$uniqueKey]))
 			{
-				$result = true;
+				$query = "SELECT * FROM `".$settings_database_auth_table."` WHERE `".$uniqueKey."` = '".$user[$uniqueKey]."'";
+			}
+			else
+			{
+				return error("function userexist: given \$user has property named ".$uniqueKey." but it is empty.");
 			}
 		}
 		else
 		{
-			/* check if there is already a user with that name */
-			if($user->username == $username)
-			{
-				if($user->password == $password)
-				{
-					$result = true;
-				}
-			}
+			return error("function userexist: given \$user has no property named ".$uniqueKey.".");
 		}
+	}
+	else
+	{
+		return error("function userexist: no user given.");
+	}
+	$user_array = $mysqli_object->query($query);
+	
+	if(!empty($user_array))
+	{
+		$result = true;
+	}
+	else
+	{
+		$result = false;
 	}
 
 	return $result;
@@ -122,7 +124,7 @@ function groups($group = null,$where = "")
 /* get $user as assoc-array
  * by id/Username/Mail (in this order, if no $uniqueKey is given)
  */ 
-function userget($user,$uniqueKey = "")
+function userget($user,$uniqueKey = "id")
 {
 	$result = null;
 
@@ -158,6 +160,7 @@ function userget($user,$uniqueKey = "")
 	
 	return $result;
 }
+
 /* get ALL $".$settings_database_auth_table." as assoc-array
  * iterate over list like this:
    	foreach ($".$settings_database_auth_table." as $key => $value) {
@@ -287,8 +290,19 @@ function getUserBySession($session)
 	return $result;
 }
 
-/* delete user */
-function userdel($user)
+/* delete user
+ * $identifyByKey -> the key by which you want to identify your user
+ * usually every user has a unique id given by the database
+ * so it's savest to use id
+ * 
+ * but you might also want to delete all users named "joe"
+ * 
+ * so go
+ * $user = newUser();
+ * $user["username"] = "joe";
+ * userdel($user,"username");
+ * */
+function userdel($user,$identifyByKey = "id")
 {
 	if(!is_array($user))
 	{
@@ -301,21 +315,24 @@ function userdel($user)
 	global $settings_database_name;
 	$worked = false;
 
-	$userID = "";
-	if(isset($user))
+	if(isset($user[$identifyByKey]))
 	{
-		if(!empty($user))
+		if(!empty($user[$identifyByKey]))
 		{
-			$userID = $user["id"];
+			$output = $mysqli_object->query("DELETE FROM  `".$settings_database_name."`.`".$settings_database_auth_table."` WHERE `".$settings_database_auth_table."`.`".$identifyByKey."` = '".$user[$identifyByKey]."';");
+			$worked = true;
+		}
+		else
+		{
+			return error("function userdel: there is a property ".$identifyByKey." in \$user but it has no value.");
 		}
 	}
-
-	if(!is_null($userID))
+	else
 	{
-		$output = $mysqli_object->query("DELETE FROM  `".$settings_database_name."`.`".$settings_database_auth_table."` WHERE `".$settings_database_auth_table."`.`id` = ".$userID.";");
+		return error("function userdel: there is no property ".$identifyByKey." in \$user given.");
 	}
 	
-	return $output;
+	return $worked;
 }
 
 /* add/register a new user
@@ -339,6 +356,11 @@ function userdel($user)
  * */
 function useradd($user) // $requested_username = "",$requested_password = "",$groups = "",$data = ""
 {
+	global $mysqli_object; global $worked; $worked = false;
+	global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames;
+	global $settings_database_name;
+	global $settings_default_home_after_login;
+	
 	if(!is_array($user))
 	{
 		error("function useradd: expected input to be array");
@@ -347,16 +369,16 @@ function useradd($user) // $requested_username = "",$requested_password = "",$gr
 	}
 	if(empty($user["username"]))
 	{
-		error("function useradd: can not continue, \$user has no username");
-		$worked = false;
-		return $worked;
+		return error("function useradd: can not continue, \$user has no username");
 	}
 	
-	global $activation;
-	global $mysqli_object; global $worked; $worked = false;
-	global $settings_database_auth_table; global $settings_database_groups_table;
-	global $settings_database_name;
-	global $settings_default_home_after_login;
+	if($settings_uniqueUsernames)
+	{
+		if(userexist($user,"username"))
+		{
+			return error("function useradd: can not continue, user ".$user["username"]." is taken and \$settings_uniqueUsernames is set to true.");
+		}
+	}
 
 	// under linux, when creating users there is always a a group created with the same name, that per default this user belongs to (it's "his" group)
 	// search for username in groups, if not found add.
@@ -372,21 +394,28 @@ function useradd($user) // $requested_username = "",$requested_password = "",$gr
 	// check if given groups already exist, if not add
 	if(!groupexist($user["username"]))
 	{
-		$groups["groupname"] = $user["username"];
-		groupadd($groups);
+		$group = newGroup();
+		$group["groupname"] = $user["username"];
+		groupadd($group);
 	}
 
 	// search for username in groups, if not found add.
 	// allready contains username in group-list
 	$user["id"] = ""; // id will always be automatically set by database/backend/autoincrement, or things will become chaotic
 
-	$query = "INSERT INTO `".$settings_database_name."`.`".$settings_database_auth_table."` ".array2sql($user);
+	$values = array2sql($user,"INSERT");
+	$query = "INSERT INTO `".$settings_database_name."`.`".$settings_database_auth_table."` ".$values;
 
 	// return data = false, return errors = true
 	$output = $mysqli_object -> query($query,false,true);
+	
+	// get the id of the just created user-object
+	global $id_last;
+	$user["id"] = $id_last;
+
 	$worked = true;
 	
-	return $output;
+	return $user;
 }
 
 /* change user
@@ -394,7 +423,7 @@ function useradd($user) // $requested_username = "",$requested_password = "",$gr
  * arbitrary additional details data about the user
  * data -> $data = "key:value,key:value,"
  */
-function useredit($user2edit) // $userID, $requested_username = "",$requested_password = "",$groups = "",$data = ""
+function useredit($UpdatedUser,$uniqueKey = "id") // $userID, $requested_username = "",$requested_password = "",$groups = "",$data = ""
 {
 	// check if user with this username allready exists -> warn
 	
@@ -402,62 +431,42 @@ function useredit($user2edit) // $userID, $requested_username = "",$requested_pa
 	global $settings_database_auth_table; global $settings_database_groups_table;
 	global $settings_database_name;
 	global $settings_default_home_after_login;
-
-	// under linux, when creating users there is always a a group created with the same name, that per default this user belongs to (it's "his" group)
-	// search for username in groups, if not found add.
-	if(strpos($user2edit->data,"home:") !== false)
-	{
-		// allready contains home informations
-	}
-	else
-	{
-		$user2edit->data .= ",home:".$settings_default_home_after_login.",";
-	}
-
-	// under linux, when creating users there is always a a group created with the same name, that per default this user belongs to (it's "his" group)
-	// search for username in groups, if not found add.
-	if(strpos($user2edit->groups,$requested_username) !== false)
-	{
-		// allready contains username in group-list
-	}
-	else
-	{
-		$user2edit->groups .= $requested_username.",";
-	}
-
-	// return data = false, return errors = true
-	$query = "UPDATE  `".$settings_database_name."`.`".$settings_database_auth_table."` SET  `username` =  '".$requested_username."',
-	`".$settings_database_groups_table."` =  '".$groups."',
-	`password` =  '".$requested_password."',
-	`data` = '".$data."' WHERE `".$settings_database_auth_table."`.`id` = '".$user2edit->id."';";
 	
+	// get all info about user
+	$user_database = userget($UpdatedUser,$uniqueKey);
+	// add it
+	$UpdatedUser = mergeObject($UpdatedUser,$user_database);
+
+	$values = array2sql($UpdatedUser,"UPDATE");
+
+	$query = "UPDATE `".$settings_database_name."`.`".$settings_database_auth_table."` SET ".$values." WHERE `".$settings_database_auth_table."`.`".$uniqueKey."` = '".$UpdatedUser->$uniqueKey."';";
+
 	$output = $mysqli_object -> query($query,false,true);
-
-	// SET  `username` =  'username123' WHERE  `passwd`.`id` =1;
-
-	// check if given groups already exist, if not add
-	if($groups)
-	{
-		$groups = string2array($groups, "");
-
-		foreach ($groups as $key => $value)
-		{
-			if($value)
-			{
-				if(!groupexist($value))
-				{
-					$query = "INSERT INTO `".$settings_database_name."`.`".$settings_database_groups_table."` ( `id` , `groupname` ) VALUES ( NULL , '".$value."' );";
-					$output = $mysqli_object -> query($query,false,true);
-				}
-			}
-		}
-	}
 
 	return $output;
 }
 
 /* ============ GROUP */
-/* add a group to the system (list of available groups) */
+/* add a group to the system (list of available groups)
+ * add/register a new user
+*
+* the properties a $user-array-object can have is defined through the database
+* (table defined in config/config.php -> $settings_database_auth_table e.g. passwd)
+*
+* add a column there, and you have a new property attached to $user.
+*
+* To create/add a $user you first need to get this database-defined-layout
+*
+* $user = newUser();
+*
+* Then you modify the array: username is required, anything else is optional.
+*
+* $user["username"]= "user";
+*
+* adduser($user);
+*
+* That's it!
+* */
 function groupadd($group)
 {
 	if(!is_array($group))
@@ -466,18 +475,41 @@ function groupadd($group)
 		$worked = false;
 		return $worked;
 	}
+	if(empty($group["groupname"]))
+	{
+		error("function groupadd: can not continue, \$group has no groupname");
+		$worked = false;
+		return $worked;
+	}
 
-	$result = null;
 	global $mysqli_object; global $worked; $worked = false;
 	global $settings_database_auth_table; global $settings_database_groups_table;
 	global $settings_database_name;
+	global $settings_default_home_after_login;
 
-	$query = "INSERT INTO `".$settings_database_name."`.`".$settings_database_groups_table."` ( `id` , `groupname` ) VALUES ( NULL , '".$group["groupname"]."' );";
-	$result = $mysqli_object -> query($query,false,true);
-	if($result)	$worked = true;
-	return $worked;
+	// under linux, when creating users there is always a a group created with the same name, that per default this user belongs to (it's "his" group)
+	// check if given groups already exist, if not add
+	if(!groupexist($group["groupname"]))
+	{
+		// search for groupname in groups, if not found add.
+		// allready contains groupname in group-list
+		$group["id"] = ""; // id will always be automatically set by database/backend/autoincrement, or things will become chaotic
+	
+		$values = array2sql($group,"INSERT");
+		$query = "INSERT INTO `".$settings_database_name."`.`".$settings_database_groups_table."` ".$values;
+	
+		// return data = false, return errors = true
+		$output = $mysqli_object -> query($query,false,true);
+		$worked = true;
+	}
+	else
+	{
+		return error("function groupadd: group allready exists.");
+	}
+
+	return $output;
 }
-
+	
 /* delete a group */
 function groupdel($group)
 {
@@ -647,68 +679,4 @@ function generateUserList($group = "*")
 		echo '
 				</ul>';
 }
-
-/* ========== LIBRARY ==========
- * do not call this functions directly unless you know what you do
- * the above functions use these functnios */
-
-/* build a query for inserting an array */
-function array2sql($array)
-{
-	global $settings_database_name;
-	global $settings_database_auth_table; global $settings_database_groups_table;
-
-	$query = "";
-	$count = count($user);
-	$columns = "";
-	$values = "";
-	foreach ($array as $key => $value)
-	{
-		if(!is_null($array[$key]))
-		{
-			if(($key == "id")||($key == "ID")) $value = "NULL";
-
-			if(empty($columns))
-			{
-				$columns = "`".$key."`";
-				$values = "'".$value."'";
-			}
-			else
-			{
-				$values = $values . "," . "'".$value."'";
-				$columns = $columns . ",`".$key."`";
-			}
-		}
-	}
-	$query = "($columns) VALUES ($values)";
-	
-	return $query;
-}
-
-/* outputs a warning and if $settings_log_errors == true, outputs to error.log */
-function error($message)
-{
-	trigger_error($message);
-
-	global $settings_log_errors;
-	if(!empty($settings_log_errors)){
-		log2file($settings_log_errors,$message);
-	}
-}
-
-/* outputs a warning and if $settings_log_errors == true, outputs to error.log */
-function operation($operation)
-{
-	global $settings_log_operations;
-	if(!empty($settings_log_operations)){
-		log2file($settings_log_operations,$operation);
-	}
-}
-
-/* write the error to a log file */
-function log2file($file,$this)
-{
-	file_put_contents($file, time().": ".$this."\n", FILE_APPEND);
-}
-?>
 ?>

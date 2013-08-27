@@ -101,6 +101,25 @@ function AddToArrayIfNotExist($array1,$array2)
 
 	return $result;
 }
+
+/* merge all values from objectB into objectA,
+ * overwriting values of objectA with similar properties/keys, adding keys/properties that exist in B but not in A to A */ 
+function mergeObject($A,$InToObjectB)
+{
+	foreach ($A as $key => $value)
+	{
+		if(!is_null($value))
+		{
+			if(!empty($value))
+			{
+				$InToObjectB->$key = $value;
+			}
+		}
+	}
+	
+	return $InToObjectB;
+}
+
 /* this takes timestampt, md5-hashes it then cuts it down to 8 characters */
 function salt()
 {
@@ -161,4 +180,107 @@ function generatePassword($length = 8) {
 function logError($error)
 {
 	file_put_contents($settings_errorLog, $error."\n", FILE_APPEND);
+}
+
+/* build a query for inserting an array
+* $mode == "INSERT" -> (key1,key2,key3) VALUES (value1,value2,value3)
+* $mode == "UPDATE" -> key1 = value1,key2 = value2,key3 = value3
+* */
+function array2sql($array,$mode)
+{
+	global $settings_database_name;
+	global $settings_database_auth_table; global $settings_database_groups_table;
+
+	$query = "";
+	$count = 0;
+	
+	if(is_array($array))
+	{
+		$target = count($array);
+		$target = $target - 1;
+	}
+	else if(is_object($array))
+	{
+		$target = count((array)$array);
+		$target = $target - 1;
+	}
+	else
+	{
+		return error("function array2sql: input is neither of type array nor object, aborting.");
+	}
+	$columns = "";
+	$values = "";
+
+	if($mode == "INSERT")
+	{
+		foreach ($array as $key => $value)
+		{
+			if(!is_null($array[$key]))
+			{
+				if(($key == "id")||($key == "ID")) $value = "NULL";
+
+				if($count == 0)
+				{
+					$columns = "`".$key."`";
+					$values = "'".$value."'";
+				}
+				else
+				{
+					$values = $values . "," . "'".$value."'";
+					$columns = $columns . ",`".$key."`";
+				}
+			}
+				
+			$count++;
+		}
+		$query = "($columns) VALUES ($values)";
+	}
+
+	if($mode == "UPDATE")
+	{
+		foreach ($array as $key => $value)
+		{
+			if($count != $target)
+			{
+				$query .= "`".$key."` =  '".$value."',";
+			}
+			else
+			{
+				$query .= "`".$key."` =  '".$value."'"; // do not add , at the end
+			}
+			$count++;
+		}
+	}
+
+	return $query;
+}
+
+/* outputs a warning and if $settings_log_errors == true, outputs to error.log */
+function error($message)
+{
+	trigger_error($message);
+
+	global $settings_log_errors;
+	global $worked;
+	$worked = false;
+	if(!empty($settings_log_errors)){
+		log2file($settings_log_errors,$message);
+	}
+	
+	return false;
+}
+
+/* outputs a warning and if $settings_log_errors == true, outputs to error.log */
+function operation($operation)
+{
+	global $settings_log_operations;
+	if(!empty($settings_log_operations)){
+		log2file($settings_log_operations,$operation);
+	}
+}
+
+/* write the error to a log file */
+function log2file($file,$this)
+{
+	file_put_contents($file, time().": ".$this."\n", FILE_APPEND);
 }

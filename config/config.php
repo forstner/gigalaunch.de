@@ -7,6 +7,8 @@ $settings_errorLog = $settings_platform_name."_error.log"; // if empty, no error
 $settings_log_errors = "log/error.log"; // if errors should be logged to file, if not leave this empty
 $settings_log_operations = "log/operations.log"; // if there should be a line written for every operation done (so you may be able to track problems)
 
+$settings_uniqueUsernames = true; // please leave this at true, otherwise useredit may fail, true: two users can NOT have the same username, false: two users can have the same username (identification is mainly done over an unique database generated id)
+
 /* ======================= DATABASE */
 /* here the database credentials are beeing stored */
 $settings_datasource = "mysql"; // right now can only be "mysql", could be postgress (not implemented) sqlite (not implemented)
