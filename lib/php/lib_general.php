@@ -186,49 +186,46 @@ function logError($error)
 * $mode == "INSERT" -> (key1,key2,key3) VALUES (value1,value2,value3)
 * $mode == "UPDATE" -> key1 = value1,key2 = value2,key3 = value3
 * */
-function array2sql($array,$mode)
+function arrayobject2sqlvalues($ArrayOrObject,$mode)
 {
 	global $settings_database_name;
 	global $settings_database_auth_table; global $settings_database_groups_table;
-
+	
 	$query = "";
 	$count = 0;
 	
-	if(is_array($array))
+	if(is_array($ArrayOrObject))
 	{
-		$target = count($array);
-		$target = $target - 1;
 	}
-	else if(is_object($array))
+	else if(is_object($ArrayOrObject))
 	{
-		$target = count((array)$array);
-		$target = $target - 1;
+		$ArrayOrObject = object2array($ArrayOrObject);
 	}
 	else
 	{
-		return error("function array2sql: input is neither of type array nor object, aborting.");
+		return error("function arrayobject2sqlvalues: input is of type ".gettype($ArrayOrObject)." array or object expected.");
 	}
+
+	$target = count($ArrayOrObject);
+	$target = $target - 1;
 	$columns = "";
 	$values = "";
 
 	if($mode == "INSERT")
 	{
-		foreach ($array as $key => $value)
+		foreach ($ArrayOrObject as $key => $value)
 		{
-			if(!is_null($array[$key]))
+			if(($key == "id")||($key == "ID")) $value = "NULL";
+			
+			if($count == 0)
 			{
-				if(($key == "id")||($key == "ID")) $value = "NULL";
-
-				if($count == 0)
-				{
-					$columns = "`".$key."`";
-					$values = "'".$value."'";
-				}
-				else
-				{
-					$values = $values . "," . "'".$value."'";
-					$columns = $columns . ",`".$key."`";
-				}
+				$columns = "`".$key."`";
+				$values = "'".$value."'";
+			}
+			else
+			{
+				$values = $values . "," . "'".$value."'";
+				$columns = $columns . ",`".$key."`";
 			}
 				
 			$count++;
@@ -238,15 +235,18 @@ function array2sql($array,$mode)
 
 	if($mode == "UPDATE")
 	{
-		foreach ($array as $key => $value)
+		foreach ($ArrayOrObject as $key => $value)
 		{
-			if($count != $target)
+			if(($key != "id")&&($key != "ID"))
 			{
-				$query .= "`".$key."` =  '".$value."',";
-			}
-			else
-			{
-				$query .= "`".$key."` =  '".$value."'"; // do not add , at the end
+				if($count != $target)
+				{
+					$query .= "`".$key."` =  '".$value."',";
+				}
+				else
+				{
+					$query .= "`".$key."` =  '".$value."'"; // do not add , at the end
+				}
 			}
 			$count++;
 		}
@@ -283,4 +283,87 @@ function operation($operation)
 function log2file($file,$this)
 {
 	file_put_contents($file, time().": ".$this."\n", FILE_APPEND);
+}
+
+/* convert multi dimensional objects to array
+ * credits: http://www.if-not-true-then-false.com/2009/php-tip-convert-stdclass-object-to-multidimensional-array-and-convert-multidimensional-array-to-stdclass-object
+ */
+function object2array($object) {
+	if (is_object($object)) {
+		// Gets the properties of the given object
+		// with get_object_vars function
+		$object = get_object_vars($object);
+	}
+
+	if (is_array($object)) {
+		/*
+			* Return array converted to object
+		* Using __FUNCTION__ (Magic constant)
+		* for recursive call
+		*/
+		return array_map(__FUNCTION__, $object);
+	}
+	else {
+		// Return array
+		return $object;
+	}
+}
+
+/* convert multi dimensional arrays to objects
+ * credits: http://www.if-not-true-then-false.com/2009/php-tip-convert-stdclass-object-to-multidimensional-array-and-convert-multidimensional-array-to-stdclass-object/
+ */
+function array2object($array) {
+	if (is_array($array)) {
+		/*
+			* Return array converted to object
+		* Using __FUNCTION__ (Magic constant)
+		* for recursive call
+		*/
+		return (object) array_map(__FUNCTION__, $array);
+	}
+	else {
+		// Return object
+		return $array;
+	}
+}
+
+/* check if an object or array has an an property, and if that property has an value */
+function haspropertyandvalue($objectOrArray,$property,$caller)
+{
+	$result = false;
+	
+	if(is_array($objectOrArray) || is_object($objectOrArray))
+	{
+		if(!is_null($objectOrArray))
+		{
+			if(is_array($objectOrArray)) $objectOrArray = array2object($objectOrArray);
+			
+			if(isset($objectOrArray->$property))
+			{
+				if(!is_null($objectOrArray->$property))
+				{
+					$result = true;
+				}
+				else
+				{
+					return error("function ".$caller.": \$objectOrArray has property ".$property." but without value. Argh!");
+				}
+			}
+			else
+			{
+				return error("function ".$caller.": \$objectOrArray has no property ".$property.". Argh!");
+			}
+		}
+		else
+		{
+			return error("function ".$caller.": is null. Argh!");
+		}
+	}
+	else
+	{
+		$caller = "haspropertyandvalue";
+		return error("function ".$caller.": input \$objectOrArray is of type ".gettype($objectOrArray)." but i need object or array. Argh!");
+	}
+
+	return $result;
 }

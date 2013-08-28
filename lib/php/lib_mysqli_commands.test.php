@@ -8,54 +8,58 @@ echo "<hr><h1 color='red'>test database user management commands</h1><br>";
 
 comment("get definition of user from database");
 $user = newUser();
-success($user);
-
-// userdel with id
-$user["id"] = 0;
-$user["username"] = 0;
-comment("delete User (if it exists)");
-userdel($user);
 success();
 
+// userdel with id
+$user->id = 0;
+comment("delete User by id (default)");
+success(userdel($user));
+
 // userdel with username
-$user["username"] = "user";
-comment("delete User (if it exists)");
+comment("delete user by username (all users with this username if reuse allowed)");
+$user->username = "user";
+success(userdel($user,"username"));
+$user->username = "superuser";
 success(userdel($user,"username"));
 
 // groupdel - delete a group ALSO UPDATE USER RECORDS!
 comment("groupdel - delete a group ALSO UPDATE USER RECORDS!");
-$group["groupname"] = "user";
+$group->groupname = "user";
 success(groupdel($group));
 
 // useradd
 comment("add user to database");
-$user["username"]= "user";
-$user["mail"] = "mail@mail.de";
-$user["firstname"] = "firstname";
-$user["lastname"] = "lastname";
-$user = useradd($user); // returns the user-object from database, containing a new, database generated id, that is important for editing the user
+$user->username = "user";
+$user->mail = "mail@mail.de";
+$user->firstname = "firstname";
+$user->lastname = "lastname";
+$user = useradd($user); // returns the user-object from database, containing a new, database generated id, that is important for editing/deleting the user later
 success();
 
 // userget by id/Mail/Username
 comment("get user by ID");
-success(userget($user));
+$user = userget($user);
+success();
 
 // getUserByUsername
 comment("get User by Username");
-success(userget($user,"username"));
+$user = userget($user,"username");
+success();
 
 // getUserByMail
-comment("get User by Username");
-success(userget($user,"mail"));
+comment("get User by mail");
+$user = userget($user,"mail");
+success();
 
 // userget
 comment("get a list of all users");
-success(userget());
+$users = userget();
+success();
 	
 // useredit
 comment("edit User (if it exists)");
-$user["mail"] = "new@mail.de";
-$user["username"] = "superuser";
+$user->mail = "new@mail.de";
+$user->username = "superuser";
 success(useredit($user));
 
 // userexist
@@ -64,24 +68,38 @@ success(userexist($user));
 
 echo "<hr><h1 color='red'>test database Group management commands</h1><br>";
 
+// groupdel - delete a group ALSO UPDATE USER RECORDS!
+comment("groupdel - delete a group (can not be deleted if users are still in a group)");
+$group = newGroup();
+$group->groupname = "test";
+success(groupdel($group));
+
 // groupadd
 /* the database-concept behind groups is like this:
  * 1. there is a column in the passwd table which contains a comma-separated list of all groups that the user belongs to.
- * 2. the table groups contains all available groups, you can add your own column-properties.
+ * 2. the table groups contains all available groups, you can add your own column-properties to the table, enriching the amounts of properties a group can have.
  */
-comment("get definition of group from database");
-$group = newGroup();
-$group["groupname"] = "test";
-success(groupadd($group));
+comment("groupadd");
+$group = groupadd($group); // returns the group-object from database, containing a new, database generated id, that is important for editing/deleting the group later
+success();
 
 // groupexist
-comment("groupexist - test if a group exists");
-success(groupexist($group));
+comment("groupexist - test if a group exists by id");
+groupexist($group);
+success();
 
 // groupchange, also update the name in all user records!!!
-comment("groupchange");
-$group["name"] = "changedTest";
-success(groupchange($group));
+comment("groupedit");
+$group->groupname = "changedTest";
+success(groupedit($group));
+
+// get group by id
+comment("get group by id");
+success(groups($group,"id"));
+
+// get group by groupname
+comment("get group by groupname");
+success(groups($group,"groupname"));
 
 // get all available groups
 comment("get all available groups");
@@ -109,26 +127,22 @@ success(groupadduser($user,$group));
 comment("groupremuser - remove user from group");
 success(groupremuser($user,$group));
 
-// groupdel - delete a group ALSO UPDATE USER RECORDS!
-comment("groupdel - delete a group ALSO UPDATE USER RECORDS!");
-success(groupdel($group));
-
 // recordget
 comment("get definition of arbitrary record from database");
 $DataRecord = newRecord("tableName");
 
 // recordadd
 comment("recordadd - add a arbitrary record to a arbitrary table");
-$DataRecord["id"] = "auto";
-$DataRecord["key1"] = "value1";
-$DataRecord["key2"] = "value2";
-$DataRecord["key3"] = "value3";
+$DataRecord->id = "auto";
+$DataRecord->key1 = "value1";
+$DataRecord->key2 = "value2";
+$DataRecord->key3 = "value3";
 success(recordadd($DataRecord));
 
 // recordchange
 comment("change record");
-$DataRecord["key2"] = "newvalue2";
-$DataRecord["key3"] = "newvalue3";
+$DataRecord->key2 = "newvalue2";
+$DataRecord->key3 = "newvalue3";
 success(recordadd($DataRecord));
 
 // recorddel

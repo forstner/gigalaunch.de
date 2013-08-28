@@ -13,10 +13,13 @@ $mysqli_object = new class_mysqli_interface();
 
 /* ============ USERS */
 
-/* get table-definition (what keys does my table have) creates an example array-object */
-function describe($table)
+/* describe a table-structure, returns array/object full of keys = columns
+ * $mode could be "array" or "object" and defines the way the result is returned
+* default is "object"
+* */
+function describe($table,$mode = "object")
 {
-	$newUser = array();
+	$result = null;
 	global $mysqli_object; global $worked; $worked = false; global $worked;
 	global $settings_database_name;
 	$tableDefinition = $mysqli_object->query("DESCRIBE ".$table);
@@ -25,24 +28,33 @@ function describe($table)
 	for($i=0;$i<$target;$i++)
 	{
 		$key = $tableDefinition[$i]->Field;
-		$newUser[$key] = "";
+		$result->$key = "";
+	}
+	
+	if($mode == "array")
+	{
+		$result = object2array($result);
 	}
 
-	return $newUser;
+	return $result;
 }
 
-/* create a new user-teamplate-array-object as defined in database */
+/* get definition for a new user teamplate-object from database
+ * meaning: the properties of the user-object depend on the structure of your your passwd (or $settings_database_auth_table) table in the database
+ * effectively linking your user-Objects-layout to the database */
 function newUser()
 {
-	global $settings_database_auth_table; global $settings_database_groups_table;
+	global $settings_database_auth_table;
 	return describe($settings_database_auth_table);
 }
 
-/* create a new goup-teamplate-array-object as defined in database */
+/* get definition for a new group teamplate-object from database
+ * meaning: the properties of the group-object depend on the structure of your your passwd (or $settings_database_auth_table) table in the database
+* effectively linking your group-Objects-layout to the database */
 function newGroup()
 {
 	global $settings_database_groups_table;
-	return describe($settings_database_groups_table);
+	return describe($settings_database_groups_table); 
 }
 
 /* create a new record-teamplate-array-object as defined in database */
@@ -58,40 +70,24 @@ function userexist($user,$uniqueKey = "id")
 
 	global $mysqli_object; global $worked; $worked = false;
 	global $settings_database_name;
-	global $settings_database_auth_table; global $settings_database_groups_table;
+	global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames;
 	$query = "";
-	if($user)
+	
+	if(haspropertyandvalue($user,$uniqueKey,"userexist"))
 	{
 		// filter list
-		if(isset($user[$uniqueKey]))
-		{
-			if(!empty($user[$uniqueKey]))
-			{
-				$query = "SELECT * FROM `".$settings_database_auth_table."` WHERE `".$uniqueKey."` = '".$user[$uniqueKey]."'";
-			}
-			else
-			{
-				return error("function userexist: given \$user has property named ".$uniqueKey." but it is empty.");
-			}
-		}
-		else
-		{
-			return error("function userexist: given \$user has no property named ".$uniqueKey.".");
-		}
+		$query = "SELECT * FROM `".$settings_database_auth_table."` WHERE `".$uniqueKey."` = '".$user->$uniqueKey."'";
 	}
-	else
-	{
-		return error("function userexist: no user given.");
-	}
+
 	$user_array = $mysqli_object->query($query);
 	
-	if(!empty($user_array))
+	if(empty($user_array))
 	{
-		$result = true;
+		$result = false;
 	}
 	else
 	{
-		$result = false;
+		$result = true;
 	}
 
 	return $result;
@@ -104,7 +100,7 @@ function groups($group = null,$where = "")
 {
 	$result = false; // default result value
 	global $mysqli_object; global $worked; $worked = false;
-	global $settings_database_auth_table; global $settings_database_groups_table;
+	global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames;
 
 	$query = "";
 	if(empty($where))
@@ -122,26 +118,39 @@ function groups($group = null,$where = "")
 }
 
 /* get $user as assoc-array
- * by id/Username/Mail (in this order, if no $uniqueKey is given)
+ * by id, if no $uniqueKey is given (could also be username,mail if those values are unique)
  */ 
-function userget($user,$uniqueKey = "id")
+function userget($user = null,$uniqueKey = "id")
 {
 	$result = null;
 
 	global $mysqli_object; global $worked; $worked = false;
 	global $settings_database_name;
-	global $settings_database_auth_table; global $settings_database_groups_table;
+	global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames;
 	$query = "";
-	if($user)
+	if(!is_null($user))
 	{
-		// filter list
-		$query = "SELECT * FROM `".$settings_database_auth_table."` WHERE `".$uniqueKey."` = '".$user[$uniqueKey]."'";
+		if(haspropertyandvalue($user,$uniqueKey,"userget"))
+		{
+			$user_string = "";
+			if(is_array($user))
+			{
+				$user_string = $user[$uniqueKey];
+			}
+			else if(is_object($user))
+			{
+				$user_string = $user->$uniqueKey;
+			}
+			// filter list
+			$query = "SELECT * FROM `".$settings_database_auth_table."` WHERE `".$uniqueKey."` = '".$user_string."'";
+		}
 	}
 	else
 	{
 		// return all users
 		$query = "SELECT * FROM `".$settings_database_auth_table."`";
 	}
+
 	$user_array = $mysqli_object->query($query);
 	if(isset($user_array))
 	{
@@ -157,6 +166,8 @@ function userget($user,$uniqueKey = "id")
 			$result = $user_array; // multiple records returned
 		}
 	}
+	
+	if(!empty($result)) $worked = true;
 	
 	return $result;
 }
@@ -176,7 +187,7 @@ function users($where = "")
 {
 	global $mysqli_object; global $worked; $worked = false;
 	global $settings_database_name;
-	global $settings_database_auth_table; global $settings_database_groups_table;
+	global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames;
 	return $mysqli_object->query("SELECT * FROM `".$settings_database_auth_table."` ".$where);
 }
 function getDevices($where = "")
@@ -243,7 +254,7 @@ function setSession($username,$password)
 	global $mysqli_object; global $worked; $worked = false;
 	global $settings_database_name;
 	
-	global $settings_database_auth_table; global $settings_database_groups_table;
+	global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames;
 	global $settings_login_session_timeout;
 
 
@@ -273,7 +284,7 @@ function getUserBySession($session)
 	global $mysqli_object; global $worked; $worked = false;
 	global $settings_database_name;
 	
-	global $settings_database_auth_table; global $settings_database_groups_table;
+	global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames;
 	$result = "";
 	if($session)
 	{
@@ -299,37 +310,24 @@ function getUserBySession($session)
  * 
  * so go
  * $user = newUser();
- * $user["username"] = "joe";
+ * $user->username = "joe";
  * userdel($user,"username");
  * */
 function userdel($user,$identifyByKey = "id")
 {
-	if(!is_array($user))
+	if(!is_object($user))
 	{
-		error("function userdel: expected input to be array");
-		$worked = false;
-		return $worked;
+		return error("function userdel: expected input \$user to be an object");
 	}
 	global $mysqli_object; global $worked; $worked = false;
-	global $settings_database_auth_table; global $settings_database_groups_table;
+	global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames;
 	global $settings_database_name;
 	$worked = false;
 
-	if(isset($user[$identifyByKey]))
+	if(haspropertyandvalue($user,$identifyByKey,"userdel"))
 	{
-		if(!empty($user[$identifyByKey]))
-		{
-			$output = $mysqli_object->query("DELETE FROM  `".$settings_database_name."`.`".$settings_database_auth_table."` WHERE `".$settings_database_auth_table."`.`".$identifyByKey."` = '".$user[$identifyByKey]."';");
-			$worked = true;
-		}
-		else
-		{
-			return error("function userdel: there is a property ".$identifyByKey." in \$user but it has no value.");
-		}
-	}
-	else
-	{
-		return error("function userdel: there is no property ".$identifyByKey." in \$user given.");
+		$output = $mysqli_object->query("DELETE FROM  `".$settings_database_name."`.`".$settings_database_auth_table."` WHERE `".$settings_database_auth_table."`.`".$identifyByKey."` = '".$user->$identifyByKey."';");
+		$worked = true;
 	}
 	
 	return $worked;
@@ -348,7 +346,7 @@ function userdel($user,$identifyByKey = "id")
  * 
  * Then you modify the array: username is required, anything else is optional.
  * 
- * $user["username"]= "user";
+ * $user->username= "user";
  * 
  * adduser($user);
  * 
@@ -360,50 +358,47 @@ function useradd($user) // $requested_username = "",$requested_password = "",$gr
 	global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames;
 	global $settings_database_name;
 	global $settings_default_home_after_login;
-	
-	if(!is_array($user))
+
+	if(!haspropertyandvalue($user, "username", "useradd"))
 	{
-		error("function useradd: expected input to be array");
 		$worked = false;
 		return $worked;
 	}
-	if(empty($user["username"]))
-	{
-		return error("function useradd: can not continue, \$user has no username");
-	}
-	
+
+	// check if user allready exists
 	if($settings_uniqueUsernames)
 	{
 		if(userexist($user,"username"))
 		{
-			return error("function useradd: can not continue, user ".$user["username"]." is taken and \$settings_uniqueUsernames is set to true.");
+			return error("function useradd: can not continue, user ".$user->username." is taken and \$settings_uniqueUsernames is set to true.");
 		}
 	}
 
 	// under linux, when creating users there is always a a group created with the same name, that per default this user belongs to (it's "his" group)
 	// search for username in groups, if not found add.
-	if(empty($user["home"]))
+	if(empty($user->home))
 	{
-		$user["home"] = $settings_default_home_after_login;
+		$user->home = $settings_default_home_after_login;
 	}
 
 	// Create a unique  activation code:
-	$user["activation"] = md5(uniqid(rand(), true));
+	$user->activation = md5(uniqid(rand(), true));
 	
 	// under linux, when creating users there is always a a group created with the same name, that per default this user belongs to (it's "his" group)
 	// check if given groups already exist, if not add
-	if(!groupexist($user["username"]))
+	$group = newGroup();
+	$group->groupname = $user->username;
+
+	if(!groupexist($group))
 	{
-		$group = newGroup();
-		$group["groupname"] = $user["username"];
 		groupadd($group);
 	}
 
 	// search for username in groups, if not found add.
 	// allready contains username in group-list
-	$user["id"] = ""; // id will always be automatically set by database/backend/autoincrement, or things will become chaotic
+	$user->id = ""; // id will always be automatically set by database/backend/autoincrement, or things will become chaotic
 
-	$values = array2sql($user,"INSERT");
+	$values = arrayobject2sqlvalues($user,"INSERT");
 	$query = "INSERT INTO `".$settings_database_name."`.`".$settings_database_auth_table."` ".$values;
 
 	// return data = false, return errors = true
@@ -411,14 +406,14 @@ function useradd($user) // $requested_username = "",$requested_password = "",$gr
 	
 	// get the id of the just created user-object
 	global $id_last;
-	$user["id"] = $id_last;
+	$user->id = $id_last;
 
 	$worked = true;
 	
 	return $user;
 }
 
-/* change user
+/* edit/update/change a user
  * $groups = a,comma,separated,list,of,groupnames
  * arbitrary additional details data about the user
  * data -> $data = "key:value,key:value,"
@@ -428,16 +423,26 @@ function useredit($UpdatedUser,$uniqueKey = "id") // $userID, $requested_usernam
 	// check if user with this username allready exists -> warn
 	
 	global $mysqli_object; global $worked; $worked = false;
-	global $settings_database_auth_table; global $settings_database_groups_table;
+	global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames;
 	global $settings_database_name;
 	global $settings_default_home_after_login;
-	
+
 	// get all info about user
 	$user_database = userget($UpdatedUser,$uniqueKey);
-	// add it
+
+	// merge it
 	$UpdatedUser = mergeObject($UpdatedUser,$user_database);
 
-	$values = array2sql($UpdatedUser,"UPDATE");
+	// if $settings_uniqueUsernames enabled -> check if username is allready in use/exists
+	if($settings_uniqueUsernames)
+	{
+		if(userexist($UpdatedUser,"username"))
+		{
+			return error("function useredit: can not rename username from ".$user_database->username." to ".$UpdatedUser->username." because the username is allready in use.");
+		}
+	}
+
+	$values = arrayobject2sqlvalues($UpdatedUser,"UPDATE");
 
 	$query = "UPDATE `".$settings_database_name."`.`".$settings_database_auth_table."` SET ".$values." WHERE `".$settings_database_auth_table."`.`".$uniqueKey."` = '".$UpdatedUser->$uniqueKey."';";
 
@@ -447,37 +452,31 @@ function useredit($UpdatedUser,$uniqueKey = "id") // $userID, $requested_usernam
 }
 
 /* ============ GROUP */
-/* add a group to the system (list of available groups)
- * add/register a new user
+/* add a group to the system (list of available groups) / add/register a new group
+ * 
+ * $systemgroup = 1 -> this group is a system-group (like admin, guest... that can not/should not be deleted, even if there are no users anymore using it)
 *
-* the properties a $user-array-object can have is defined through the database
+* the properties a group-array-object can have is defined through the database
 * (table defined in config/config.php -> $settings_database_auth_table e.g. passwd)
 *
-* add a column there, and you have a new property attached to $user.
+* add a column there, and you have a new property attached to group.
 *
-* To create/add a $user you first need to get this database-defined-layout
+* To create/add a $group you first need to get this database-defined-layout
 *
-* $user = newUser();
+* $user = newGroup();
 *
-* Then you modify the array: username is required, anything else is optional.
+* Then you modify the array: groupname is required, anything else is optional.
 *
-* $user["username"]= "user";
+* $group->groupname= "group";
 *
-* adduser($user);
+* addgroup($group);
 *
 * That's it!
 * */
-function groupadd($group)
+function groupadd($group,$systemgroup = 0)
 {
-	if(!is_array($group))
+	if(!haspropertyandvalue($group, "groupname", "groupadd"))
 	{
-		error("function groupadd: expected input to be array");
-		$worked = false;
-		return $worked;
-	}
-	if(empty($group["groupname"]))
-	{
-		error("function groupadd: can not continue, \$group has no groupname");
 		$worked = false;
 		return $worked;
 	}
@@ -487,19 +486,24 @@ function groupadd($group)
 	global $settings_database_name;
 	global $settings_default_home_after_login;
 
-	// under linux, when creating users there is always a a group created with the same name, that per default this user belongs to (it's "his" group)
+	// under linux, when creating groups there is always a a group created with the same name, that per default this group belongs to (it's "his" group)
 	// check if given groups already exist, if not add
-	if(!groupexist($group["groupname"]))
+	if(!groupexist($group))
 	{
 		// search for groupname in groups, if not found add.
 		// allready contains groupname in group-list
-		$group["id"] = ""; // id will always be automatically set by database/backend/autoincrement, or things will become chaotic
+		$group->id = ""; // id will always be automatically set by database/backend/autoincrement, or things will become chaotic
+		$group->system = $systemgroup;
 	
-		$values = array2sql($group,"INSERT");
+		$values = arrayobject2sqlvalues($group,"INSERT");
 		$query = "INSERT INTO `".$settings_database_name."`.`".$settings_database_groups_table."` ".$values;
 	
 		// return data = false, return errors = true
 		$output = $mysqli_object -> query($query,false,true);
+		// get the id of the just created group-object
+		global $id_last;
+		$group->id = $id_last;
+		
 		$worked = true;
 	}
 	else
@@ -507,29 +511,126 @@ function groupadd($group)
 		return error("function groupadd: group allready exists.");
 	}
 
-	return $output;
+	return $group;
 }
-	
-/* delete a group */
-function groupdel($group)
+
+/* edit/update/change a group
+ * $groups = a,comma,separated,list,of,groupnames
+* arbitrary additional details data about the group
+* data -> $data = "key:value,key:value,"
+*/
+function groupedit($UpdatedGroup,$uniqueKey = "id") // $groupID, $requested_groupname = "",$requested_password = "",$groups = "",$data = ""
 {
-	if(!is_array($group))
+	// check if group with this groupname allready exists -> warn
+
+	global $mysqli_object; global $worked; $worked = false;
+	global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueGroupnames;
+	global $settings_database_name;
+	global $settings_default_home_after_login;
+
+	// get all info about group
+	$group_database = groupget($UpdatedGroup,$uniqueKey);
+
+	// merge it
+	$UpdatedGroup = mergeObject($UpdatedGroup,$group_database);
+
+	// if $settings_uniqueGroupnames enabled -> check if groupname is allready in use/exists
+	if($settings_uniqueGroupnames)
 	{
-		error("function groupdel: expected input to be array");
-		$worked = false;
-		return $worked;
+		if(groupexist($UpdatedGroup,"groupname"))
+		{
+			return error("function groupedit: can not rename groupname from ".$group_database->groupname." to ".$UpdatedGroup->groupname." because the groupname is allready in use.");
+		}
 	}
 
-	$result = null;
-	global $mysqli_object; global $worked; $worked = false;
-	global $settings_database_auth_table; global $settings_database_groups_table;
-	global $settings_database_name;
+	$values = arrayobject2sqlvalues($UpdatedGroup,"UPDATE");
 
-	if(isset($group["groupname"]) && (!is_null($group["groupname"])))
+	$query = "UPDATE `".$settings_database_name."`.`".$settings_database_auth_table."` SET ".$values." WHERE `".$settings_database_auth_table."`.`".$uniqueKey."` = '".$UpdatedGroup->$uniqueKey."';";
+
+	$output = $mysqli_object -> query($query,false,true);
+
+	return $output;
+}
+
+/* get $group as assoc-array
+ * by id, if no $uniqueKey is given (could also be groupname,mail if those values are unique)
+*/
+function groupget($group = null,$uniqueKey = "id")
+{
+	$result = null;
+
+	global $mysqli_object; global $worked; $worked = false;
+	global $settings_database_name;
+	global $settings_database_auth_table; global $settings_database_groups_table;
+	$query = "";
+	if(!is_null($group))
+	{
+		if(haspropertyandvalue($group,$uniqueKey,"groupget"))
+		{
+			$group_string = "";
+			if(is_array($group))
+			{
+				$group_string = $group[$uniqueKey];
+			}
+			else if(is_object($group))
+			{
+				$group_string = $group->$uniqueKey;
+			}
+			// filter list
+			$query = "SELECT * FROM `".$settings_database_groups_table."` WHERE `".$uniqueKey."` = '".$group_string."'";
+		}
+	}
+	else
+	{
+		// return all groups
+		$query = "SELECT * FROM `".$settings_database_groups_table."`";
+	}
+
+	$group_array = $mysqli_object->query($query);
+	if(isset($group_array))
+	{
+		if(count($group_array) <= 1)
+		{
+			if(isset($group_array[0]))
+			{
+				$result = $group_array[0];
+			}
+		}
+		else
+		{
+			$result = $group_array; // multiple records returned
+		}
+	}
+
+	if(!empty($result)) $worked = true;
+
+	return $result;
+}
+
+/* delete a group */
+function groupdel($group,$identifyByKey = "id")
+{
+	if(is_string($group))
+	{
+		$group_object = newGroup();
+		$group_object->$identifyByKey = $group;
+		$group = $group_object;
+	}
+
+	if(!is_object($group))
+	{
+		return error("function groupdel: expected input \$group to be an object");
+	}
+	global $mysqli_object; global $worked; $worked = false;
+	global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames;
+	global $settings_database_name;
+	$worked = false;
+
+	if(haspropertyandvalue($group,$identifyByKey,"groupdel"))
 	{
 		// check out if there are still users in this group -> refuse to delete
 		$users = users();
-		
+
 		$group_in_use = false;
 		$count = count($users);
 		$username = "";
@@ -538,33 +639,30 @@ function groupdel($group)
 			$username = $users[$i]->username;
 			$groups = $users[$i]->groups;
 			$groups_array = explode(",",$groups);
-			$groupname = $group["groupname"];
+			$groupname = $group->groupname;
 			if(in_array($groupname, $groups_array))
 			{
 				$group_in_use = true;
 				break;
 			}
 		}
-		
+
 		if($group_in_use)
 		{
-			error("function groupdel: can not delete group with name: ".$groupname." - the group is still in use by user ".$username);
+			error("function groupdel: can not delete group with name: ".$groupname." - the group is still in use by group ".$groupname);
 			$worked = false;
 			return $worked;
 		}
 		else
 		{
-			$query = "DELETE FROM `".$settings_database_name."`.`".$settings_database_groups_table."` WHERE `".$settings_database_groups_table."`.`groupname` = '".$groupname."';";
+			$query = "DELETE FROM `".$settings_database_name."`.`".$settings_database_groups_table."` WHERE `".$settings_database_groups_table."`.`groupname` = '".$group->$identifyByKey."';";
 			$result = $mysqli_object -> query($query,false,true);
 		}
-	}
-	else
-	{
-		error("function groupdel: given \$group has no groupname");
 	}
 
 	return $worked;
 }
+
 
 /* get a list of all available groups
  * $option = as array
@@ -574,7 +672,7 @@ function getGroups($option = "as object")
 {
 	$result = null;
 	global $mysqli_object; global $worked; $worked = false;
-	global $settings_database_auth_table; global $settings_database_groups_table;
+	global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames;
 	global $settings_database_name;
 	$result = $mysqli_object->query("SELECT * FROM `".$settings_database_groups_table."`");
 
@@ -595,25 +693,42 @@ function getGroups($option = "as object")
 
 /* checks if a group exists
  * 
- * alternative version:
+ * you can either pass a $group object with ->groupname set, or the name of the group as string
  * 
- * $groups = groups(null,"WHERE `groupname` = '".$user["username"]."'");
+ * alternative way to do it:
+ * $groups = groups(null,"WHERE `groupname` = '".$user->username."'");
+ * if(!empty($groups))
+ * {
+ * 		// yes group does exist
+ * }
  * -> then check if $groups array is empty.
  * */ 
-function groupexist($groupname)
+function groupexist($group,$uniqueKey = "id")
 {
+	if(is_string($group))
+	{
+		$group_object = newGroup();
+		$group_object->$uniqueKey = $group;
+		$group = $group_object;
+	}
+	if(!haspropertyandvalue($group, $uniqueKey, "groupexist"))
+	{
+		$worked = false;
+		return $worked;
+	}
+
 	$result = false; // default result value
 	global $mysqli_object; global $worked; $worked = false;
-	global $settings_database_auth_table; global $settings_database_groups_table;
-	
-	$query = "SELECT * FROM `".$settings_database_groups_table."` WHERE `groupname` = '".$groupname."'";
+	global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames;
+
+	$query = "SELECT * FROM `".$settings_database_groups_table."` WHERE `".$uniqueKey."` = '".$group->$uniqueKey."'";
 	$result_array = $mysqli_object->query($query);
-	
+
 	if($result_array)
 	{
 		$result = true;
 	}
-	
+
 	return $result;
 }
 
