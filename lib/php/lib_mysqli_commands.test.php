@@ -25,7 +25,9 @@ success(userdel($user,"username"));
 // groupdel - delete a group ALSO UPDATE USER RECORDS!
 comment("groupdel - delete a group ALSO UPDATE USER RECORDS!");
 $group->groupname = "user";
-success(groupdel($group));
+success(groupdel($group,"groupname"));
+$group->groupname = "changedTest";
+success(groupdel($group,"groupname"));
 
 // useradd
 comment("add user to database");
@@ -33,29 +35,34 @@ $user->username = "user";
 $user->mail = "mail@mail.de";
 $user->firstname = "firstname";
 $user->lastname = "lastname";
-$user = useradd($user); // returns the user-object from database, containing a new, database generated id, that is important for editing/deleting the user later
+$users = useradd($user); // returns the user-object from database, containing a new, database generated id, that is important for editing/deleting the user later
 success();
 
-// userget by id/Mail/Username
+// users by id/Mail/Username
 comment("get user by ID");
-$user = userget($user);
+$users = users($user);
 success();
 
 // getUserByUsername
 comment("get User by Username");
-$user = userget($user,"username");
+$users = users($user,"username");
 success();
 
 // getUserByMail
 comment("get User by mail");
-$user = userget($user,"mail");
+$users = users($user,"mail");
 success();
 
-// userget
+// users
 comment("get a list of all users");
-$users = userget();
+$users = users();
 success();
-	
+
+// get all users with custom filter
+comment("get all users with custom filter");
+$users = users(null,"id","WHERE `mail` = 'mail@mail.de'");
+success();
+
 // useredit
 comment("edit User (if it exists)");
 $user->mail = "new@mail.de";
@@ -70,7 +77,7 @@ echo "<hr><h1 color='red'>test database Group management commands</h1><br>";
 
 // groupdel - delete a group ALSO UPDATE USER RECORDS!
 comment("groupdel - delete a group (can not be deleted if users are still in a group)");
-$group = newGroup();
+$groups = newGroup();
 $group->groupname = "test";
 success(groupdel($group));
 
@@ -80,47 +87,77 @@ success(groupdel($group));
  * 2. the table groups contains all available groups, you can add your own column-properties to the table, enriching the amounts of properties a group can have.
  */
 comment("groupadd");
-$group = groupadd($group); // returns the group-object from database, containing a new, database generated id, that is important for editing/deleting the group later
+$groups = groupadd($group); // returns the group-object from database, containing a new, database generated id, that is important for editing/deleting the group later
 success();
 
 // groupexist
 comment("groupexist - test if a group exists by id");
-groupexist($group);
+if(groupexist($group))
+{
+	echo "yes group ".$group->groupname." exists.";
+}
+else
+{
+	echo "no group ".$group->groupname." does not exists.";
+}
+
 success();
 
 // groupchange, also update the name in all user records!!!
 comment("groupedit");
 $group->groupname = "changedTest";
+$group->mail = "groupA@mail.com";
 success(groupedit($group));
 
 // get group by id
 comment("get group by id");
-success(groups($group,"id"));
+$groups = groups($group,"id");
+success();
 
 // get group by groupname
 comment("get group by groupname");
-success(groups($group,"groupname"));
+$group->groupname = "changedTest";
+$groups = groups($group,"groupname");
+success();
+
+// get group by groupname
+comment("get group by groupname");
+$groups = groups($group,"mail");
+success();
 
 // get all available groups
 comment("get all available groups");
-success(groups());
+$groups = groups();
+success();
 
-// get groups with filter
-// get system groups
-comment("get groups of user");
-success(groups($user));
+// get all groups that the user belongs to
+comment("get all groups that the user belongs to");
+comment("get groups of user as object");
+$groups = groupOfusers($user);
+success();
+
+comment("get groups of user as string");
+$groups = groupOfusers($user,"strings");
+success();
 
 // get system groups
-comment("get groups of user");
-success(groups(null,"WHERE `system` = 1"));
+comment("get system groups");
+$groups = groups(null,"id","WHERE `system` = 1");
+success();
+
+// get groups with custom filter
+comment("get groups with custom filter");
+$groups = groups(null,"id","WHERE `mail` = 'groupA@mail.com'");
+success();
 
 // get all groups with this groupname
 $groupname = "user";
-comment("get groups of user");
-success(groups(null,"WHERE `".$settings_database_groups_table."` LIKE '%".$groupname."%'"));
+comment("get all groups with this groupname");
+$groups = groups(null,"id","WHERE `groupname` = '".$groupname."'");
+success();
 
 // groupadduser - add user to a group
-comment("add user to a group");
+comment("groupadduser - add user to a group");
 success(groupadduser($user,$group));
 
 // groupremuser - remove user from group

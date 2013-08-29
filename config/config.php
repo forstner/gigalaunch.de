@@ -19,7 +19,6 @@ $settings_database_pass = "root";
 $settings_database_auth_table = "passwd"; // what the table is called, where the users & passwords (md5 hashes) are stored
 $settings_database_groups_table = "groups"; // what the table is called, where the groups are stored
 
-
 /* ======================= USERS */
 /* ================ DEFAULTS */
 
