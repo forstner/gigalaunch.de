@@ -82,7 +82,7 @@ function array2string($input, $key_value_delimiter = ":", $element_delimiter = "
 		{
 			if(!$key_value_delimiter) // is there a $key_value_delimiter given? if not, it's maybe a list,with,elements
 			{
-				$result .= $value+$element_delimiter;
+				$result .= $value.$element_delimiter;
 			}
 			else
 			{

@@ -367,3 +367,45 @@ function haspropertyandvalue($objectOrArray,$property,$caller)
 
 	return $result;
 }
+
+/* remove all empty elemtns from an array
+ * removes all NULL, FALSE and Empty Strings but leaves 0 (zero) values
+*/
+function arrayRemoveEmpty($array)
+{
+	return array_filter( $array, 'strlen' );
+}
+
+/* remove an element with the given $value or $key or both */
+function arrayRemoveElement($array,$key_input = null,$value_input = null)
+{
+	foreach($array as $key => $value)
+	{
+		if(($value_input != null) && ($key_input != null))
+		{
+			// compare both
+			if(($value_input == $value) && ($key_input == $key))
+			{
+				unset($array[$key]);
+			}
+		}
+		else if(($value_input != null) && ($key_input == null))
+		{
+			// compare $value
+			if(($value_input == $value))
+			{
+				unset($array[$key]);
+			}
+		}
+		else if(($value_input == null) && ($key_input != null))
+		{
+			// compare $key
+			if(($key_input == $key))
+			{
+				unset($array[$key]);
+			}
+		}
+	}
+
+	return $array;
+}

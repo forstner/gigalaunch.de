@@ -429,9 +429,12 @@ function useredit($UpdatedUser,$uniqueKey = "id") // $userID, $requested_usernam
 	// if $settings_uniqueUsernames enabled -> check if username is allready in use/exists
 	if($settings_uniqueUsernames)
 	{
-		if(userexist($UpdatedUser,"username"))
+		if($user_database->username != $UpdatedUser->username)
 		{
-			return error("function useredit: can not rename username from ".$user_database->username." to ".$UpdatedUser->username." because the username is allready in use.");
+			if(userexist($UpdatedUser,"username"))
+			{
+				return error("function useredit: can not rename username from ".$user_database->username." to ".$UpdatedUser->username." because the username is allready in use.");
+			}
 		}
 	}
 
@@ -865,11 +868,6 @@ function groupOfusers($user = null,$result_mode = "objects")
 /* groupadduser - add user to a group */
 function groupadduser($user,$group)
 {
-	global $mysqli_object; global $worked; $worked = false;
-	global $settings_database_name;
-	global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames;
-	$query = "";
-	
 	$user = users($user); // get groups from database
 
 	$groupname = "";
@@ -883,12 +881,43 @@ function groupadduser($user,$group)
 		$groupname = $group;
 	}
 
-	$user->groups = $user->groups.",".$groupname;
+	$lastChar = substr($user->groups, -1);    // gibt "f" zurück
+	if($lastChar != ",")
+	{
+		$user->groups .= ",".$groupname;
+	}
+	else
+	{
+		$user->groups .= $groupname;
+	}
 
-	// filter list
-	$query = "SELECT * FROM `".$settings_database_auth_table."` WHERE `".$uniqueKey."` = '".$user->$uniqueKey."'";
+	return useredit($user);
+}
 
-	$user_array = $mysqli_object->query($query);
+/* groupdeluser - add user to a group */
+function groupdeluser($user,$group)
+{
+	$user = users($user); // get groups from database
+
+	$groupname = "";
+
+	if(is_object($group))
+	{
+		$groupname = $group->groupname;
+	}
+	else if(is_string($group))
+	{
+		$groupname = $group;
+	}
+
+	$groups_array = string2array($user->groups, null, ",");
+	$groups_array = arrayRemoveEmpty($groups_array);
+	$groups_array = arrayRemoveElement($groups_array,null,$groupname);
+	$groups = array2string($groups_array, null, ",");
+
+	$user->groups = $groups;
+
+	return useredit($user);
 }
 
 /*

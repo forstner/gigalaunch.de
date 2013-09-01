@@ -162,7 +162,7 @@ success(groupadduser($user,$group));
 
 // groupremuser - remove user from group
 comment("groupremuser - remove user from group");
-success(groupremuser($user,$group));
+success(groupdeluser($user,$group));
 
 // recordget
 comment("get definition of arbitrary record from database");
