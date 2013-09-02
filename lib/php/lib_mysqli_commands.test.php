@@ -79,7 +79,7 @@ echo "<hr><h1 color='red'>test database Group management commands</h1><br>";
 comment("groupdel - delete a group (can not be deleted if users are still in a group)");
 $groups = newGroup();
 $group->groupname = "test";
-success(groupdel($group));
+success(groupdel($group,"groupname"));
 
 // groupadd
 /* the database-concept behind groups is like this:
@@ -87,7 +87,7 @@ success(groupdel($group));
  * 2. the table groups contains all available groups, you can add your own column-properties to the table, enriching the amounts of properties a group can have.
  */
 comment("groupadd");
-$groups = groupadd($group); // returns the group-object from database, containing a new, database generated id, that is important for editing/deleting the group later
+$group = groupadd($group); // returns the group-object from database, containing a new, database generated id, that is important for editing/deleting the group later
 success();
 
 // groupexist
@@ -136,8 +136,10 @@ comment("get groups of user as object");
 $groups = groupOfusers($user);
 success();
 
-comment("get groups of user as string");
+comment("get groups of user as an array of strings");
 $groups = groupOfusers($user,"strings");
+// one big , separated string
+$groups = array2string($groups,null,",");
 success();
 
 // get system groups
@@ -166,25 +168,51 @@ success(groupdeluser($user,$group));
 
 // recordget
 comment("get definition of arbitrary record from database");
-$DataRecord = newRecord("tableName");
+$NewRecord = newRecord("datarecord");
 
 // recordadd
 comment("recordadd - add a arbitrary record to a arbitrary table");
-$DataRecord->id = "auto";
-$DataRecord->key1 = "value1";
-$DataRecord->key2 = "value2";
-$DataRecord->key3 = "value3";
-success(recordadd($DataRecord));
+$NewRecord->id = "auto";
+$NewRecord->key1 = "value1";
+$NewRecord->key2 = "value2";
+$NewRecord->key3 = "value3";
+$NewRecord = recordadd($NewRecord); // returns the record-object from database, containing a new, database generated id, that is important for editing/deleting the record later
+success();
 
 // recordchange
-comment("change record");
-$DataRecord->key2 = "newvalue2";
-$DataRecord->key3 = "newvalue3";
-success(recordadd($DataRecord));
+comment("recordedit: change record");
+$NewRecord->key2 = "newvalue2";
+$NewRecord->key3 = "newvalue3";
+success(recordedit($NewRecord));
+
+// records by id/Mail/Username
+comment("get record by ID");
+$records = records($NewRecord);
+success();
+
+// getUserByUsername
+comment("get User by key1");
+$records = records($NewRecord,"key1");
+success();
+
+// getUserByMail
+comment("get User by key2");
+$records = records($NewRecord,"key2");
+success();
+
+// records
+comment("get a list of all records");
+$records = records();
+success();
+
+// get all records with custom filter
+comment("get all records with custom filter");
+$records = records(null,"id","WHERE `key1` = 'value1'");
+success();
 
 // recorddel
-comment("del record");
-success(recorddel($DataRecord));
+comment("recorddel: del record");
+success(recorddel($NewRecord));
 
 // this functionalities need to be implemented with the very general functions above:
 // getDevices

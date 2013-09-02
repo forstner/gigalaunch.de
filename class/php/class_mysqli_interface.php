@@ -93,6 +93,7 @@ class class_mysqli_interface {
 		$output = array();
 
 		$result = $mysqli_link->select_db($settings_database_name);
+
 		if(!$result)
 		{
 			// 1. something went wrong
