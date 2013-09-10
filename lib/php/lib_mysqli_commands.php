@@ -257,7 +257,6 @@ function setSession($username,$password)
 	global $settings_database_name; global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames; global $settings_lastDatabase; global $settings_lastTable; global $settings_lastColumn;
 	global $settings_login_session_timeout;
 
-
 	// the ip that the user had during login
 	$ip_login = $_SERVER['REMOTE_ADDR'];
 	

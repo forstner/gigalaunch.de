@@ -9,32 +9,35 @@ require_once("config/config.php"); // load project-config file
 /* ================= */
 
 require_once('./lib/php/lib_mysqli_commands.php');
-require_once('./lib/php/lib_general.php');
 
 if(!empty($_REQUEST['username']) && !empty($_REQUEST['password_encrypted']))
 {
 	require_once('config/config.php');
 	
-	$user = getUserByUsername($_REQUEST['username']);
+	// old way:
+	// $user = getUserByUsername($_REQUEST['username']);
+	// new way:
+	$user = newUser();
+	$user->username = $_REQUEST['username'];
+	$user = users($user,"username");
 	
-	if(userexist($_REQUEST['username'],null,$user)) // check if username exists
+	if(!empty($user)) // check if username exists
 	{
 		// at this point we know the username exists
 		// let's compare the submitted password_encrypted to value of the array key (the right password)
-		if(userexist($_REQUEST['username'],$_REQUEST['password_encrypted'],$user)) // check if username with that password exists
+		if(($user->username == $_REQUEST['username']) && ($user->password == $_REQUEST['password_encrypted'])) // check if username with that password exists
 		{
 			// password is correct
 			session_start();
 			setSession($_REQUEST['username'],$_REQUEST['password_encrypted']);
 			
-			$data = userdata($_REQUEST['username']);
 			if($settings_login_session_timeout > 0)
 			{
 				// echo('type:success,id:login successful,details:you have now access for '.seconds2minutes($settings_login_session_timeout).' minutes');
 				// sleep(3);
-				if(isset($data['home']))
+				if(isset($user->home))
 				{
-					header("Location: ".$data['home']);
+					header("Location: ".$user->home);
 				}
 				else
 				{
@@ -72,7 +75,7 @@ if(!empty($_REQUEST['username']) && !empty($_REQUEST['password_encrypted']))
 		</div>
 		<div data-role="content">
 			<h4>Login:</h4>
-			<form id="loginForm" class="loginForm" action="frontend_login.php" method="post" accept-charset="UTF-8" data-ajax="false">
+			<form id="loginForm" class="loginForm" action="login_frontend.php" method="post" accept-charset="UTF-8" data-ajax="false">
 				<!-- where errors are displayed (put it directly next to the interactive element, that can produce an error) -->
 				<div id="error" class="error" data-role="collapsible">
 					<h3>error/status</h3>
