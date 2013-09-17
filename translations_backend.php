@@ -31,6 +31,10 @@ if(isset($_REQUEST["translations"]))
 		}
 	}
 
-	echo json_encode($result_array);
+	// if there are any translations return them
+	if($result_array)
+	{
+		echo json_encode($result_array);
+	}
 }
 ?>

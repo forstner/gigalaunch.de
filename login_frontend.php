@@ -1,81 +1,62 @@
-<?php
-/* ================= please put this on top of every page, modify the allowed users/groups entries to manage access per page. */
-error_reporting(E_ALL); // turn the reporting of php errors on
-$allowed_users = "all users including guests"; // a list of userIDs that are allowed to access this page 
-$allowed_groups = "all groups including guests"; // a list of groups, that are allowed to access this page
-require_once('./lib/php/lib_security.php'); // will mysql-real-escape all input
-require_once("config/config.php"); // load project-config file
-// // login needs to be open for all in order to login! require_once('./lib/php/lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
-/* ================= */
-
-require_once('./lib/php/lib_mysqli_commands.php');
-
-if(!empty($_REQUEST['username']) && !empty($_REQUEST['password_encrypted']))
-{
-	require_once('config/config.php');
-	
-	// old way:
-	// $user = getUserByUsername($_REQUEST['username']);
-	// new way:
-	$user = newUser();
-	$user->username = $_REQUEST['username'];
-	$user = users($user,"username");
-	
-	if(!empty($user)) // check if username exists
-	{
-		// at this point we know the username exists
-		// let's compare the submitted password_encrypted to value of the array key (the right password)
-		if(($user->username == $_REQUEST['username']) && ($user->password == $_REQUEST['password_encrypted'])) // check if username with that password exists
-		{
-			// password is correct
-			session_start();
-			setSession($_REQUEST['username'],$_REQUEST['password_encrypted']);
-			
-			if($settings_login_session_timeout > 0)
-			{
-				// echo('type:success,id:login successful,details:you have now access for '.seconds2minutes($settings_login_session_timeout).' minutes');
-				// sleep(3);
-				if(isset($user->home))
-				{
-					header("Location: ".$user->home);
-				}
-				else
-				{
-					header("Location: ".$settings_default_home_after_login);
-				}
-			}
-			else
-			{
-				// echo('type:success,id:login successful,details:you have now access. live long and prosper! :)');
-				// sleep(3);
-				header("Location: servermessages/session_expired.php");
-			}
-		}
-		else
-		{
-			// exit('type:error,id:username or password wrong,details:Either username or password did not match. ');
-			header("Location: servermessages/wrong_username_or_password.php");
-		}
-	} else {
-		// exit('type:error,id:username or password wrong,details:Either username or password did not match. ');
-		header("Location: servermessages/wrong_username_or_password.php");
-	}
-}	
-?>
 <!DOCTYPE html> 
-<html> 
-<head> 
-	<title><?php global $settings_current_filename; echo $settings_current_filename; ?></title>
-	<?php global $settings_meta; echo $settings_meta; ?>
+<html>
+<head>
+	<!-- meta -->
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- apple-iphone specific stuff -->
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="white">
+	<link rel="apple-touch-icon" href="images/opensource_icon.png"/>
+
+	<!-- credits: who made this world a better place? -->
+	<meta name="author" content="user">
+
+	<!-- tools: what was used to make this world a better place -->
+	<meta name="editor" content="pdt eclipse">
+
+	<!-- css valid for all projects, includes the default jquery mobile css -->
+	<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.3.0.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/global.css"/>
+
+	<!-- project wide css -->
+	<link rel="stylesheet" type="text/css" href="css/projectWide.css"/>
+
+	<!-- project wide js libraries: jquery, jquery mobile -->
+	<script type="text/javascript" src="lib/js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="lib/js/jquery.mobile-1.3.0.min.js"></script>
+
+	<!-- timer plugin -->
+	<script type="text/javascript" src="lib/js/lib_jquery.timer.js"></script>
+
+	<!-- js-client-side-md5, so that no password gets over network unencrypted, esp not during registration -->
+	<script type="text/javascript" src="lib/js/lib_webtoolkit.md5.js"></script>
+
+	<!-- nice input validation plugin -->
+	<script type="text/javascript" src="lib/js/lib_jquery.validate.js"></script>
+
+	<!--  provices conversion function -->
+	<script type="text/javascript" src="lib/js/lib_convert.js"></script>
+
+	<!--  provices string operation functions -->
+	<script type="text/javascript" src="lib/js/lib_strings.js"></script>
+
+	<!-- general stuff, client side functions to process server response -->
+	<script type="text/javascript" src="lib/js/lib_general.js"></script>
+
+	<!-- translations -->
+	<script type="text/javascript" src="lib/js/lib_translate.js"></script>
 </head>
 <body>
 	<div data-role="page" id="login">
 		<div data-role="header" data-position="inline">
-			<?php global $settings_logo; echo $settings_logo; ?>
+			<script type="text/javascript">loadLogo();</script>
 		</div>
 		<div data-role="content">
 			<h4>Login:</h4>
-			<form id="loginForm" class="loginForm" action="login_frontend.php" method="post" accept-charset="UTF-8" data-ajax="false">
+			<form id="loginForm" class="loginForm" action="" method="post" accept-charset="UTF-8">
 				<!-- where errors are displayed (put it directly next to the interactive element, that can produce an error) -->
 				<div id="error" class="error" data-role="collapsible">
 					<h3>error/status</h3>
@@ -96,8 +77,7 @@ if(!empty($_REQUEST['username']) && !empty($_REQUEST['password_encrypted']))
 				<label for="password_encrypted">md5 Encrypted Password:</label><input id="password_encrypted" name="password_encrypted" id="password_encrypted" value="5f4dcc3b5aa765d61d8327deb882cf99"/>
 
 				<!-- submit button -->
-				<input type="submit" name="Submit" value="login" />
-
+				<input id="signupsubmit" name="signup" type="submit" value="login"/>
 			</form>
 		</div> 
 		<div data-role="footer">

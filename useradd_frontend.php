@@ -123,8 +123,60 @@ else if(!empty($_REQUEST['username']) && !empty($_REQUEST['password'])) /* is it
 <!DOCTYPE html> 
 <html> 
 <head> 
-	<title><?php global $settings_current_filename; echo $settings_current_filename; ?></title> 
-	<?php global $settings_meta; echo $settings_meta; ?>
+	 
+	<!-- meta -->
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- apple-iphone specific stuff -->
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="white">
+	<link rel="apple-touch-icon" href="images/opensource_icon.png"/>
+
+	<!-- credits: who made this world a better place? -->
+	<meta name="author" content="user">
+
+	<!-- tools: what was used to make this world a better place -->
+	<meta name="editor" content="pdt eclipse">
+
+	<!-- css valid for all projects, includes the default jquery mobile css -->
+	<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.3.0.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/global.css"/>
+
+	<!-- project wide css -->
+	<link rel="stylesheet" type="text/css" href="css/projectWide.css"/>
+
+	<!-- file wide css -->
+	<link rel="stylesheet" type="text/css" href="css/'+CurrentFilename+'.css"/>
+
+	<!-- project wide js libraries: jquery, jquery mobile -->
+	<script type="text/javascript" src="lib/js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="lib/js/jquery.mobile-1.3.0.min.js"></script>
+
+	<!-- timer plugin -->
+	<script type="text/javascript" src="lib/js/lib_jquery.timer.js"></script>
+
+	<!-- js-client-side-md5, so that no password gets over network unencrypted, esp not during registration -->
+	<script type="text/javascript" src="lib/js/lib_webtoolkit.md5.js"></script>
+
+	<!-- nice input validation plugin -->
+	<script type="text/javascript" src="lib/js/lib_jquery.validate.js"></script>
+
+	<!--  provices conversion function -->
+	<script type="text/javascript" src="lib/js/lib_convert.js"></script>
+
+	<!--  provices string operation functions -->
+	<script type="text/javascript" src="lib/js/lib_strings.js"></script>
+
+	<!-- client side functions to process server response -->
+	<script type="text/javascript" src="lib/js/lib_general.js"></script>
+
+	<!-- translations -->
+	<script type="text/javascript" src="lib/js/lib_translate.js"></script>
+			
+	<!-- page specific js includes & custom js code -->
+	<script type="text/javascript" src="'+CurrentFilename+'.js"></script>
 </head> 
 <body> 
 <div data-role="page" id="useradd">

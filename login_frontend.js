@@ -2,6 +2,9 @@ $(document).ready(function() {
 	/* handles the submit of the form javascript way (not calling an url) */
 	// validate signup form on keyup and submit
 	$("#loginForm").validate({
+		submitHandler: function(form) {
+			submitForm(form);
+		},
 		rules: {
 			username: {
 				required: true,

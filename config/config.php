@@ -30,10 +30,6 @@ $settings_default_home_after_login = "frontend_UserManagement.php"; // redirect 
 require_once('./lib/php/lib_detectLang.php'); // will detect the currently used language
 $settings_lang = detectLang();
 
-/* ======================= OPTICS */
-/* ================ LOGO */
-$settings_logo = '<img id="logo" src="images/projectlogo.png" style="width:200px;"/>';
-
 /* ======================= UPLOADS */
 /* ================ GENERAL */
 $upload_allowedExtensions = array("gif", "jpeg", "jpg", "png");
@@ -78,64 +74,8 @@ $filename_and_ending = $filename_and_ending[count($filename_and_ending) - 1];
 $filename_and_ending = explode('.', $filename_and_ending);
 $settings_current_filename = $filename_and_ending[0];
 
-$settings_meta = '
-		<!-- meta -->
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-
-		<!-- apple-iphone specific stuff -->
-		<meta name="apple-mobile-web-app-capable" content="yes"/>
-		<meta name="apple-mobile-web-app-status-bar-style" content="white">
-		<link rel="apple-touch-icon" href="images/opensource_icon.png"/>
-
-		<!-- credits: who made this world a better place? -->
-		<meta name="author" content="user">
-
-		<!-- tools: what was used to make this world a better place -->
-		<meta name="editor" content="pdt eclipse">
-
-		<!-- css valid for all projects, includes the default jquery mobile css -->
-		<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.3.0.min.css" />
-		<link rel="stylesheet" type="text/css" href="css/global.css"/>
-
-		<!-- project wide css -->
-		<link rel="stylesheet" type="text/css" href="css/projectWide.css"/>
-
-		<!-- file wide css -->
-		<link rel="stylesheet" type="text/css" href="css/'.$settings_current_filename.'.css"/>
-
-		<!-- project wide js libraries: jquery, jquery mobile -->
-		<script type="text/javascript" src="lib/js/jquery-1.9.1.min.js"></script>
-		<script type="text/javascript" src="lib/js/jquery.mobile-1.3.0.min.js"></script>
-
-		<!-- timer plugin -->
-		<script type="text/javascript" src="lib/js/lib_jquery.timer.js"></script>
-
-		<!-- js-client-side-md5, so that no password gets over network unencrypted, esp not during registration -->
-		<script type="text/javascript" src="lib/js/lib_webtoolkit.md5.js"></script>
-
-		<!-- nice input validation plugin -->
-		<script type="text/javascript" src="lib/js/lib_jquery.validate.js"></script>
-
-		<!--  provices conversion function -->
-		<script type="text/javascript" src="lib/js/lib_convert.js"></script>
-
-		<!--  provices string operation functions -->
-		<script type="text/javascript" src="lib/js/lib_strings.js"></script>
-
-		<!-- client side functions to process server response -->
-		<script type="text/javascript" src="lib/js/lib_general.js"></script>
-
-		<!-- translations -->
-		<script type="text/javascript" src="lib/js/lib_translate.js"></script>
-				
-		<!-- page specific js includes & custom js code -->
-		<script type="text/javascript" src="'.$settings_current_filename.'.js"></script>
-				
-		';
-		// if lang needs to be available in javascript, uncomment the following line and move it 2 lines up
-		// <script>var lang = "'.$settings_lang.'";</script>
+// if lang needs to be available in javascript, uncomment the following line and move it 2 lines up
+// <script>var lang = "'.$settings_lang.'";</script>
 
 /* o detect mobile browser, if yes -> load different css do not paint a lot of blue stuff around the UI */
 // require_once('detectmobilebrowser.php');
