@@ -121,7 +121,7 @@ if(!$open_to_all) // no further check if you shall pass
 	if($session_valid == true)
 	{
 		// is used by the calling file
-		$UserGroups = getGroupsOfUser($user);
+		$groups = groupOfusers($user);
 
 		if(!$open_to_all_logged_in_users)
 		{
@@ -144,7 +144,7 @@ if(!$open_to_all) // no further check if you shall pass
 			// check if the user is allowed to access this page
 			$allowed_groups_array = explode(',', $allowed_groups);
 	
-			foreach ($UserGroups as $key => $group)
+			foreach ($groups as $key => $group)
 			{
 				if(in_array($group, $allowed_groups_array))
 				{

@@ -6,6 +6,10 @@ include_once("config/config.php");
 
 echo "<hr><h1 color='red'>test database user management commands</h1><br>";
 
+comment("create database");
+loadSQLFromFile("./lib/php/lib_mysqli_commands.test.sql");
+success();
+
 comment("get definition of user from database");
 $user = newUser();
 success();
@@ -23,6 +27,7 @@ $user->username = "superuser";
 success(userdel($user,"username"));
 
 // groupdel - delete a group ALSO UPDATE USER RECORDS!
+$group = newGroup();
 comment("groupdel - delete a group ALSO UPDATE USER RECORDS!");
 $group->groupname = "user";
 success(groupdel($group,"groupname"));
@@ -53,6 +58,12 @@ comment("get User by mail");
 $users = users($user,"mail");
 success();
 
+// the session variable exists, let's check it's valid:
+comment("getUserBySession - important to check if user is logged in or not.");
+$_SESSION['session'] = "5217840915ed98901b610f61132a6c56"; // set some session
+$user = getUserBySession($_SESSION['session']);
+success();
+
 // users
 comment("get a list of all users");
 $users = users();
@@ -77,7 +88,7 @@ echo "<hr><h1 color='red'>test database Group management commands</h1><br>";
 
 // groupdel - delete a group ALSO UPDATE USER RECORDS!
 comment("groupdel - delete a group (can not be deleted if users are still in a group)");
-$groups = newGroup();
+$group = newGroup();
 $group->groupname = "test";
 success(groupdel($group,"groupname"));
 

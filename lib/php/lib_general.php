@@ -1,4 +1,7 @@
 <?php
+require_once('lib_array_and_objects.php');
+require_once('lib_convert.php');
+
 /* just very general functions, is included via config.php
  * so that it is available to all files */
 
@@ -23,102 +26,47 @@ function getREQUESTSstarting($with)
 	return $result;
 }
 
-/* generates a server response as html page 
- * input: exit('type:error,id:session expired,details:Please re-login!. ');
- */
-function generateServerMessage($message)
-{
-	$type = ""; // can be error, success
-	$id = ""; // unique id of the error
-	$details = ""; // give details to add meaning and allow users/admins to debug the problem
-
-	$array = explode(',',$message);
-	
-	$target = count($array);
-	for($i=0;$i<$target;$i++)
-	{
-		$key_value = explode(':',$array[$i]);
-		if($i == 0)
-		{
-			$type = $key_value[1];
-		}
-		else if($i == 1)
-		{
-			$id = $key_value[1];
-		}
-		else if($i == 2)
-		{
-			$details = $key_value[1];
-		}
-		
-	}
-	echo '
-	<!doctype html>
-	<html>
-	<head>
-	<meta http-equiv="refresh" content="99; URL=../frontend_login.php">
-	<title>redirect</title>
-	</head>
-	<body>
-	<div id="parent">
-	<div id="zentriert" class="gradientV">
-	<fieldset>
-	<h3>'.$type.': '.$id.'</h3>
-	<p>
-	<div id="details">
-	'.$details.'
-	<br>
-	<hr>
-	<h3>not your fault?</hr>
-	Contact the <a href="mailto:<?php global $settings_mail_admin; echo $settings_mail_admin; ?>">administrator</a>. </div>
-	</p>
-	</fieldset>
-	</form>
-	</ul>
-	</div>
-	</div>
-	</div>
-	</body>
-	</html>';
-}
-
-/* merge two arrays with unique values, adds a value to an array, if such an value does not exist yet.
+/* define the format of the server answer/result/message
+ *
+ * ===== input:
+ * 
+ * a bunch of strings ($action,$resultType,$resultValue,$details)
+ * 
+ * $additionalResult -> is just any array with additional data, that the server wants to pass to the client.
+ * 
+ * ===== output:
+ *
+ * right now the format is like this:
+ * 
+ * action: what action/operation the client is doing with the server
+ * resultType: success/failed, true/false - if it is a positive or a negative result
+ * resultValue: the value/data of the result - in case of login it is simply "success" (same as resultType)
+ * details: a message explaining the result
+ * 
+ * the string is JSON formatted, so it can be easily converted into a javascript/jquery-object on the clientside via jQuery.parseJSON.
+ * 
  * example:
- * groups that do not exist in $SytemGroups, will be appended to $SytemGroups array and returned as result
- 	$SytemGroups = getSystemGroups();
-	$groups_tmp = AddToArrayIfNotExist($groups, $SytemGroups);
-*/
-function AddToArrayIfNotExist($array1,$array2)
+ * {action":"login","resultType":"success","resultValue":"success","details":"you have now access. live long and prosper! Login expires in 30 minutes."}
+ * 
+ * */
+function answer($additionalResult = null,$action,$resultType,$resultValue,$details)
 {
-	$result = $array1; // In PHP arrays are assigned by copy, while objects are assigned by reference.
-	foreach ($array2 as $key => $value)
+	$result = Array();
+	
+	if($additionalResult != null)
 	{
-		if(!in_array($value,$result))
-		{
-			$result[] = $value; // push
-		}
-	}
-
-	return $result;
-}
-
-/* merge all values from objectB into objectA,
- * overwriting values of objectA with similar properties/keys, adding keys/properties that exist in B but not in A to A */ 
-function mergeObject($A,$InToObjectB)
-{
-	foreach ($A as $key => $value)
-	{
-		if(!is_null($value))
-		{
-			if(!empty($value))
-			{
-				$InToObjectB->$key = $value;
-			}
-		}
+		$result = mergeArray($additionalResult,$result);
 	}
 	
-	return $InToObjectB;
+	$result["action"] = $action;
+	$result["resultType"] = $resultType;
+	$result["resultValue"] = $resultValue;
+	$result["details"] = $details;
+	
+	// give answer to client
+	echo json_encode($result);
 }
+
 
 /* this takes timestampt, md5-hashes it then cuts it down to 8 characters */
 function salt()
@@ -182,79 +130,6 @@ function logError($error)
 	file_put_contents($settings_errorLog, $error."\n", FILE_APPEND);
 }
 
-/* build a query for inserting an array
-* $mode == "INSERT" -> (key1,key2,key3) VALUES (value1,value2,value3)
-* $mode == "UPDATE" -> key1 = value1,key2 = value2,key3 = value3
-* */
-function arrayobject2sqlvalues($ArrayOrObject,$mode)
-{
-	global $settings_database_name;
-	global $settings_database_auth_table; global $settings_database_groups_table;
-	
-	$query = "";
-	$count = 0;
-	
-	if(is_array($ArrayOrObject))
-	{
-	}
-	else if(is_object($ArrayOrObject))
-	{
-		$ArrayOrObject = object2array($ArrayOrObject);
-	}
-	else
-	{
-		return error("function arrayobject2sqlvalues: input is of type ".gettype($ArrayOrObject)." array or object expected.");
-	}
-
-	$target = count($ArrayOrObject);
-	$target = $target - 1;
-	$columns = "";
-	$values = "";
-
-	if($mode == "INSERT")
-	{
-		foreach ($ArrayOrObject as $key => $value)
-		{
-			if(($key == "id")||($key == "ID")) $value = "NULL";
-			
-			if($count == 0)
-			{
-				$columns = "`".$key."`";
-				$values = "'".$value."'";
-			}
-			else
-			{
-				$values = $values . "," . "'".$value."'";
-				$columns = $columns . ",`".$key."`";
-			}
-				
-			$count++;
-		}
-		$query = "($columns) VALUES ($values)";
-	}
-
-	if($mode == "UPDATE")
-	{
-		foreach ($ArrayOrObject as $key => $value)
-		{
-			if(($key != "id")&&($key != "ID"))
-			{
-				if($count != $target)
-				{
-					$query .= "`".$key."` =  '".$value."',";
-				}
-				else
-				{
-					$query .= "`".$key."` =  '".$value."'"; // do not add , at the end
-				}
-			}
-			$count++;
-		}
-	}
-
-	return $query;
-}
-
 /* outputs a warning and if $settings_log_errors == true, outputs to error.log */
 function error($message)
 {
@@ -283,129 +158,4 @@ function operation($operation)
 function log2file($file,$this)
 {
 	file_put_contents($file, time().": ".$this."\n", FILE_APPEND);
-}
-
-/* convert multi dimensional objects to array
- * credits: http://www.if-not-true-then-false.com/2009/php-tip-convert-stdclass-object-to-multidimensional-array-and-convert-multidimensional-array-to-stdclass-object
- */
-function object2array($object) {
-	if (is_object($object)) {
-		// Gets the properties of the given object
-		// with get_object_vars function
-		$object = get_object_vars($object);
-	}
-
-	if (is_array($object)) {
-		/*
-			* Return array converted to object
-		* Using __FUNCTION__ (Magic constant)
-		* for recursive call
-		*/
-		return array_map(__FUNCTION__, $object);
-	}
-	else {
-		// Return array
-		return $object;
-	}
-}
-
-/* convert multi dimensional arrays to objects
- * credits: http://www.if-not-true-then-false.com/2009/php-tip-convert-stdclass-object-to-multidimensional-array-and-convert-multidimensional-array-to-stdclass-object/
- */
-function array2object($array) {
-	if (is_array($array)) {
-		/*
-			* Return array converted to object
-		* Using __FUNCTION__ (Magic constant)
-		* for recursive call
-		*/
-		return (object) array_map(__FUNCTION__, $array);
-	}
-	else {
-		// Return object
-		return $array;
-	}
-}
-
-/* check if an object or array has an an property, and if that property has an value */
-function haspropertyandvalue($objectOrArray,$property,$caller)
-{
-	$result = false;
-	
-	if(is_array($objectOrArray) || is_object($objectOrArray))
-	{
-		if(!is_null($objectOrArray))
-		{
-			if(is_array($objectOrArray)) $objectOrArray = array2object($objectOrArray);
-			
-			if(isset($objectOrArray->$property))
-			{
-				if(!is_null($objectOrArray->$property))
-				{
-					$result = true;
-				}
-				else
-				{
-					return error("function ".$caller.": \$objectOrArray has property ".$property." but without value. Argh!");
-				}
-			}
-			else
-			{
-				return error("function ".$caller.": \$objectOrArray has no property ".$property.". Argh!");
-			}
-		}
-		else
-		{
-			return error("function ".$caller.": is null. Argh!");
-		}
-	}
-	else
-	{
-		$caller = "haspropertyandvalue";
-		return error("function ".$caller.": input \$objectOrArray is of type ".gettype($objectOrArray)." but i need object or array. Argh!");
-	}
-
-	return $result;
-}
-
-/* remove all empty elemtns from an array
- * removes all NULL, FALSE and Empty Strings but leaves 0 (zero) values
-*/
-function arrayRemoveEmpty($array)
-{
-	return array_filter( $array, 'strlen' );
-}
-
-/* remove an element with the given $value or $key or both */
-function arrayRemoveElement($array,$key_input = null,$value_input = null)
-{
-	foreach($array as $key => $value)
-	{
-		if(($value_input != null) && ($key_input != null))
-		{
-			// compare both
-			if(($value_input == $value) && ($key_input == $key))
-			{
-				unset($array[$key]);
-			}
-		}
-		else if(($value_input != null) && ($key_input == null))
-		{
-			// compare $value
-			if(($value_input == $value))
-			{
-				unset($array[$key]);
-			}
-		}
-		else if(($value_input == null) && ($key_input != null))
-		{
-			// compare $key
-			if(($key_input == $key))
-			{
-				unset($array[$key]);
-			}
-		}
-	}
-
-	return $array;
 }

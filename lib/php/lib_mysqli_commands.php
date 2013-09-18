@@ -19,7 +19,7 @@ $mysqli_object = new class_mysqli_interface();
 * */
 function describe($table,$mode = "object")
 {
-	$result = null;
+	$result = new stdClass();
 	global $mysqli_object; global $worked; $worked = false; global $worked;
 	global $settings_database_name;
 	$tableDefinition = $mysqli_object->query("DESCRIBE ".$table);
@@ -276,6 +276,27 @@ function setSession($username,$password)
 	return $valid_until;
 }
 
+/*
+* get $session
+* $session hash is md5($username.$password.$salt)
+* returns timestamp until when the session is valid
+*/
+function getSessionExpiration($session, $user) {
+	$valid_until = null;
+	// check if an user object was handed over
+	if (! $user) {
+		// no user object was handed over -> get user
+		$user = getUserBySession ( $session );
+	}
+
+	if ($user) {
+		// hash found
+		$valid_until = $user->loginexpires;
+	}
+
+	return $valid_until;
+}
+
 /* get user by session
  */
 function getUserBySession($session)
@@ -294,6 +315,8 @@ function getUserBySession($session)
 			$result = $user_array[0];
 		}
 	}
+	
+	if(!empty($result)) $worked = true;
 	
 	return $result;
 }
@@ -1203,26 +1226,53 @@ global $settings_database_name;
 
 return $mysqli_object->query("SELECT * FROM `inputs` ".$where);
 }
-/* get $session
-* $session hash is md5($username.$password.$salt)
-* returns timestamp until when the session is valid
-function getSessionExpiration($session,$user)
+*/
+
+/* load sql-commands from a sql file */
+function loadSQLFromFile($url)
 {
-$valid_until = null;
-// check if an user object was handed over
-if(!$user)
-{
-// no user object was handed over -> get user
-$user = getUserBySession($session);
+	// ini_set ( 'memory_limit', '512M' );
+	// set_time_limit ( 0 );
+
+	global $settings_database_name;
+	global $mysqli_object; global $worked; $worked = false;
+	
+	$sql_query = "";
+	
+	// read line by line
+	$lines = file($url);
+	$count = count($lines);
+
+	for($i = 0;$i<$count;$i++)
+	{
+		$line = $lines[$i];
+		$cmd3 = substr($line, 0, 3);
+		$cmd4 = substr($line, 0, 4);
+		$cmd6 = substr($line, 0, 6);
+		if($cmd3 == "USE")
+		{
+			// cut away USE ``;
+			$settings_database_name = substr($line, 5, -3);
+		}
+		else if($cmd4 == "DROP")
+		{
+			$mysqli_object->query($line); // execute this line
+		}
+		else if(($cmd6 == "INSERT") || ($cmd6 == "CREATE"))
+		{
+			// sum all lines up until ; is detected
+			$multiline = $line;
+			while(!strstr($line, ';'))
+			{
+				$i++;
+				$line = $lines[$i];
+				$multiline .= $line;
+			}
+			$multiline = str_replace("\n", "", $multiline); // remove newlines/linebreaks
+			$mysqli_object->query($multiline); // execute this line
+		}		
+	}
+
+	return $worked;
 }
-
-if($user)
-{
-// hash found
-$valid_until = $user->loginexpires;
-}
-
-return $valid_until;
-}*/
-
 ?>

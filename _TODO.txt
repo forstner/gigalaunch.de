@@ -35,7 +35,7 @@ no problem!
 just add it in the database, and the getUser(); functions will (hopefully) return an appropriate stdClass object,
 you can access your newProperty via $user->newProperty; 
 
-4.2. the server responds with an json_encoded array from database (echo json_encode($result_array);)
+4.2. the server responds with an json_encoded array from database (search source code for "json_encode" -> json_encode($result_array_from_database);
 ...because it is easy to process such objects in javascript.
 
 1. ./class/php/class_mysqli_interface.php -> that implements the connection buildup/setup/auth for your favourite database.

@@ -25,7 +25,7 @@ $(document).ready(function() {
 	    			 */
 	    			if(response)
 	    			{
-	    				var result = displayServerError(response, responseText, jqXHR, 1);
+	    				var result = displayServerMessage(response, responseText, jqXHR, 1);
 	    				if	(result["type"] == "success")
 	    				{
 	    					// show message "ok" for 3 seconds then go back to previous page
@@ -50,7 +50,7 @@ $(document).ready(function() {
 	    		},
 	    		error: function(jqXHR, responseText, errorThrown )
 	    		{
-	    			var result = displayServerError(response, responseText, jqXHR, 1);
+	    			var result = displayServerMessage(response, responseText, jqXHR, 1);
 	    			/* A function to be called if the request fails.
 	    			 * The function receives three arguments:
 					   		 1. The jqXHR (in jQuery 1.4.x, XMLHttpRequest) object,

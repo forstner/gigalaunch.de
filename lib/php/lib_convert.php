@@ -1,4 +1,46 @@
 <?php
+/* convert multi dimensional objects to array
+ * credits: http://www.if-not-true-then-false.com/2009/php-tip-convert-stdclass-object-to-multidimensional-array-and-convert-multidimensional-array-to-stdclass-object
+*/
+function object2array($object) {
+	if (is_object($object)) {
+		// Gets the properties of the given object
+		// with get_object_vars function
+		$object = get_object_vars($object);
+	}
+
+	if (is_array($object)) {
+		/*
+			* Return array converted to object
+		* Using __FUNCTION__ (Magic constant)
+		* for recursive call
+		*/
+		return array_map(__FUNCTION__, $object);
+	}
+	else {
+		// Return array
+		return $object;
+	}
+}
+
+/* convert multi dimensional arrays to objects
+ * credits: http://www.if-not-true-then-false.com/2009/php-tip-convert-stdclass-object-to-multidimensional-array-and-convert-multidimensional-array-to-stdclass-object/
+*/
+function array2object($array) {
+	if (is_array($array)) {
+		/*
+			* Return array converted to object
+		* Using __FUNCTION__ (Magic constant)
+		* for recursive call
+		*/
+		return (object) array_map(__FUNCTION__, $array);
+	}
+	else {
+		// Return object
+		return $array;
+	}
+}
+
 function seconds2minutes($seconds)
 {
 	$minutes = $seconds / 60;

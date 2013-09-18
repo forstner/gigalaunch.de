@@ -48,6 +48,10 @@
 
 	<!-- translations -->
 	<script type="text/javascript" src="lib/js/lib_translate.js"></script>
+
+	<!-- =========== THESE LINES YOU WILL HAVE TO ADAPT MANUALLY FOR EVERY PAGE =========== -->
+	<link rel="stylesheet" type="text/css"        href="login_frontend.css"/> <!-- page specific css -->
+	<script                type="text/javascript"  src="login_frontend.js"></script> <!-- page specific js -->
 </head>
 <body>
 	<div data-role="page" id="login">
@@ -57,14 +61,7 @@
 		<div data-role="content">
 			<h4>Login:</h4>
 			<form id="loginForm" class="loginForm" action="" method="post" accept-charset="UTF-8">
-				<!-- where errors are displayed (put it directly next to the interactive element, that can produce an error) -->
-				<div id="error" class="error" data-role="collapsible">
-					<h3>error/status</h3>
-					<p>
-					<div id="details">details</div>
-					</p>
-				</div>
-				
+			
 				<!-- credentials -->
 				<!-- username input -->
 				<label for="username">UserName*:</label> <input type="text" name="username" id="username" maxlength="250" value="username"/>
@@ -78,6 +75,9 @@
 
 				<!-- submit button -->
 				<input id="signupsubmit" name="signup" type="submit" value="login"/>
+
+				<!-- where errors are displayed (put it directly next to the interactive element, that can produce an error) -->
+				<div id="login_error_div"></div>
 			</form>
 		</div> 
 		<div data-role="footer">

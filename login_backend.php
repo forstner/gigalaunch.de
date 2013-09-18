@@ -8,6 +8,8 @@ require_once("config/config.php"); // load project-config file
 // // login needs to be open for all in order to login! require_once('./lib/php/lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
 /* ================= */
 
+$result = Array();
+
 require_once('./lib/php/lib_mysqli_commands.php');
 
 if(!empty($_REQUEST['username']) && !empty($_REQUEST['password_encrypted']))
@@ -33,42 +35,39 @@ if(!empty($_REQUEST['username']) && !empty($_REQUEST['password_encrypted']))
 			
 			if($settings_login_session_timeout > 0)
 			{
-				// echo('type:success,id:login successful,details:you have now access for '.seconds2minutes($settings_login_session_timeout).' minutes');
-				// sleep(3);
-				$gotoAfterLogin = "";
+				$home = "";
 				if(isset($user->home))
 				{
 					// if not empty
 					if($user->home)
 					{
-						$gotoAfterLogin = $user->home;
+						$home = $user->home;
 					}
 					else
 					{
-						$gotoAfterLogin = $settings_default_home_after_login;
+						$home = $settings_default_home_after_login;
 					}
 				}
 				else
 				{
-					$gotoAfterLogin = $settings_default_home_after_login;
+					$home = $settings_default_home_after_login;
 				}
-				header("Location: ".$gotoAfterLogin);
+
+				$result["goto"] = $home; // header("Location: ".$home);
+				$result["expires"] = seconds2minutes($settings_login_session_timeout);
+				answer($result,"login","success","success","you have now access. live long and prosper! Login expires in ".seconds2minutes($settings_login_session_timeout)." minutes.");
 			}
 			else
 			{
-				// echo('type:success,id:login successful,details:you have now access. live long and prosper! :)');
-				// sleep(3);
-				header("Location: servermessages/session_expired.php");
+				answer(null,"login","failed","failed","session expired please login again.");
 			}
 		}
 		else
 		{
-			// exit('type:error,id:username or password wrong,details:Either username or password did not match. ');
-			header("Location: servermessages/wrong_username_or_password.php");
+			answer(null,"login","failed","failed","wrong username or password.");
 		}
 	} else {
-		// exit('type:error,id:username or password wrong,details:Either username or password did not match. ');
-		header("Location: servermessages/wrong_username_or_password.php");
+		answer(null,"login","failed","failed","wrong username or password.");
 	}
 }	
 ?>

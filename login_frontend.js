@@ -3,7 +3,19 @@ $(document).ready(function() {
 	// validate signup form on keyup and submit
 	$("#loginForm").validate({
 		submitHandler: function(form) {
-			submitForm(form);
+			submitForm(form,
+					function(result) // ResultHandler of the form-request -> process the result/answer of the server
+					{
+						displayServerMessage(result,$("#login_error_div")); // visualize the response
+
+						// after a successful login
+						if((result["action"] == "login") && (result["resultType"] == "success"))
+						{
+							// go to user's home
+							window.location = result["goto"];
+						}
+					}
+			);
 		},
 		rules: {
 			username: {

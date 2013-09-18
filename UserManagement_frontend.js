@@ -48,7 +48,7 @@ function openDialogDelete()
 	}
 	else
 	{
-		displayServerError("type:error,id:NO USERS SELECTED,details:Please select a user to delete.","success");
+		displayServerMessage("type:error,id:NO USERS SELECTED,details:Please select a user to delete.","success");
 	}
 
 	/*
@@ -78,7 +78,7 @@ function deleteUser()
 		var jqxhr = $.post("frontend_useredit.php", data2server, function(response, responseText, jqXHR) {
 			if(response)
 			{
-				displayServerError(response, responseText, jqXHR);
+				displayServerMessage(response, responseText, jqXHR);
 				if(responseText == "success")
 				{
 					// refresh user list, complete page refresh

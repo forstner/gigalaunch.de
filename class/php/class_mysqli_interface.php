@@ -92,24 +92,27 @@ class class_mysqli_interface {
 
 		$output = array();
 
-		$result = $mysqli_link->select_db($settings_database_name);
+		$detectCreateDatabase = substr($query, 0, 15);
+		if("CREATE DATABASE" == $detectCreateDatabase)
+		{
+			$result = true;
+		}
+		else
+		{
+			$result = $mysqli_link->select_db($settings_database_name);
+		}
 
 		if(!$result)
 		{
-			// 1. something went wrong
+			// could not select database, something went wrong
 			$worked = false;
 
 			// check if database exists
-			$query = "SHOW DATABASES";
-			$result = mysqli_query(query);
-			$id_last = mysqli_insert_id($mysqli_link);
+			$query = "SHOW DATABASES;";
+			$result = mysqli_query($query);
+			// $id_last = mysqli_insert_id($mysqli_link);
 
-			$error_details = " Selecting database failed: ".mysqli_connect_error();
-
-			if($echo_errors)
-			{
-				exit('type:error,id:select_db failed,details:'.$error_details);
-			}
+			trigger_error("type:error,id:select_db failed,details:"." Selecting database failed: ".mysqli_connect_error());
 		}
 		else
 		{
@@ -126,7 +129,7 @@ class class_mysqli_interface {
 				$settings_datasource = str_replace(",", " ", $settings_datasource);
 				$settings_datasource = str_replace(":", " ", $settings_datasource);
 				
-				exit('type:error,id:database error,details:'.$error.',datasource:'.$settings_datasource);
+				trigger_error('type:error,id:database error,details:'.$error.',datasource:'.$settings_datasource);
 			}
 
 			if($return_data)
