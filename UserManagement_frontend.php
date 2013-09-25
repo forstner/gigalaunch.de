@@ -88,28 +88,28 @@ o change all php to javascript, php generated sources out
 			}
 		}
 		 -->
-		</div> <!-- end content -->
-
 		<!-- where errors are displayed (put it directly next to the interactive element, that can produce an error) -->
 		<div id="login_error_div"></div>
 		
 		<div data-role="footer">
-			<div data-role="navbar">
-				<ul>
-					<li>
-						<a data-icon="minus" href="#" onclick="openDialogDelete();">DELETE</a>
-					</li>
-					<li>
-						<a data-icon="plus" href="frontend_useradd.php" rel="external" data-ajax="false">ADD</a>
-					</li>
-					<!--
-					<li>
-						<a data-icon="star" href="#">SAVE</a>
-					</li>
-					-->
-				</ul>
-			</div>
+				<div data-role="navbar">
+					<ul>
+						<li>
+							<a data-icon="minus" href="#" onclick="openDialogDelete();">DELETE</a>
+						</li>
+						<li>
+							<a data-icon="plus" href="useradd.php" rel="external" data-ajax="false">ADD</a>
+						</li>
+		<!--
+						<li>
+							<a data-icon="star" href="#">SAVE</a>
+						</li>
+		-->
+					</ul>
+				</div>
+				<!-- /navbar -->
 		</div>
+		<!-- /footer -->
 	</div>
 	<!-- end page -->
 
