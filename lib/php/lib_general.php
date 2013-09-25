@@ -49,13 +49,11 @@ function getREQUESTSstarting($with)
  * {action":"login","resultType":"success","resultValue":"success","details":"you have now access. live long and prosper! Login expires in 30 minutes."}
  * 
  * */
-function answer($additionalResult = null,$action,$resultType,$resultValue,$details)
+function answer($result = null,$action = "",$resultType = "",$resultValue = "",$details = "")
 {
-	$result = Array();
-	
-	if($additionalResult != null)
+	if(!$result)
 	{
-		$result = mergeArray($additionalResult,$result);
+		$result = Array();
 	}
 	
 	$result["action"] = $action;

@@ -43,19 +43,24 @@ $user->lastname = "lastname";
 $users = useradd($user); // returns the user-object from database, containing a new, database generated id, that is important for editing/deleting the user later
 success();
 
-// users by id/Mail/Username
+// get user by id/Mail/Username
 comment("get user by ID");
-$users = users($user);
+$user = getFirstElementOfArray(users($user));
 success();
 
 // getUserByUsername
 comment("get User by Username");
-$users = users($user,"username");
+$user = users($user,"username");
 success();
 
 // getUserByMail
 comment("get User by mail");
-$users = users($user,"mail");
+$users = users(null,"mail","mail@mail.de");
+success();
+
+// get all users in this group
+comment("get all users in this group");
+$users = users(null,"groups","username");
 success();
 
 // the session variable exists, let's check it's valid:
@@ -144,11 +149,11 @@ success();
 // get all groups that the user belongs to
 comment("get all groups that the user belongs to");
 comment("get groups of user as object");
-$groups = groupOfusers($user);
+$groups = getGroupsOfUser($user);
 success();
 
 comment("get groups of user as an array of strings");
-$groups = groupOfusers($user,"strings");
+$groups = getGroupsOfUser($user,"strings");
 // one big , separated string
 $groups = array2string($groups,null,",");
 success();

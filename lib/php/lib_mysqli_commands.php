@@ -98,40 +98,55 @@ function userexist($user,$uniqueKey = "id")
 }
 
 /* returns an array of all users available (if no parameter given)
- *
+*
 * if $user given -> get $user as assoc-array
 * by id (default) if no $uniqueKey is given
 * (you can also specify get user by username,mail -> $uniqueKey)
 *
 * via $where you can filter the users you want with your own sql query
 */
-function users($user = null,$uniqueKey = "id",$where = "")
+function users($user = null,$uniqueKey = "id",$uniqueValue = null,$where = "")
 {
-
 	$result = null;
 
 	global $mysqli_object; global $worked; $worked = false;
 	global $settings_database_name; global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames; global $settings_lastDatabase; global $settings_lastTable; global $settings_lastColumn;
 	$query = "";
-	if(!is_null($user))
+	if((!is_null($user)) && haspropertyandvalue($user,$uniqueKey,"users") && (!is_null($uniqueKey)))
 	{
-		if(haspropertyandvalue($user,$uniqueKey,"users"))
+		$user_string = "";
+		if(is_array($user))
 		{
-			$user_string = "";
-			if(is_array($user))
-			{
-				$user_string = $user[$uniqueKey];
-			}
-			else if(is_object($user))
-			{
-				$user_string = $user->$uniqueKey;
-			}
-			// filter list
-			$query = "SELECT * FROM `".$settings_database_auth_table."` WHERE `".$uniqueKey."` = '".$user_string."'";
-			$settings_lastDatabase = $settings_database_name;
-			$settings_lastTable = $settings_database_auth_table;
-			$settings_lastColumn = $uniqueKey;
+			$user_string = $user[$uniqueKey];
 		}
+		else if(is_object($user))
+		{
+			$user_string = $user->$uniqueKey;
+		}
+		
+		// assemble sql-query
+		if($uniqueKey == "groups")
+		{
+			// if it's about groups
+			$preFilteredUsersList = users($user,null,"WHERE `groups` LIKE '%".$user->groupname."%'");
+			
+			$target = count($preFilteredUsersList);
+			for ($i = 0; $i <= $target; $i++) {
+				$userInstance = $preFilteredUsersList[$i];
+				$groupsArray = string2array($userInstance->groups,null);
+				if(in_array($user->groupname,$groupsArray))
+				{
+					array_push($result,$userInstance);
+				}
+			}
+		}
+		else
+		{
+			$query = "SELECT * FROM `".$settings_database_auth_table."` WHERE `".$uniqueKey."` = '".$user_string."'";
+		}
+		$settings_lastDatabase = $settings_database_name;
+		$settings_lastTable = $settings_database_auth_table;
+		$settings_lastColumn = $uniqueKey;
 	}
 	else
 	{
@@ -151,21 +166,9 @@ function users($user = null,$uniqueKey = "id",$where = "")
 		}
 	}
 
+	// execute sql query
 	$user_array = $mysqli_object->query($query);
-	if(isset($user_array))
-	{
-		if(count($user_array) <= 1)
-		{
-			if(isset($user_array[0]))
-			{
-				$result = $user_array[0];
-			}
-		}
-		else
-		{
-			$result = $user_array; // multiple records returned
-		}
-	}
+	$result = $user_array; // even when only one record is returned, always return an array
 
 	if(!empty($result)) $worked = true;
 
@@ -813,7 +816,7 @@ function generateUserList($group = "*")
 	}
 	else
 	{
-		$users = getUsersByGroup($group);
+		$users = getUsersByGroup($group); // must be replaced with something like: $users = users($user,"groups");
 	}
 		if($group == "*") $group = "All Users:";
 		echo '
@@ -828,7 +831,7 @@ function generateUserList($group = "*")
 			// if $goup == users -> all users that are not admin
 			if($group == "users")
 			{
-				$groups_of_element = getGroupsOfUser($user);
+				$groups_of_element = getgetGroupsOfUser($user);
 				if(in_array("admins",$groups_of_element))
 				{
 					$paint = false;
@@ -860,7 +863,7 @@ function generateUserList($group = "*")
 /* get all groups of given user(s) as
  * -> $result_mode = "objects" array of database-objects
  * -> $result_mode = "strings" */
-function groupOfusers($user = null,$result_mode = "objects")
+function getGroupsOfUser($user = null,$result_mode = "objects")
 {
 	$result = Array();
 	$query = "";
@@ -942,7 +945,7 @@ function groupadduser($user,$group)
 		$groupname = $group;
 	}
 
-	$lastChar = substr($user->groups, -1);    // gibt "f" zurück
+	$lastChar = substr($user->groups, -1);
 	if($lastChar != ",")
 	{
 		$user->groups .= ",".$groupname;

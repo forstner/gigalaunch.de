@@ -121,7 +121,7 @@ if(!$open_to_all) // no further check if you shall pass
 	if($session_valid == true)
 	{
 		// is used by the calling file
-		$groups = groupOfusers($user);
+		$groups = getGroupsOfUser($user);
 
 		if(!$open_to_all_logged_in_users)
 		{

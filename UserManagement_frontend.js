@@ -1,90 +1,54 @@
-/* open dialog delete */
-function openDialogDelete()
+$(document).ready(function() {
+	getAllUsers();
+});
+
+/* get a list of all users */
+function getAllUsers()
 {
-	// generate list of selected users
-	var counter = 0;
-	var data2server = {};
-	
-	$("#deleteDialog_content").empty();
+	var usersArray = users(
+					function(result) // ResultHandler
+					{
+						if(result)
+						{
+							$("#content").append('<ul id="userList"></ul>');
 
-	// get all checked checkboxes
-	var allCheckBoxes = $("input[type='checkbox']");
-	var allCheckedCheckBoxes = [];
-	
-	for( var i = 0; i < allCheckBoxes.length; i++)
-	{
-		if($(allCheckBoxes[i]).prop('checked'))
-		{
-			allCheckedCheckBoxes.push(allCheckBoxes[i]);
-		}
-	}
-	
-	if(allCheckedCheckBoxes.length > 0)
-	{
-		// fill popup dialog with info
-		for(i = 0;i < allCheckedCheckBoxes.length; i++)
-		{
-			checkbox = allCheckedCheckBoxes[i];
-			var name = $(checkbox).attr("name");
-			var id = $(checkbox).attr("id");
-			var userid = $(checkbox).attr('userid');
-			var key = "user2delete"+counter++;
-			
-			var imgSrc = $("#profilepicture"+userid).attr("src");
-			var UserName = $("#username"+userid).text();
-			$("#deleteDialog_content").append(
-					"	<img class='profilePicture' src='"+imgSrc+"'/>" +
-					"	<h3>"+UserName+"</h3>");
-			$("#deleteDialog_content").append("</br>");
-		}
+							$.each(result,
+								function(index, value) {
+								
+								$("#userList").append('\
+								<li>\
+									<input type="checkbox" class="checkbox" name="checkbox_'+result[index]['username']+'" id="checkbox_'+result[index]['username']+'" data-mini="true" value="0" userid="'+result[index]['id']+'"/>\
+									<a href="frontend_useredit.php?selectUserId='+result[index]['id']+'" rel="external" data-ajax="false">\
+										<img id="profilepicture'+result[index]['id']+'" src="'+result[index]['profilepicture']+'" class="profilepicture"/>\
+										<h3 id="username'+result[index]['id']+'">'+result[index]['username']+'</h3>\
+										<p>UserID:'+result[index]['id']+'</p>\
+									</a>\
+								</li>');
 
-		// show popup dialog
-		$.mobile.changePage( "#deleteDialog", {
-			transition: "pop",
-			role: "dialog",
-			reverse: false,
-		});
+								/* jquery mobile generated source -> does not look nice
+								$("#userList").append('\
+										<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ui-li-has-thumb ui-first-child ui-btn-up-c"><div class="ui-btn-inner ui-li"><div class="ui-btn-text">\
+										<div class="ui-checkbox"><input type="checkbox" userid="'+result[index]['id']+'" value="0" data-mini="true" id="checkbox_'+result[index]['username']+'" name="checkbox_'+result[index]['username']+'" class="checkbox"></div>\
+										<a onclick="useredit('+result[index]['id']+')" data-ajax="false" rel="external" class="ui-link-inherit">\
+											<img class="profilepicture ui-li-thumb" src="'+result[index]['profilepicture']+'" id="profilepicture_'+result[index]['username']+'">\
+											<h3 id="'+result[index]['username']+'1" class="ui-li-heading">'+result[index]['username']+'</h3>\
+											<p class="ui-li-desc"></p>\
+										</a>\
+									</div>\
+									<span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>\
+									');
+								}
+								*/
+							
+							});
 
-	}
-	else
-	{
-		displayServerMessage("type:error,id:NO USERS SELECTED,details:Please select a user to delete.","success");
-	}
-
-	/*
-	<h3 class="ui-li-heading">usernameNew</h3>
-	<img class="profilepicture ui-li-thumb" src="images/profilepictures/11.jpg">
-	*/
-
-}
-
-/* delete the selected (checkbox) users */
-function deleteUser()
-{
-	var counter = 0;
-	var data2server = {};
-	$("input[type='checkbox']").each(function() {
-		if($(this).prop('checked'))
-		{
-			var value = $(this).attr('userid');
-			var key = "user2delete"+counter++;
-			data2server[key] = value; // adds key:value to object2
-		}
-	});
-	
-	// backend in php/ruby/python/java needs to implement this command: frontend_useredit.php
-	if(data2server)
-	{
-		var jqxhr = $.post("frontend_useredit.php", data2server, function(response, responseText, jqXHR) {
-			if(response)
-			{
-				displayServerMessage(response, responseText, jqXHR);
-				if(responseText == "success")
-				{
-					// refresh user list, complete page refresh
-					document.location.href = window.location.href;
-				}
-			}
-		});
-	}
+							$("#userList").listview();
+							
+						}
+						else
+						{
+							displayServerMessage(result,$("#login_error_div")); // visualize the response
+						}
+					}
+				); // get array of users
 }

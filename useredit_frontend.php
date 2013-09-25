@@ -30,7 +30,7 @@ if(isset($_REQUEST['editUserId']))
 // 2. put all user's data into the input fields
 $data = getDataOfUserID(null,$user2edit);
 // 3. wait for a change request
-$UserGroups = getGroupsOfUser($user2edit);
+$UserGroups = getgetGroupsOfUser($user2edit);
 
 if(!empty($_REQUEST['selectUserId'])) /* is it an select user action? */
 {

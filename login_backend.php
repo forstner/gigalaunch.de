@@ -21,7 +21,7 @@ if(!empty($_REQUEST['username']) && !empty($_REQUEST['password_encrypted']))
 	// new way:
 	$user = newUser();
 	$user->username = $_REQUEST['username'];
-	$user = users($user,"username");
+	$user = getFirstElementOfArray(users($user,"username"));
 	
 	if(!empty($user)) // check if username exists
 	{

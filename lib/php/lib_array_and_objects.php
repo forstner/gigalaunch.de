@@ -1,5 +1,5 @@
 <?php
-/* =================== ARRAY FUNCTIONALITY */
+/* =================== ARRAY FUNCTIONALITY  =================== */
 /* merge two arrays with unique values, adds a value to an array, if such an value does not exist yet.
  * example:
  * groups that do not exist in $SytemGroups, will be appended to $SytemGroups array and returned as result
@@ -20,8 +20,12 @@ function AddToArrayIfNotExist($array1,$array2)
 	return $result;
 }
 
-/* check if an object or array has an an property, and if that property has an value */
-function haspropertyandvalue($objectOrArray,$property,$caller)
+/* check if an object or array has an an property, and if that property has an value
+ * 
+ * if $displayErrors = true
+ * you will get error messages in your html-output
+ * */
+function haspropertyandvalue($objectOrArray,$property,$caller,$displayErrors = false)
 {
 	$result = false;
 
@@ -39,23 +43,23 @@ function haspropertyandvalue($objectOrArray,$property,$caller)
 				}
 				else
 				{
-					return error("function ".$caller.": \$objectOrArray has property ".$property." but without value. Argh!");
+					if($displayErrors) error("function ".$caller.": \$objectOrArray has property ".$property." but without value. Argh!");
 				}
 			}
 			else
 			{
-				return error("function ".$caller.": \$objectOrArray has no property ".$property.". Argh!");
+				if($displayErrors) error("function ".$caller.": \$objectOrArray has no property ".$property.". Argh!");
 			}
 		}
 		else
 		{
-			return error("function ".$caller.": is null. Argh!");
+			if($displayErrors) error("function ".$caller.": is null. Argh!");
 		}
 	}
 	else
 	{
 		$caller = "haspropertyandvalue";
-		return error("function ".$caller.": input \$objectOrArray is of type ".gettype($objectOrArray)." but i need object or array. Argh!");
+		if($displayErrors) error("function ".$caller.": input \$objectOrArray is of type ".gettype($objectOrArray)." but i need object or array. Argh!");
 	}
 
 	return $result;
@@ -121,7 +125,29 @@ function mergeArray($A,$InToArrayB)
 	return $InToArrayB;
 }
 
-/* =================== OBJECT FUNCTIONALITY */
+
+/* sometimes when querying the database, only a single result is returned but encapsulated in an array
+ * for easier further processing it is necessary to extract it.
+*/
+function getFirstElementOfArray($array)
+{
+	$result = Array();
+	if(isset($array))
+	{
+		if(count($array) <= 1)
+		{
+			if(isset($array[0]))
+			{
+				$result = $array[0];
+			}
+		}
+	}
+
+	return $result;
+}
+
+
+/* =================== OBJECT FUNCTIONALITY =================== */
 
 /* merge all values from objectB into objectA,
  * overwriting values of objectA with similar properties/keys, adding keys/properties that exist in B but not in A to A */
@@ -141,7 +167,7 @@ function mergeObject($A,$InToObjectB)
 	return $InToObjectB;
 }
 
-/* =================== FUNCTIONALITY FOR BOTH (ARRAYS AND OBJECTS) */
+/* =================== FUNCTIONALITY FOR BOTH (ARRAYS AND OBJECTS) =================== */
 
 /* build a query for inserting an array
 * $mode == "INSERT" -> (key1,key2,key3) VALUES (value1,value2,value3)
