@@ -6,7 +6,7 @@ $(document).ready(function() {
 			submitForm(form,
 					function(result) // ResultHandler of the form-request -> process the result/answer of the server
 					{
-						displayServerMessage(result,$("#login_error_div")); // visualize the response
+						displayServerMessage(result,$(".error_div")); // visualize the response
 
 						// after a successful login
 						if((result["action"] == "login") && (result["resultType"] == "success"))
@@ -34,7 +34,7 @@ $(document).ready(function() {
 			},
 			password: {
 				required: "Please provide a password",
-				minlength: "Your password must be at least 8 characters long, a secure password consists of a mix of numbers/special chars/UPPER/lowercase characters"
+				minlength: "Your password must be at least 8 characters long, should be a mix of numbers/special chars/UPPER/lowercase characters"
 			}
 		}
 	});

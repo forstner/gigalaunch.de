@@ -190,7 +190,7 @@ function groups($group = null,$uniqueKey = "id",$where = "")
 	global $mysqli_object; global $worked; $worked = false;
 	global $settings_database_name; global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames; global $settings_lastDatabase; global $settings_lastTable; global $settings_lastColumn;
 	$query = "";
-	if(!is_null($group))
+	if((!is_null($group)) && haspropertyandvalue($group,$uniqueKey,"groups") && (!is_null($uniqueKey)))
 	{
 		if(haspropertyandvalue($group,$uniqueKey,"groups"))
 		{
@@ -802,7 +802,8 @@ function groupexist($group,$uniqueKey = "id")
  // if $goup == * -> all users of all groups are
  // if $goup == "users" -> all users that are not admin
  // if $goup == "yourself" -> the currently logged in user 
- */
+  */
+/*
 function generateUserList($group = "*")
 {
 	if(($group == "*") || ($group == "users"))
@@ -823,7 +824,7 @@ function generateUserList($group = "*")
 			<h4>'.$group.'</h4>
 				<ul data-role="listview">';
 	
-		/* paint a list of users */
+		// paint a list of users
 		foreach($users as $key => $user)
 		{
 			$paint = true;
@@ -859,6 +860,7 @@ function generateUserList($group = "*")
 		echo '
 				</ul>';
 }
+*/
 
 /* get all groups of given user(s) as
  * -> $result_mode = "objects" array of database-objects

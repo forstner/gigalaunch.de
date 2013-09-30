@@ -136,11 +136,11 @@ $(document).ready(function() {
 				},
 				password: {
 					required: "Please provide a password",
-					minlength: "Your password must be at least 8 characters long, a secure password consists of a mix of numbers/special chars/UPPER/lowercase characters"
+					minlength: "Your password must be at least 8 characters long, should be a mix of numbers/special chars/UPPER/lowercase characters"
 				},
 				password_confirm: {
 					required: "Please provide a password",
-					minlength: "Your password must be at least 8 characters long, a secure password consists of a mix of numbers/special chars/UPPER/lowercase characters",
+					minlength: "Your password must be at least 8 characters long, should be a mix of numbers/special chars/UPPER/lowercase characters",
 					equalTo: "Please enter the same password as above"
 				},
 				email: "Please enter a valid email address"

@@ -5,6 +5,8 @@ require_once('./lib/php/lib_mysqli_commands.php');
 
 if(isset($_REQUEST["action"]))
 {
+	/* =============== users */
+
 	/* list users */
 	if($_REQUEST["action"] == "users")
 	{
@@ -19,6 +21,25 @@ if(isset($_REQUEST["action"]))
 		else
 		{
 			answer($users, "users", "failed");
+		}
+	}
+	
+	/* =============== group */
+	
+	/* list groups */
+	if($_REQUEST["action"] == "groups")
+	{
+		// comment("get definition of group from database");
+		$group = newGroup();
+		$groups = groups($group,$_REQUEST["uniqueKey"],$_REQUEST["uniqueValue"],$_REQUEST["where"]);
+
+		if($groups)
+		{
+			answer($groups, "groups", "success");
+		}
+		else
+		{
+			answer($groups, "groups", "failed");
 		}
 	}
 }
