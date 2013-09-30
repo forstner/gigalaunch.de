@@ -92,22 +92,16 @@ o change all php to javascript, php generated sources out
 		<div id="login_error_div"></div>
 		
 		<div data-role="footer">
-				<div data-role="navbar">
-					<ul>
-						<li>
-							<a data-icon="minus" href="#" onclick="openDialogDelete();">DELETE</a>
-						</li>
-						<li>
-							<a data-icon="plus" href="useradd.php" rel="external" data-ajax="false">ADD</a>
-						</li>
-		<!--
-						<li>
-							<a data-icon="star" href="#">SAVE</a>
-						</li>
-		-->
-					</ul>
-				</div>
-				<!-- /navbar -->
+			<div data-role="navbar">
+				<ul>
+					<li>
+						<a data-icon="minus" onclick="openDialogDelete();">DELETE</a>
+					</li>
+					<li>
+						<a data-icon="plus" onclick="openDialogAdd();" rel="external" data-ajax="false">ADD</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 		<!-- /footer -->
 	</div>
