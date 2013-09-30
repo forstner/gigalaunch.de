@@ -1,5 +1,6 @@
 <!-- ================= TODO
-o change all php to javascript, php generated sources out 
+o change all php to javascript, php generated sources out
+currently on: getting page useradd to work (form like login)
 -->
 <!DOCTYPE html> 
 <html>
@@ -61,7 +62,7 @@ o change all php to javascript, php generated sources out
 	
 </head>
 <body>
-	<div data-role="page" id="admin">
+	<div data-role="page" id="userList">
 		<div data-role="header" data-position="inline" data-backbtn="true">
 			<div class="ui-bar ui-bar-b">
 				<a onclick="getAllUsers();" rel="external" data-ajax="false" class="nav_button admins" data-role="button" data-theme="a" data-inline="true" data-mini="true" data-icon="bars">all</a>
@@ -70,48 +71,98 @@ o change all php to javascript, php generated sources out
 				<a rel="external" data-ajax="false" class="nav_button yourself" data-role="button" data-theme="a" data-inline="true" data-mini="true" data-icon="bars">yourself</a>
 			</div>
 		</div>
-		<div id="content" data-role="content">
+		<div class="content" data-role="content">
 			<h4>All Users:</h4>
 		</div>
-		<!-- 
-		if($is_admin)
-		{
-			// yes he/she is, no restrictions
-			generateUserList($group);
-		}
-		else
-		{
-			// no, i don't hink so, only display the logged in user
-			if(!($group == "admins"))
-			{
-				generateUserList($user->username);
-			}
-		}
-		 -->
 		<!-- where errors are displayed (put it directly next to the interactive element, that can produce an error) -->
-		<div id="login_error_div"></div>
+		<div class="error_div"></div>
 		
 		<div data-role="footer">
-				<div data-role="navbar">
-					<ul>
-						<li>
-							<a data-icon="minus" href="#" onclick="openDialogDelete();">DELETE</a>
-						</li>
-						<li>
-							<a data-icon="plus" href="useradd.php" rel="external" data-ajax="false">ADD</a>
-						</li>
-		<!--
-						<li>
-							<a data-icon="star" href="#">SAVE</a>
-						</li>
-		-->
-					</ul>
-				</div>
-				<!-- /navbar -->
+			<div data-role="navbar">
+				<ul>
+					<li>
+						<a data-icon="minus" onclick="openDialogDelete();">DELETE</a>
+					</li>
+					<li>
+						<a data-icon="plus" href="#userAdd" rel="external" data-ajax="false">ADD</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 		<!-- /footer -->
 	</div>
-	<!-- end page -->
+	<!-- end page user list -->
+
+	<div data-role="page" id="userAdd">
+		<div data-role="header" data-position="inline" data-backbtn="true">
+			<div class="ui-bar ui-bar-b">
+				<a onclick="getAllUsers();" rel="external" data-ajax="false" class="nav_button admins" data-role="button" data-theme="a" data-inline="true" data-mini="true" data-icon="bars">all</a>
+				<a rel="external" data-ajax="false" class="nav_button admins" data-role="button" data-theme="a" data-inline="true" data-mini="true" data-icon="bars">admins</a>
+				<a rel="external" data-ajax="false" class="nav_button users" data-role="button" data-theme="a" data-inline="true" data-mini="true" data-icon="bars">users</a>
+				<a rel="external" data-ajax="false" class="nav_button yourself" data-role="button" data-theme="a" data-inline="true" data-mini="true" data-icon="bars">yourself</a>
+			</div>
+		</div>
+		<div class="content" data-role="content">
+			<h4>add new User</h4>
+			<form id="useraddForm" class="useraddForm"
+				action="frontend_useradd.php" method="post" accept-charset="UTF-8">
+				<h4>Register New User:</h4>
+				<!-- credentials -->
+				<label for="username">UserName*:</label> <input type="text"
+					name="username" id="username" maxlength="250" />
+
+				<label for="password">Password*:</label> <input type="password"
+					name="password" id="password" maxlength="250" /> <label
+					for="password_confirm">Password check*:</label> <input
+					type="password" name="password_confirm" id="password_confirm"
+					maxlength="250" />
+
+				<!-- get a list of all available user groups -->
+				<fieldset data-role="controlgroup" data-type="vertical">
+					<h4>Groups</h4>
+					<input type="checkbox" name="checkbox_group_default"
+						id="checkbox_group_default" class="custom checkbox_group_default"
+						data-mini="true" value="1" class="ui-disabled" checked="true" /> <label
+						class="checkbox_group_default_label" for="checkbox_group_default">username</label>
+					<input type="checkbox" name="checkbox_group_admins"
+						id="checkbox_group_admins" class="custom checkbox_group_default"
+						data-mini="true" value="1" class="ui-disabled" checked="true" /> <label
+						class="checkbox_group_admins_label" for="checkbox_group_admins">admins</label>
+					<input type="checkbox" name="checkbox_group_'.$groupname.'"
+						id="checkbox_group_'.$groupname.'" class="custom" data-mini="true"
+						value="0" /> <label for="checkbox_group_'.$groupname.'">'.$groupname.'</label>
+				</fieldset>
+				<h4>Details:</h4>
+				<!-- additional infos about the user (optional, goes into passwd->data column, key:value,key:value,key:value, style  -->
+				<label for="firstname">Firstname*: </label> <input type="text"
+					name="firstname" id="firstname" maxlength="250" /> <label
+					for="lastname">Lastname*: </label> <input type="text"
+					name="lastname" id="lastname" maxlength="250" /> <label for="email">Email*:</label>
+				<input type="text" name="email" id="email" maxlength="250" /> <label
+					for="home"
+					title="this will be the default site the uesr get's redirected to after login">home:</label>
+				<input type="text" name="home" id="home" maxlength="250" value="" />
+			</form>
+		</div>
+
+		<!-- where errors are displayed (put it directly next to the interactive element, that can produce an error) -->
+		<div class="error_div"></div>
+		
+		<div data-role="footer">
+			<div data-role="navbar">
+				<ul>
+					<li>
+						<a data-icon="minus" onclick="window.history.back();">CANCEL</a>
+					</li>
+					<li>
+						<a data-icon="plus" onclick="" rel="external" data-ajax="false">SAVE</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!-- /footer -->
+	</div>
+	<!-- end page user list -->
 
 	<!-- dialog -->
 	<div data-role="dialog" id="deleteDialog">

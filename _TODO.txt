@@ -1,5 +1,7 @@
 ===== TODO ===== FEEL FREE TO PUT YOUR OWN REQUESTS HERE, ALSO FEEL FREE TO IMPLEMENT ANYTHING ON THAT LIST, PLEASE HELP!!! :-D (o = open, ok = done, higher priority is on top)
 
+o rework frontend for 100% backend independent usability of the server
+
 o actually i have some redundancy here
 groupadd/useradd -> could be done via reusing recordadd
 ... but of course does recordadd then need to know what type of record it is dealing with (user/group) and do the additional steps needed (create a group for every new user)

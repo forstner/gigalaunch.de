@@ -77,7 +77,7 @@
 				<input id="signupsubmit" name="signup" type="submit" value="login"/>
 
 				<!-- where errors are displayed (put it directly next to the interactive element, that can produce an error) -->
-				<div id="login_error_div"></div>
+				<div class="error_div"></div>
 			</form>
 		</div> 
 		<div data-role="footer">

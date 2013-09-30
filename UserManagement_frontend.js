@@ -10,14 +10,14 @@ function getAllUsers()
 					{
 						if(result)
 						{
-							$("#content").append('<ul id="userList"></ul>');
+							$("#userList > .content").append('<ul></ul>');
 
 							$.each(result,
 								function(index, value) {
 								
 								if((typeof result[index]) == "object") // only execute on returned data in object form, not on other properties action = users ... are also returned.
 								{
-									$("#userList").append('\
+									$("#userList > .content > ul").append('\
 											<li>\
 											<input type="checkbox" class="checkbox" name="checkbox_'+result[index]['username']+'" id="checkbox_'+result[index]['username']+'" data-mini="true" value="0" userid="'+result[index]['id']+'"/>\
 											<a href="frontend_useredit.php?selectUserId='+result[index]['id']+'" rel="external" data-ajax="false">\
@@ -30,12 +30,13 @@ function getAllUsers()
 							
 							});
 
-							$("#userList").listview();
+							// jquery mobile transform this into a listview();
+							$("#userList > .content > ul").listview();
 							
 						}
 						else
 						{
-							displayServerMessage(result,$("#login_error_div")); // visualize the response
+							displayServerMessage(result,$(".error_div")); // visualize the response
 						}
 					}
 				); // get array of users
