@@ -10,6 +10,9 @@ $settings_log_operations = "log/operations.log"; // if there should be a line wr
 
 $settings_uniqueUsernames = true; // please leave this at true, otherwise useredit may fail, true: two users can NOT have the same username, false: two users can have the same username (identification is mainly done over an unique database generated id)
 
+/* ======================= DEVELOPMENT */
+$settings_debug_mode = true; // if you want additional info about whats going on. will also perserve xdebug ?Session parameters.
+
 /* ======================= DATABASE */
 /* here the database credentials are beeing stored */
 $settings_datasource = "mysql"; // right now can only be "mysql", could be postgress (not implemented) sqlite (not implemented)

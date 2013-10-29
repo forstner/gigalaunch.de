@@ -139,44 +139,8 @@ if(!empty($_REQUEST['editUserId'])) /* is it an change user action? */
 
 	<!-- tools: what was used to make this world a better place -->
 	<meta name="editor" content="pdt eclipse">
-
-	<!-- css valid for all projects, includes the default jquery mobile css -->
-	<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.3.0.min.css" />
-	<link rel="stylesheet" type="text/css" href="css/global.css"/>
-
-	<!-- project wide css -->
-	<link rel="stylesheet" type="text/css" href="css/projectWide.css"/>
-
-	<!-- file wide css -->
-	<link rel="stylesheet" type="text/css" href="css/'+CurrentFilename+'.css"/>
-
-	<!-- project wide js libraries: jquery, jquery mobile -->
-	<script type="text/javascript" src="lib/js/jquery-1.10.2.js"></script>
-	<script type="text/javascript" src="lib/js/jquery.mobile-1.3.2.js"></script>
-
-	<!-- timer plugin -->
-	<script type="text/javascript" src="lib/js/lib_jquery.timer.js"></script>
-
-	<!-- js-client-side-md5, so that no password gets over network unencrypted, esp not during registration -->
-	<script type="text/javascript" src="lib/js/lib_webtoolkit.md5.js"></script>
-
-	<!-- nice input validation plugin -->
-	<script type="text/javascript" src="lib/js/lib_jquery.validate.js"></script>
-
-	<!--  provices conversion function -->
-	<script type="text/javascript" src="lib/js/lib_convert.js"></script>
-
-	<!--  provices string operation functions -->
-	<script type="text/javascript" src="lib/js/lib_strings.js"></script>
-
-	<!-- client side functions to process server response -->
-	<script type="text/javascript" src="lib/js/lib_general.js"></script>
-
-	<!-- translations -->
-	<script type="text/javascript" src="lib/js/lib_translate.js"></script>
-			
-	<!-- page specific js includes & custom js code -->
-	<script type="text/javascript" src="'+CurrentFilename+'.js"></script>
+	
+	<script type="text/javascript" src="lib/js/dynamically_load_js_and_css.js"></script>
 </head> 
 <body> 
 <div data-role="page" id="useredit">

@@ -12,7 +12,7 @@ $(document).ready(function() {
 						if((result["action"] == "login") && (result["resultType"] == "success"))
 						{
 							// go to user's home
-							window.location = result["goto"];
+							goToPage(result["goto"]);
 						}
 					}
 			);

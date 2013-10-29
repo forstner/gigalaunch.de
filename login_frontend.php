@@ -18,12 +18,6 @@
 	<meta name="editor" content="pdt eclipse">
 
 	<script type="text/javascript" src="lib/js/dynamically_load_js_and_css.js"></script>
-	
-	<!-- load page specific css -->
-	<script src="login_frontend.js" type="text/javascript"></script>
-
-	<!-- load page specific js -->
-	<link rel="stylesheet" type="text/css" href="login_frontend.css"/>
 </head>
 <body>
 	<div data-role="page" id="login">
