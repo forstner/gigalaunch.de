@@ -20,7 +20,7 @@ $(document).ready(function() {
 	    	// 1. is a username entered? if not -> ARGH!
 	    	if(!username)
 	    	{
-	    		displayServerMessage("type:error,id:no username entered,details:Please enter a username it can not be nothing!","success");
+	    		ServerStatusMessage("type:error,id:no username entered,details:Please enter a username it can not be nothing!","success");
 	    	}
 	    	else
 	    	{
@@ -37,7 +37,7 @@ $(document).ready(function() {
 	    					var jqxhr = $.post("frontend_useradd.php", data, function(response, responseText, jqXHR) {
 	    						if(response)
 	    						{
-	    							displayServerMessage(response, responseText, jqXHR);
+	    							ServerStatusMessage(response, responseText, jqXHR);
 	    						}
 	    					});
 	    				}
@@ -73,7 +73,7 @@ $(document).ready(function() {
 		    			 */
 		    			if(response)
 		    			{
-		    				var result = displayServerMessage(response, responseText, jqXHR, 1);
+		    				var result = ServerStatusMessage(response, responseText, jqXHR, 1);
 		    				if	(result["type"] == "success")
 		    				{
 		    					// show message "ok" for 3 seconds then go back to previous page
@@ -98,7 +98,7 @@ $(document).ready(function() {
 		    		},
 		    		error: function(jqXHR, responseText, errorThrown )
 		    		{
-		    			var result = displayServerMessage(response, responseText, jqXHR, 1);
+		    			var result = ServerStatusMessage(response, responseText, jqXHR, 1);
 		    			/* A function to be called if the request fails.
 		    			 * The function receives three arguments:
 						   		 1. The jqXHR (in jQuery 1.4.x, XMLHttpRequest) object,

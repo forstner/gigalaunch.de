@@ -6,7 +6,7 @@ $(document).ready(function() {
 			submitForm(form,
 					function(result) // ResultHandler of the form-request -> process the result/answer of the server
 					{
-						displayServerMessage(result,$(".error_div")); // visualize the response
+						ServerStatusMessage(result,$(".error_div")); // visualize the response
 
 						// after a successful login
 						if((result["action"] == "login") && (result["resultType"] == "success"))

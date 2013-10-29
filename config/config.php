@@ -1,6 +1,7 @@
 <?php
 /* ======================= ABOUT THE PLATFORM */
 $settings_platform_name = "gigalaunch";
+$settings_platform_logo = "images/projectlogo.png";
 $settings_platform_url = "http://gigalaunch.de";
 $settings_errorLog = $settings_platform_name."_error.log"; // if empty, no errors are logged to file
 
@@ -80,4 +81,5 @@ $settings_current_filename = $filename_and_ending[0];
 /* o detect mobile browser, if yes -> load different css do not paint a lot of blue stuff around the UI */
 // require_once('detectmobilebrowser.php');
 // $settings_detected_browser = 'desktop'; // is detected automatically/overwritten automatically, possible values are desktop,
+
 ?>

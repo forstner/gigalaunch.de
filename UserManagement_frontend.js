@@ -14,7 +14,7 @@ $(document).ready(function() {
 			usernameTaken($(this).val(),function(taken){
 				if(taken)
 				{
-					displayServerMessage(taken,$(".error_div")); // visualize the response
+					ServerStatusMessage(taken,$(".error_div")); // visualize the response
 				}
 			});
 		}
@@ -25,7 +25,7 @@ $(document).ready(function() {
 			submitForm(form,
 				function(result) // ResultHandler of the form-request -> process the result/answer of the server
 				{
-					displayServerMessage(result,$(".error_div")); // visualize the response
+					ServerStatusMessage(result,$(".error_div")); // visualize the response
 
 					// after a successful login
 					if((result["action"] == "login") && (result["resultType"] == "success"))

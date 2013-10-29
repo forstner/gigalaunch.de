@@ -1,9 +1,11 @@
 <!-- ================= TODO
-o test profile picture upload :-D
 o test adding users
 o test deleting users
 o change all php to javascript, php generated sources out
 currently on: getting page useradd to work (form like login)
+o test profile picture upload :-D
+... is broken. i don't know yet how to jquery->upload without page refresh. (it's a bigger problem so i won't fix it now)
+... submit is wrong... because it submitts the whole form instead of triggering a upload
 -->
 <!DOCTYPE html> 
 <html>
@@ -123,7 +125,8 @@ currently on: getting page useradd to work (form like login)
 					type="password" name="password_confirm" id="password_confirm"
 					maxlength="250" />
 					
-				<!-- here user can select and upload a profile picture -->
+				<!-- here user can select and upload a profile picture, disabled temporarily -->
+				<!--  
 				<div id="fileUpload">
 					<h4>ProfilePicture:</h4>
 					<form action="./lib/php/lib_upload.php?" method="post" enctype="multipart/form-data" rel="external" data-ajax="false">
@@ -134,6 +137,7 @@ currently on: getting page useradd to work (form like login)
 						<input type="submit" name="submit" value="upload"><input type="hidden" name="selectUserId" value="">
 					</form>
 				</div>
+				 -->
 
 				<!-- get a list of all available user groups -->
 				<fieldset data-role="controlgroup" data-type="vertical">
