@@ -1,4 +1,7 @@
-===== TODO ===== FEEL FREE TO PUT YOUR OWN REQUESTS HERE, ALSO FEEL FREE TO IMPLEMENT ANYTHING ON THAT LIST, PLEASE HELP!!! :-D (o = open, ok = done, higher priority is on top)
+===== the most important thing ===== 
+good software culture: proper change and risk management -> this needs to be practiced!
+
+==== TODO ==== <- FEEL FREE TO PUT YOUR OWN REQUESTS HERE, ALSO FEEL FREE TO IMPLEMENT ANYTHING ON THAT LIST, PLEASE HELP!!! :-D (o = open, ok = done, higher priority is on top)
 
 o useradd working
 
