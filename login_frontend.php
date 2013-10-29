@@ -19,6 +19,11 @@
 
 	<script type="text/javascript" src="lib/js/dynamically_load_js_and_css.js"></script>
 	
+	<!-- load page specific css -->
+	<script src="login_frontend.js" type="text/javascript"></script>
+
+	<!-- load page specific js -->
+	<link rel="stylesheet" type="text/css" href="login_frontend.css"/>
 </head>
 <body>
 	<div data-role="page" id="login">
@@ -40,8 +45,8 @@
 				<!-- onkeypress this hidden field is updated and transmitted  type="hidden" -->
 				<label for="password_encrypted">md5 Encrypted Password:</label><input id="password_encrypted" name="password_encrypted" id="password_encrypted" value="5f4dcc3b5aa765d61d8327deb882cf99"/>
 
-				<!-- submit button -->
-				<input id="signupsubmit" name="signup" type="submit" value="login"/>
+				<!-- login button -->
+				<input id="button_login" name="button_login" type="submit" value="login"/>
 
 				<!-- where errors are displayed (put it directly next to the interactive element, that can produce an error) -->
 				<div class="error_div"></div>
