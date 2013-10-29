@@ -13,7 +13,7 @@ function translate($keyword,$lang)
 	}
 	$result_database = null;
 	$result_string = "";
-	require_once './class/php/class_mysqli_interface.php';
+	require_once './lib/php/lib_mysqli_interface.php';
 	// init database object
 	$mysqli_object = new class_mysqli_interface();
 

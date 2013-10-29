@@ -21,9 +21,9 @@
 * per default all incoming arguments are mysql-real-escaped, so this should prevent an sql injection input form.
  */
 
-if(!class_exists("./class/php/class_mysqli_interface"))
+if(!class_exists("./lib/php/class_mysqli_interface"))
 {
-	require_once('./class/php/class_mysqli_interface.php');
+	require_once('./lib/php/lib_mysqli_interface.php');
 }
 
 // init database

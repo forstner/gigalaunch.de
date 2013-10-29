@@ -4,7 +4,7 @@
  * so it does not need all the ./lib/php/lib_session.php/./lib/php/lib_security.php, but the parent.php does!
 */
 
-require_once('./class/php/class_mysqli_interface.php');
+require_once('./lib/php/lib_mysqli_interface.php');
 require_once('./lib/php/lib_convert.php');
 require_once('./lib/php/lib_general.php');
 

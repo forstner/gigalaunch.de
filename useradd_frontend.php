@@ -151,8 +151,8 @@ else if(!empty($_REQUEST['username']) && !empty($_REQUEST['password'])) /* is it
 	<link rel="stylesheet" type="text/css" href="css/'+CurrentFilename+'.css"/>
 
 	<!-- project wide js libraries: jquery, jquery mobile -->
-	<script type="text/javascript" src="lib/js/jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="lib/js/jquery.mobile-1.3.0.min.js"></script>
+	<script type="text/javascript" src="lib/js/jquery-1.10.2.js"></script>
+	<script type="text/javascript" src="lib/js/jquery.mobile-1.3.2.js"></script>
 
 	<!-- timer plugin -->
 	<script type="text/javascript" src="lib/js/lib_jquery.timer.js"></script>
