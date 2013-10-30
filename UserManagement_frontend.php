@@ -26,7 +26,10 @@ o test profile picture upload :-D
 	<!-- tools: what was used to make this world a better place -->
 	<meta name="editor" content="pdt eclipse">
 
-	<script type="text/javascript" src="lib/js/dynamically_load_js_and_css.js"></script>	
+	<script type="text/javascript" src="lib/js/dynamically_load_js_and_css.js"></script>
+	
+	<!-- include library with user management commands -->
+	<script type="text/javascript" src="lib/lib_users_and_groups.js"></script>	
 </head>
 <body>
 	<div data-role="page" id="userList">
@@ -48,7 +51,7 @@ o test profile picture upload :-D
 			<div data-role="navbar">
 				<ul>
 					<li>
-						<a data-icon="minus" onclick="openDialogDelete();">DELETE</a>
+						<a data-icon="minus href="#popup_deleteUser" data-rel="popup" data-position-to="window" data-role="button" data-inline="true" data-transition="pop">DELETE</a>
 					</li>
 					<li>
 						<a data-icon="plus" href="#userAdd" rel="external" data-ajax="false">ADD</a>
@@ -106,16 +109,22 @@ o test profile picture upload :-D
 					<h4>Groups</h4>
 					<div id="container_ListOfGroups"></div>
 				</fieldset>
-				<h4>Details:</h4>
-				<!-- additional infos about the user (optional, goes into passwd->data column, key:value,key:value,key:value, style  -->
-				<label for="firstname">Firstname: </label>
-				<input type="text" name="firstname" id="firstname" maxlength="250" /> <label for="lastname">Lastname: </label>
-				<input type="text" name="lastname" id="lastname" maxlength="250" />
-				<label for="email">Email*:</label>
-				<input type="text" name="email" id="email" maxlength="250" /> <label
-					for="home"
-					title="this will be the default site the uesr get's redirected to after login">home:</label>
-				<input type="text" name="home" id="home" maxlength="250" value="" />
+				
+				<!-- DETAILS -->
+				<div id="details">
+					<h4>Details:</h4>
+					<!-- additional infos about the user (optional, goes into passwd->data column, key:value,key:value,key:value, style  -->
+					<label for="firstname">Firstname: </label>
+					<input type="text" name="firstname" id="firstname" maxlength="250" /> <label for="lastname">Lastname: </label>
+					<input type="text" name="lastname" id="lastname" maxlength="250" />
+					<label for="email">Email*:</label>
+					<input type="text" name="email" id="email" maxlength="250" /> <label
+						for="home"
+						title="this will be the default site the uesr get's redirected to after login">home:</label>
+						
+					<input type="text" name="home" id="home" maxlength="250" value="" />
+					<a data-icon="plus" href="#dialog_add_detail_field" data-rel="popup" data-position-to="window" data-role="button" data-inline="true" data-transition="pop">Add details</a>
+				</div>
 			</form>
 		</div>
 
@@ -138,17 +147,32 @@ o test profile picture upload :-D
 	</div>
 	<!-- end page user list -->
 
-	<!-- dialog -->
-	<div data-role="dialog" id="deleteDialog">
-		<div data-role="header" data-theme="d">
+	<!-- dialogs -->
+	<!-- dialog_add_detail_field -->
+	<div data-role="popup" id="dialog_add_detail_field" data-overlay-theme="a" data-theme="c" style="max-width:400px;" class="ui-corner-all">
+		<div data-role="header" data-theme="a" class="ui-corner-top">
+			<h1>Please specify the field to add:</h1>
+		</div>
+		<div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
+			<label for="FieldName">FieldName:</label>
+			<input type="text" name="FieldName" id="FieldName" maxlength="250" />
+			<a onclick="addField();" href="#" data-role="button" data-inline="true" data-transition="flow" data-theme="b">Add</a>  
+		</div>
+	</div>
+	
+	<!-- dialog_deleteUser -->
+	<div data-role="popup" id="popup_deleteUser" data-overlay-theme="a" data-theme="c" style="max-width:400px;" class="ui-corner-all">
+		<div data-role="header" data-theme="a" class="ui-corner-top">
 			<h1>Do you really ...</h1>
 		</div>
-		<div data-role="content">
+		<div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
+			<h3 class="ui-title">Are you sure you want to delete this user?</h3>
+			<p>This action cannot be undone.</p>
 			<h1>...want to delete these Users?</h1>
-			<div id="deleteDialog_content">
+			<div id="dialog_deleteUser_content">
 			</div>
-			<a href="#" onclick="deleteUser();" data-role="button" data-rel="back" data-theme="b">Delete</a>       
-			<a href="#" data-role="button" data-rel="back" data-theme="c">Cancel</a>    
+			<a href="#" data-role="button" data-inline="true" data-rel="back" data-theme="c">Cancel</a>    
+			<a onclick="deleteUser();" href="#" data-role="button" data-inline="true" data-rel="back" data-transition="flow" data-theme="b">Delete</a>  
 		</div>
 	</div>
 </body>
