@@ -3,6 +3,11 @@ good software culture: proper change and risk management -> this needs to be pra
 
 ==== TODO ==== <- FEEL FREE TO PUT YOUR OWN REQUESTS HERE, ALSO FEEL FREE TO IMPLEMENT ANYTHING ON THAT LIST, PLEASE HELP!!! :-D (o = open, ok = done, higher priority is on top)
 
+o make a high quality and and fun video-documentation (adobe-jquery is missing out on this, big mistake!) "getting started" video... how to
+oo 1. setup all of this
+oo 2. how to "mouse-click-wise" customize your installation
+oo 3. how to program and customize this
+
 o useradd working
 
 o useredit working

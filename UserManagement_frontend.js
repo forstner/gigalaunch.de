@@ -4,8 +4,9 @@ var groupsArray = [];
 
 $(document).ready(function() {
 	
-	usersArray = generateUserlist("#userList > .content");
-	groupsArray = generateGrouplist("#container_ListOfGroups");
+	usersArray = generateUserlist("#userList > .content",function(){
+		groupsArray = generateGrouplist("#container_ListOfGroups");
+	});
 	
 	$("#username").bind( "change", function(event, ui) {
 		var username = $(this).val();
