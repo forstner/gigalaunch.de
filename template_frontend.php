@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
+    <link href="css/global.css" type="text/css" rel="stylesheet"/>
     <link rel="shortcut icon" href="images/favicon.png">
 
     <title>Off Canvas Template for Bootstrap</title>

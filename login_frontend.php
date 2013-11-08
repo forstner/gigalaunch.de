@@ -17,6 +17,9 @@
 <!-- Custom styles for this template -->
 <link href="css/signin.css" rel="stylesheet">
 
+<!-- global gigalaunch -->
+<link href="css/global.css" type="text/css" rel="stylesheet"/>
+
 <!-- Just for debugging purposes. Don't actually copy this line! -->
 <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 
@@ -29,8 +32,8 @@
 
 <body>
 	<div class="container">
-
-		<form class="form-signin" action="login_backend.php">
+		<div class="logo"></div> <!-- where the logo (as configured in conf/config.php will be shown -->
+		<form class="form-signin" action="login_backend.php" onsubmit="javascript: return false;">
 			<h2 class="form-signin-heading">Please sign in</h2>
 			<!-- credentials -->
 			<!-- username input -->
@@ -56,7 +59,37 @@
     <script src="lib/js/jquery.js"></script>
     <script src="lib/js/bootstrap.min.js"></script>
     <script src="lib/js/lib_webtoolkit.md5.js"></script>
-    <script src="lib/js/lib_jquery.validate.js"></script>
-    <script src="login_frontend.js"></script>
+    <script src="lib/js/lib_general.js"></script>
+    <script>
+    $(document).ready(function() {
+    	/* handles the submit of the form javascript way (not calling an url) */
+    	// validate signup form on keyup and submit
+    	$('.form-signin').submit(function() {
+    	    submitForm('.form-signin',	function(result)
+					    	    	    {
+					    					ServerStatusMessage(result,$(".error_div")); // visualize the response
+					
+					    					// after a successful login
+					    					if((result["action"] == "login") && (result["resultType"] == "success"))
+					    					{
+					    						// go to user's home
+					    						goToPage(result["goto"]);
+					    					}
+					    	    	    }
+        	    );
+    	    return false; // we don't want our form to be submitted
+    	});
+
+    	// manually syncing fields
+    	$("#password_cleartext").keyup(
+    	    function()
+    	    {
+    			password_cleartext = $("#password_cleartext").val();
+    			password_encrypted = MD5(password_cleartext); 
+    			$("#password_encrypted").val(password_encrypted);
+    	    }
+    	);
+    });
+    </script>
 </body>
 </html>
