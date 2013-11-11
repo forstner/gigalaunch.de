@@ -1,5 +1,6 @@
 <?php
-/* provides services for jquery-js-clients in concerns of user management by utilizing the lib/lib_mysqli_commands.php */
+/* provides services for jquery-js-clients in concerns of user management by utilizing the lib/php/lib_mysqli_commands.php */
+chdir(".."); // or all the require_once fail, because the paths are wrong.
 chdir(".."); // or all the require_once fail, because the paths are wrong.
 require_once('./lib/php/lib_mysqli_commands.php');
 
@@ -13,8 +14,31 @@ if(isset($_REQUEST["action"]))
 		// comment("get definition of user from database");
 		$user = newUser();
 		$users = users($user,$_REQUEST["uniqueKey"],$_REQUEST["uniqueValue"],$_REQUEST["where"]);
-
-		if($users)
+		
+		// if a template is given, do not return user list as json object, but fill the values into the template
+		if(isset($_REQUEST["template"]))
+		{
+			if($users)
+			{
+				$result = "";
+				$target = count($users);
+				for($i=0;$i<$target;$i++)
+				{
+					$template = $_REQUEST["template"];
+					$currentUser = $users[$i];
+					foreach ($currentUser as $key => $value)
+					{
+						// fill in values into the template
+						$template = str_replace("$".$key, $value, $template);
+					}
+					
+					$result = $result.$template;
+				}
+				
+				echo $result;
+			}
+		}
+		else if($users)
 		{
 			answer($users, "users", "success");
 		}
