@@ -45,7 +45,14 @@ success();
 
 // get user by id/Mail/Username
 comment("get user by ID");
-$user = getFirstElementOfArray(users($user));
+/* this may look confusing $user -> is essentially: 
+ * 
+ * the way this operates:
+ * 1. $user = newUser(); // get database layout of an UserObject-Instance (basically all the keys but no values, not a real user record just the layout of it)
+ * 2. $user->id = 0; // set the user id of the UserObject-Instance to 0, so we are looking for a user with id == 0
+ * */
+$user = getFirstElementOfArray(users($user)); // now passing this $user[id] = 0 to the function users which then extracts a real user with this id.
+// advantage of this approach: you always have the definition of the user-object at hand and do not need to look it up
 success();
 
 // getUserByUsername

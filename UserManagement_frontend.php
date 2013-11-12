@@ -83,16 +83,10 @@ o test profile picture upload :-D
 			<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar"
 				role="navigation">
 				<div class="list-group">
-					<a href="#" class="list-group-item active">Link</a> <a href="#"
-						class="list-group-item">Link</a> <a href="#"
-						class="list-group-item">Link</a> <a href="#"
-						class="list-group-item">Link</a> <a href="#"
-						class="list-group-item">Link</a> <a href="#"
-						class="list-group-item">Link</a> <a href="#"
-						class="list-group-item">Link</a> <a href="#"
-						class="list-group-item">Link</a> <a href="#"
-						class="list-group-item">Link</a> <a href="#"
-						class="list-group-item">Link</a>
+					<a href="#" class="list-group-item active">Link</a>
+					<a href="#" class="list-group-item">Link</a>
+					<a href="#" class="list-group-item">Link</a>
+					<a href="#" class="list-group-item">Link</a>
 				</div>
 			</div>
 			<!--/span-->
@@ -103,15 +97,20 @@ o test profile picture upload :-D
 
 		<!-- user add/edit form -->
 		<h4>Edit User:</h4>
-		<img id="profilepicture" class="profilepicture"
-			src="images/profilepictures/asian_model_profilepicture.jpg"
-			alt="profile Picture">
-		<form class="form-userEdit" action="UserManagement_backend.php" onsubmit="javascript: return false;">
-			<label>Firstname:</label> <input id="Firstname" name="Firstname" type="text" class="form-control">
-			<label>Lastname:</label> <input id="Lastname" name="Lastname" type="text" class="form-control">
+		<form id="form-userEdit" class="form-userEdit" action="UserManagement_backend.php" onsubmit="javascript: return false;">
+			<p>
+				<img id="profilepicture" class="profilepicture" src="" alt="profile Picture">
+			</p>
+			<input id="UserID" name="UserID" type="text" class="hidden form-control">
+			<input id="action" name="action" type="text" class="hidden form-control">
+			<label>firstname:</label>
+			<input id="firstname" name="firstname" type="text" class="form-control">
+			<label>lastname:</label>
+			<input id="lastname" name="lastname" type="text" class="form-control">
 
 			<!-- username -->
-			<label>UserName:</label> <input id="username" name="username" type="text" class="form-control">
+			<label>UserName:</label>
+			<input id="username" name="username" type="text" class="form-control">
 			<!-- password -->
 			<label>Password:</label>
 			<!-- should not be submitted, because it has no name -->
@@ -119,15 +118,14 @@ o test profile picture upload :-D
 			<!-- password check -->
 			<input id="password_check" type="password" placeholder="password Again" class="form-control" title="something wrong here" data-placement="bottom">
 			<input id="password_encrypted" name="password_encrypted" type="text" placeholder="generated encrypted password" class="form-control">
-
-			<!-- groups -->
-			<label>belongs to these Groups:</label>
-			<p>tip on one of these buttons to make the user belong to this group
-				(active button) or remove user from group (disabled button).</p>
-			<div class="row groups">
-			</div>
-
 		</form>
+
+		<!-- groups -->
+		<label>belongs to these Groups:</label>
+		<p>tip on one of these buttons to make the user belong to this group
+			(active button) or remove user from group (disabled button).</p>
+		<div class="row groups"></div>
+
 		<!-- controls -->
 		<div class="row">
 			<div class="col-6 col-sm-6 col-lg-4">
@@ -148,7 +146,6 @@ o test profile picture upload :-D
 	</div>
 	<!--/.container-->
 
-
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
@@ -158,18 +155,68 @@ o test profile picture upload :-D
 	<script src="lib/js/lib_general.js"></script>
 	<script src="lib/js/lib_users_and_groups.js"></script>
 	<script>
+	var users_store = null; // save for later use
+	var groups_store = null; // save for later use
     $(document).ready(function() {
-
         // get users from server and display them via template
         users(function(data)
 		{
-			$(".listOfusers").fillTemplate(data,'<div class="col-6 col-sm-6 col-lg-4"><div class="thumbnail"><img class="profilepicture" src="$profilepicture" alt="profile Picture"><div class="caption"><h3>$firstname $lastname</h3><p>Username: $username</p><p>mail: <a href="mailto:$mail">$mail</a></p><p style="text-align: right;"><a href="#" class="btn btn-primary" role="button">Edit</a></p></div></div></div>');
+        	users_store = data; // save for later use
+
+			$(".listOfusers").fillTemplate(data,'<div class="col-6 col-sm-6 col-lg-4"><div class="thumbnail"><img class="profilepicture" src="$profilepicture" alt="profile Picture"><div class="caption"><h3>$firstname $lastname</h3><p>Username: $username</p><p>mail: <a href="mailto:$mail">$mail</a></p><button class="edit btn btn-lg btn-block">Edit</button><div class="UserID hidden">$id</div></div></div></div>');
+
+			$(".edit").click(function()
+			{
+				scrollTo("#form-userEdit");
+
+				// what happens if the user clicks on edit button below profile picture
+				var UserID = $(this).next();
+
+				UserID = $(UserID).text();
+
+		    	for(var key in users_store)
+		    	{
+		    		var user = users_store[key];
+				
+	   				if(user["id"] == UserID)
+	   				{
+	   					$("#UserID").val(user["id"]);
+	   					$("#action").val("update");
+	   					$("#profilepicture").attr('src',user["profilepicture"]);
+	   					$("#username").val(user["username"]);
+	   					$("#firstname").val(user["firstname"]);
+	   					$("#lastname").val(user["lastname"]);
+	   					$("#password").val(user["password"]);
+	   					$("#password_check").val(user["password"]);
+	   					$("#password_encrypted").val(user["password"]);
+
+	   					// setting group-buttons
+	   					var groups_array = user["groups"].split(",");
+
+	   						$('.group').removeClass("btn-primary"); // disable all buttons
+		   					for(var i=0;i < groups_array.length;i++)
+		   					{
+			   					if(groups_array[i])
+			   					{
+				   					$(".group").thatHaveText(groups_array[i],function(element)
+				   					{
+			   							$(element).addClass("btn-primary"); // find element by text and enable it
+				   					});
+	   							}
+		   					}
+	   					
+	   					break;
+	   				}
+   				}
+			});
 		});
 
 		// get groups from server and display them via template
         groups(function(data)
 		{
-			$(".groups").fillTemplate(data,'<div class="col-6 col-sm-6 col-lg-4"><button class="toggle btn btn-lg btn-block">$groupname</button></div>');
+        	groups_store = data; // save for later use
+
+			$(".groups").fillTemplate(data,'<div class="col-6 col-sm-6 col-lg-4"><button class="group toggle btn btn-lg btn-block">$groupname</button></div>');
 
 			// make button-groups toggle-able
 			$(".toggle").click(function(){
@@ -184,11 +231,12 @@ o test profile picture upload :-D
 			});
 		});
 
-    	/* handles the submit of the form javascript way (not calling an url) */
+    	// when hitting save trigger submit
 		$("#save").click(function() {
 			$('.form-userEdit').submit();
 		});
 
+    	// this is executed when user hits enter on input fields or touches down on the save button
     	$('.form-userEdit').submit(function() {
 	    	// validate form
 			var valid = true;
@@ -208,12 +256,28 @@ o test profile picture upload :-D
 	    	// display error
 	    	if(valid == false)
 	    	{
-	    		$('#password').tooltip('hide').attr('data-original-title','empty or did not match the below').tooltip('show');
-	    		$('#password_check').tooltip('hide').attr('data-original-title','empty or did not match the above').tooltip('show');
+		    	toolTipOn('#password','empty or did not match the below');
+		    	toolTipOn('#password_check','empty or did not match the below');
 	    	}
 
             if(valid)
             {
+                // read values of group-buttons (are outside of form, because they trigger form-submit)
+				var groups = "";
+				$(".group").each(function() {
+					if($(this).hasClass("btn-primary")) // all buttons that have this class set are "active"
+					{
+						if(groups == "")
+						{
+							groups = $(this).val();
+						}
+						else
+						{
+							groups += $(this).val()+",";
+						}
+					}
+				});
+            
 		        submitForm(this,function(result)
 			    	    	    {
 			    					ServerStatusMessage(result,$(".error_div")); // visualize the response
@@ -222,7 +286,8 @@ o test profile picture upload :-D
 			    					{
 			    						// after a successful save -> what now?
 			    					}
-			    	    	    }
+			    	    	    },
+			    	    	    groups
 				);
 			}
     	    return false; // we don't want our form to be submitted

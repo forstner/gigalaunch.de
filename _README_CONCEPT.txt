@@ -29,51 +29,6 @@ demo: <http://gigalaunch.de>
 
 - watch passwords be client-side md5 encrypted BEFORE sending them over network (no matter if https or not)
 
-==== Group Management ====
-
-the database-concept behind groups is like this:
-1. there is a column in the passwd table which contains a comma-separated list of all groups that the user belongs to.
-2. the table groups contains all available groups, you can add your own column-properties.
-
-====== GIT REPOSITORY ======
-
-you can get source-access only via git (sry)
-
-git clone git://git.code.sf.net/p/gigalaunchde/code gigalaunchde-code
-
-how to import project into eclipse: <http://www.youtube.com/watch?feature=player_embedded&v=xxEOJxRxbOY>
-
-====== DEMO ======
-
-http://gigalaunch.de/
-
-==== HOW TO CONTRIBUTE / WRITE ACCESS ====
-
-i would love to see this project flourish and get new goodies,
-
-i have a VirtualBox VM
-+ based on Debian-Gnome
-+ pdt-eclipse
-+ git ready configured (with gigalaunch repositories)
-+ xdebug
-+ lighttpd working
-
-and i am willing to provide it as a (big) download.
-
-but saves you all the development environment setup shit and it's so nice to have a step-debugger on board.
-
-if you want it send me a message: https://sourceforge.net/sendmessage.php?touser=4169280 
-
-if you need write access
-
-1. signup at sourceforge.net
-https://sourceforge.net/user/registration
-
-2. send me a message/please contact me! via mail: jmi21@gmx.de
-https://sourceforge.net/apps/trac/sourceforge/wiki/Git%20permission%20management
-
-3. upload your public ssh key (admin area of your profile)	
-
 ===== CONCEPT ======
 
 1. keep things ASAP - as simple as possible - leave the creators room for their ideas.
@@ -90,7 +45,6 @@ all client-UI-code is client-side generated, there is no server-side generated U
 why?
 1. to keep things simple (otherwise it might be confusing)
 2. to minimize bandwidth usage (better ship data instead of generated-html)
-
 
 ==== clients ====
 
@@ -202,3 +156,48 @@ by simply comment-out this line:
 // require_once('./lib/php/lib_session.php');
 
 Questions? -> Message: https://sourceforge.net/sendmessage.php?touser=4169280
+
+==== Group Management ====
+
+the database-concept behind groups is like this:
+1. there is a column in the passwd table which contains a comma-separated list of all groups that the user belongs to.
+2. the table groups contains all available groups, you can add your own column-properties.
+
+====== GIT REPOSITORY ======
+
+you can get source-access only via git (sry)
+
+git clone git://git.code.sf.net/p/gigalaunchde/code gigalaunchde-code
+
+how to import project into eclipse: <http://www.youtube.com/watch?feature=player_embedded&v=xxEOJxRxbOY>
+
+====== DEMO ======
+
+http://gigalaunch.de/
+
+==== HOW TO CONTRIBUTE / WRITE ACCESS ====
+
+i would love to see this project flourish and get new goodies,
+
+i have a VirtualBox VM
++ based on Debian-Gnome
++ pdt-eclipse
++ git ready configured (with gigalaunch repositories)
++ xdebug
++ lighttpd working
+
+and i am willing to provide it as a (big) download.
+
+but saves you all the development environment setup shit and it's so nice to have a step-debugger on board.
+
+if you want it send me a message: https://sourceforge.net/sendmessage.php?touser=4169280 
+
+if you need write access
+
+1. signup at sourceforge.net
+https://sourceforge.net/user/registration
+
+2. send me a message/please contact me! via mail: jmi21@gmx.de
+https://sourceforge.net/apps/trac/sourceforge/wiki/Git%20permission%20management
+
+3. upload your public ssh key (admin area of your profile)	
