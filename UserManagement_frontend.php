@@ -102,40 +102,48 @@ o test profile picture upload :-D
 		<hr>
 
 		<!-- user add/edit form -->
-		<div class="row row-offcanvas row-offcanvas-right">
-			<h4>Edit User:</h4>
-			<div class="jumbotron">
-				<label>Firstname:</label>
-				<input id="Firstname" name="Firstname" type="text" class="form-control" required>
-				<label>Lastname:</label>
-				<input id="Lastname" name="Lastname" type="text" class="form-control" required>
-				<img id="profilepicture" class="profilepicture" src="images/profilepictures/asian_model_profilepicture.jpg" alt="profile Picture">
-			</div>
-			<form class="form-userEdit" action="UserManagement_backend.php" onsubmit="javascript: return false;">
-				<!-- username -->
-				<label>UserName:</label>
-				<input id="username" name="username" type="text" class="form-control" required>
-				<!-- password -->
-				<label >Password:</label>
-				<!-- should not be submitted, because it has no name -->
-				<input id="password_cleartext" type="password" class="form-control" placeholder="password" required>
-				<!-- password check -->
-				<input id="password_check" type="password" class="form-control" placeholder="password Again" required>
-				<!-- onkeypress this hidden field is updated and transmitted  type="hidden" -->
-				<input id="password_encrypted" name="password_encrypted" type="text" class="form-control" placeholder="generated encrypted password" required>
-				<label>belongs to these Groups:</label>
-				<p>tip on one of these buttons to make the user belong to this group (active button) or remove user from group (disabled button).</p>
-				<ul class="groups nav nav-pills">
-				</ul>
-				<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-				<!-- where errors are displayed (put it directly next to the interactive element, that can produce an error) -->
-				<div class="error_div"></div>
-			</form>
-		</div>
+		<h4>Edit User:</h4>
+		<img id="profilepicture" class="profilepicture"
+			src="images/profilepictures/asian_model_profilepicture.jpg"
+			alt="profile Picture">
+		<form class="form-userEdit" action="UserManagement_backend.php" onsubmit="javascript: return false;">
+			<label>Firstname:</label> <input id="Firstname" name="Firstname" type="text" class="form-control">
+			<label>Lastname:</label> <input id="Lastname" name="Lastname" type="text" class="form-control">
 
-		<footer>
-			<p>&copy; Company 2013</p>
-		</footer>
+			<!-- username -->
+			<label>UserName:</label> <input id="username" name="username" type="text" class="form-control">
+			<!-- password -->
+			<label>Password:</label>
+			<!-- should not be submitted, because it has no name -->
+			<input id="password" type="password" placeholder="password" class="form-control" title="something wrong here" data-placement="bottom">
+			<!-- password check -->
+			<input id="password_check" type="password" placeholder="password Again" class="form-control" title="something wrong here" data-placement="bottom">
+			<input id="password_encrypted" name="password_encrypted" type="text" placeholder="generated encrypted password" class="form-control">
+
+			<!-- groups -->
+			<label>belongs to these Groups:</label>
+			<p>tip on one of these buttons to make the user belong to this group
+				(active button) or remove user from group (disabled button).</p>
+			<div class="row groups">
+			</div>
+
+		</form>
+		<!-- controls -->
+		<div class="row">
+			<div class="col-6 col-sm-6 col-lg-4">
+				<button id="clear" class="btn btn-lg btn-primary btn-block">clear</button>
+			</div>
+			<div class="col-6 col-sm-6 col-lg-4">
+				<button id="save" class="btn btn-lg btn-primary btn-block">save</button>
+			</div>
+			<!-- where errors are displayed (put it directly next to the interactive element, that can produce an error) -->
+			<div class="error_div"></div>
+		</div>
+	</div>
+
+	<footer>
+		<p>&copy; Company 2013</p>
+	</footer>
 
 	</div>
 	<!--/.container-->
@@ -151,15 +159,84 @@ o test profile picture upload :-D
 	<script src="lib/js/lib_users_and_groups.js"></script>
 	<script>
     $(document).ready(function() {
+
+        // get users from server and display them via template
         users(function(data)
 		{
 			$(".listOfusers").fillTemplate(data,'<div class="col-6 col-sm-6 col-lg-4"><div class="thumbnail"><img class="profilepicture" src="$profilepicture" alt="profile Picture"><div class="caption"><h3>$firstname $lastname</h3><p>Username: $username</p><p>mail: <a href="mailto:$mail">$mail</a></p><p style="text-align: right;"><a href="#" class="btn btn-primary" role="button">Edit</a></p></div></div></div>');
 		});
 
+		// get groups from server and display them via template
         groups(function(data)
 		{
-			$(".groups").fillTemplate(data,'<li><a href="#">$groupname</a></li>');
+			$(".groups").fillTemplate(data,'<div class="col-6 col-sm-6 col-lg-4"><button class="toggle btn btn-lg btn-block">$groupname</button></div>');
+
+			// make button-groups toggle-able
+			$(".toggle").click(function(){
+				if($(this).hasClass("btn-primary"))
+				{
+					$(this).removeClass("btn-primary");
+				}
+				else
+				{
+					$(this).addClass("btn-primary");
+				}
+			});
 		});
+
+    	/* handles the submit of the form javascript way (not calling an url) */
+		$("#save").click(function() {
+			$('.form-userEdit').submit();
+		});
+
+    	$('.form-userEdit').submit(function() {
+	    	// validate form
+			var valid = true;
+
+	    	if(($("#password").val() != "") && ($("#password_check").val() != "")) // test if both fields are filled
+	    	{
+				if($("#password").val() != $("#password_check").val()) // test if both fields contain the same
+	            {
+					valid = false;
+	            }
+	    	}
+	    	else
+	    	{
+	    		valid = false;
+	    	}
+
+	    	// display error
+	    	if(valid == false)
+	    	{
+	    		$('#password').tooltip('hide').attr('data-original-title','empty or did not match the below').tooltip('show');
+	    		$('#password_check').tooltip('hide').attr('data-original-title','empty or did not match the above').tooltip('show');
+	    	}
+
+            if(valid)
+            {
+		        submitForm(this,function(result)
+			    	    	    {
+			    					ServerStatusMessage(result,$(".error_div")); // visualize the response
+			
+			    					if(result["resultType"] == "success")
+			    					{
+			    						// after a successful save -> what now?
+			    					}
+			    	    	    }
+				);
+			}
+    	    return false; // we don't want our form to be submitted
+    	});
+
+    	// manually syncing fields
+    	$("#password").keyup(
+    	    function()
+    	    {
+    			password = $("#password").val();
+    			password_encrypted = MD5(password); 
+    			$("#password_encrypted").val(password_encrypted);
+    	    }
+    	);
     });
     </script>
 </body>

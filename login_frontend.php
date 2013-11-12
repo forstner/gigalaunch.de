@@ -40,7 +40,7 @@
 			<input id="username" name="username" type="text" class="form-control" placeholder="Email address" required autofocus>
 			<!-- password input -->
 			<!-- should not be submitted, because it has no name -->
-			<input id="password_cleartext" type="password" class="form-control" placeholder="Password" required>
+			<input id="password" type="password" class="form-control" placeholder="Password" required>
 			<!-- onkeypress this hidden field is updated and transmitted  type="hidden" -->
 			<input id="password_encrypted" name="password_encrypted" type="text" class="form-control" placeholder="encrypted Password" required>
 			<label class="checkbox">
@@ -81,11 +81,11 @@
     	});
 
     	// manually syncing fields
-    	$("#password_cleartext").keyup(
+    	$("#password").keyup(
     	    function()
     	    {
-    			password_cleartext = $("#password_cleartext").val();
-    			password_encrypted = MD5(password_cleartext); 
+    			password = $("#password").val();
+    			password_encrypted = MD5(password); 
     			$("#password_encrypted").val(password_encrypted);
     	    }
     	);
