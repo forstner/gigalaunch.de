@@ -1,6 +1,7 @@
 <?php
 /* provides server settings for jquery-js-clients  */
 chdir(".."); // or all the require_once fail, because the paths are wrong.
+chdir(".."); // or all the require_once fail, because the paths are wrong.
 require_once('./config/config.php');
 
 if($_REQUEST["get"] == "settings")

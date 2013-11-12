@@ -15,30 +15,7 @@ if(isset($_REQUEST["action"]))
 		$user = newUser();
 		$users = users($user,$_REQUEST["uniqueKey"],$_REQUEST["uniqueValue"],$_REQUEST["where"]);
 		
-		// if a template is given, do not return user list as json object, but fill the values into the template
-		if(isset($_REQUEST["template"]))
-		{
-			if($users)
-			{
-				$result = "";
-				$target = count($users);
-				for($i=0;$i<$target;$i++)
-				{
-					$template = $_REQUEST["template"];
-					$currentUser = $users[$i];
-					foreach ($currentUser as $key => $value)
-					{
-						// fill in values into the template
-						$template = str_replace("$".$key, $value, $template);
-					}
-					
-					$result = $result.$template;
-				}
-				
-				echo $result;
-			}
-		}
-		else if($users)
+		if($users)
 		{
 			answer($users, "users", "success");
 		}

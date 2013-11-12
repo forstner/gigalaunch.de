@@ -1,6 +1,6 @@
 <?php
 /* ======================= ABOUT THE PLATFORM */
-$settings_platform_name = "gigalaunch";
+$settings_platform_name = "hausautomation";
 $settings_platform_logo = "images/projectlogo.png";
 $settings_platform_url = "http://gigalaunch.de";
 $settings_errorLog = $settings_platform_name."_error.log"; // if empty, no errors are logged to file

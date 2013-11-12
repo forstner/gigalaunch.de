@@ -74,25 +74,44 @@ https://sourceforge.net/apps/trac/sourceforge/wiki/Git%20permission%20management
 
 3. upload your public ssh key (admin area of your profile)	
 
-==== FRONTENDS ====
+===== CONCEPT ======
 
-== FLASH ==
+1. keep things ASAP - as simple as possible - leave the creators room for their ideas.
+2. modulize - 10000 lines of code? split them in reusable modules.
 
-there is currently no flash-client support and everything is optimized for jquery mobile, but such can be easily implemented (featuring xml <CDATA stuff)
+==== client server communication ====
 
-== JQUERY / MOBILE ==
+communication is done with json. (object-format: {key1:value1,key2:value2,key3:value3} )
+
+php and jquery-javascript can de- and encode json and i bet almost all server side languages can do this natively with one command. (without you having to write extra code) 
+
+all client-UI-code is client-side generated, there is no server-side generated UI(html) code returned from the server (besides the static (html,js,css) files).
+
+why?
+1. to keep things simple (otherwise it might be confusing)
+2. to minimize bandwidth usage (better ship data instead of generated-html)
+
+
+==== clients ====
+
+=== flash ===
+
+could be a client, but not tested, can be easily implemented (featuring xml <CDATA stuff)
+
+=== javascript ==
 
 this is right now the featured front-end technology but other frontends can be implemented because all server-service-requests are defined as "interfaces".
 
-==== BACKENDS ====
+==== server-side ====
 
 gigalaunch wants to maximize your flexibility when it comes to backends and frontends.
 
-backend-wise gigalaunch follows the idea of "give the server a defined set of commands, and i don't care in what programming language they are implemented".
+backend-wise gigalaunch follows the idea of
+"give the server a defined set of commands, and i don't care in what programming language they are implemented in".
 
-my implementation is in php, because it's easy to set up a php server.
+my implementation is in php, because it's easy and fast going to setup and debug.
 
-but yours could be in ruby, python, java or even c / c++.
+but there are plans for implementations in ruby, python, java or even c / c++ when the concept is tested and worked out.
 
 these service-commands allow frontend's (ajax, javascript, jquery, flash) to easily interact with a mysql-webserver.
 
