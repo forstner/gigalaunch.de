@@ -102,7 +102,7 @@ o test profile picture upload :-D
 				<img id="profilepicture" class="profilepicture" src="" alt="profile Picture">
 			</p>
 			<input id="UserID" name="UserID" type="text" class="hidden form-control">
-			<input id="action" name="action" type="text" class="hidden form-control">
+			<input id="action" name="action" type="text" class="hidden form-control"> <!-- default-mode: create new user -->
 			<label>firstname:</label>
 			<input id="firstname" name="firstname" type="text" class="form-control">
 			<label>lastname:</label>
@@ -117,7 +117,7 @@ o test profile picture upload :-D
 			<input id="password" type="password" placeholder="password" class="form-control" title="something wrong here" data-placement="bottom">
 			<!-- password check -->
 			<input id="password_check" type="password" placeholder="password Again" class="form-control" title="something wrong here" data-placement="bottom">
-			<input id="password_encrypted" name="password_encrypted" type="text" placeholder="generated encrypted password" class="form-control">
+			<input id="password_encrypted" name="password_encrypted" type="text" placeholder="generated encrypted password" class="form-control" type="submit">
 		</form>
 
 		<!-- groups -->
@@ -129,13 +129,13 @@ o test profile picture upload :-D
 		<!-- controls -->
 		<div class="row">
 			<div class="col-6 col-sm-6 col-lg-4">
-				<button id="clear" class="btn btn-lg btn-primary btn-block">clear</button>
+				<button id="clear" class="btn btn-lg btn-warning btn-block">clear</button>
 			</div>
 			<div class="col-6 col-sm-6 col-lg-4">
-				<button id="save" class="btn btn-lg btn-primary btn-block">save</button>
+				<button id="save" class="btn btn-lg btn-warning btn-block">save</button>
 			</div>
 			<!-- where errors are displayed (put it directly next to the interactive element, that can produce an error) -->
-			<div class="error_div"></div>
+			<div class="error_div col-6 col-sm-6 col-lg-4"></div>
 		</div>
 	</div>
 
@@ -193,7 +193,7 @@ o test profile picture upload :-D
 	   					// setting group-buttons
 	   					var groups_array = user["groups"].split(",");
 
-	   						$('.group').removeClass("btn-primary"); // disable all buttons
+	   						$('.group').removeClass("btn-primary"); // disable all group buttons
 		   					for(var i=0;i < groups_array.length;i++)
 		   					{
 			   					if(groups_array[i])
@@ -235,6 +235,15 @@ o test profile picture upload :-D
 		$("#save").click(function() {
 			$('.form-userEdit').submit();
 		});
+		
+    	// when hitting save trigger submit
+		$("#clear").click(function() {
+			$('.form-userEdit').clearForm();
+			$("#profilepicture").attr("src");
+			$('.group').removeClass("btn-primary"); // disable all group buttons
+			$("#UserID").val(""); // reset selected user id
+			$("#action").val("new");
+		});
 
     	// this is executed when user hits enter on input fields or touches down on the save button
     	$('.form-userEdit').submit(function() {
@@ -269,14 +278,22 @@ o test profile picture upload :-D
 					{
 						if(groups == "")
 						{
-							groups = $(this).val();
+							if($(this).text() != "")
+							{
+								groups = $(this).text();
+							}
 						}
 						else
 						{
-							groups += $(this).val()+",";
+							if($(this).text() != "")
+							{
+								groups += ","+$(this).text();
+							}
 						}
 					}
 				});
+
+				var additionalData = {"groups":groups};
             
 		        submitForm(this,function(result)
 			    	    	    {
@@ -287,7 +304,7 @@ o test profile picture upload :-D
 			    						// after a successful save -> what now?
 			    					}
 			    	    	    },
-			    	    	    groups
+			    	    	    additionalData
 				);
 			}
     	    return false; // we don't want our form to be submitted

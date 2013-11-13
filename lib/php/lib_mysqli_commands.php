@@ -20,7 +20,7 @@ $mysqli_object = new class_mysqli_interface();
 function describe($table,$mode = "object")
 {
 	$result = new stdClass();
-	global $mysqli_object; global $worked; $worked = false; global $worked;
+	global $mysqli_object; global $worked; $worked = false; global $output; $output = ""; global $worked;
 	global $settings_database_name;
 	$tableDefinition = $mysqli_object->query("DESCRIBE ".$table);
 
@@ -70,7 +70,7 @@ function userexist($user,$uniqueKey = "id")
 {
 	$result = null;
 
-	global $mysqli_object; global $worked; $worked = false;
+	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	global $settings_database_name; global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames; global $settings_lastDatabase; global $settings_lastTable; global $settings_lastColumn;
 	$query = "";
 	
@@ -109,7 +109,7 @@ function users($user = null,$uniqueKey = "id",$uniqueValue = null,$where = "")
 {
 	$result = null;
 
-	global $mysqli_object; global $worked; $worked = false;
+	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	global $settings_database_name; global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames; global $settings_lastDatabase; global $settings_lastTable; global $settings_lastColumn;
 	$query = "";
 	if((!is_null($user)) && haspropertyandvalue($user,$uniqueKey,"users") && (!is_null($uniqueKey)))
@@ -187,7 +187,7 @@ function groups($group = null,$uniqueKey = "id",$where = "")
 {
 	$result = null;
 
-	global $mysqli_object; global $worked; $worked = false;
+	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	global $settings_database_name; global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames; global $settings_lastDatabase; global $settings_lastTable; global $settings_lastColumn;
 	$query = "";
 	if((!is_null($group)) && haspropertyandvalue($group,$uniqueKey,"groups") && (!is_null($uniqueKey)))
@@ -256,7 +256,7 @@ function groups($group = null,$uniqueKey = "id",$where = "")
  */ 
 function setSession($username,$password)
 {
-	global $mysqli_object; global $worked; $worked = false;
+	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	global $settings_database_name; global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames; global $settings_lastDatabase; global $settings_lastTable; global $settings_lastColumn;
 	global $settings_login_session_timeout;
 
@@ -304,7 +304,7 @@ function getSessionExpiration($session, $user) {
  */
 function getUserBySession($session)
 {
-	global $mysqli_object; global $worked; $worked = false;
+	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	global $settings_database_name; global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames; global $settings_lastDatabase; global $settings_lastTable; global $settings_lastColumn;
 	$result = "";
 	if($session)
@@ -342,7 +342,7 @@ function userdel($user,$identifyByKey = "id")
 	{
 		return error("function userdel: expected input \$user to be an object");
 	}
-	global $mysqli_object; global $worked; $worked = false;
+	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	global $settings_database_name; global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames; global $settings_lastDatabase; global $settings_lastTable; global $settings_lastColumn;
 	$worked = false;
 
@@ -376,7 +376,7 @@ function userdel($user,$identifyByKey = "id")
  * */
 function useradd($user) // $requested_username = "",$requested_password = "",$groups = "",$data = ""
 {
-	global $mysqli_object; global $worked; $worked = false;
+	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	global $settings_database_name; global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames; global $settings_lastDatabase; global $settings_lastTable; global $settings_lastColumn;
 	global $settings_default_home_after_login;
 
@@ -424,7 +424,7 @@ function useradd($user) // $requested_username = "",$requested_password = "",$gr
 	{
 		$user->groups = $user->groups.",".$group->groupname.",";
 	}
-	
+
 	// search for username in groups, if not found add.
 	// allready contains username in group-list
 	$user->id = ""; // id will always be automatically set by database/backend/autoincrement, or things will become chaotic
@@ -450,18 +450,17 @@ function useradd($user) // $requested_username = "",$requested_password = "",$gr
 /* edit/update/change a user
  * $groups = a,comma,separated,list,of,groupnames
  * arbitrary additional details data about the user
- * data -> $data = "key:value,key:value,"
- */
+ * data -> $data = "key:value,key:value," */
 function useredit($UpdatedUser,$uniqueKey = "id") // $userID, $requested_username = "",$requested_password = "",$groups = "",$data = ""
 {
 	// check if user with this username allready exists -> warn
 	
-	global $mysqli_object; global $worked; $worked = false;
+	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	global $settings_database_name; global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames; global $settings_lastDatabase; global $settings_lastTable; global $settings_lastColumn;
 	global $settings_default_home_after_login;
 
 	// get all info about user
-	$user_database = users($UpdatedUser,$uniqueKey);
+	$user_database = getFirstElementOfArray(users($UpdatedUser,$uniqueKey));
 
 	// merge it
 	$UpdatedUser = mergeObject($UpdatedUser,$user_database);
@@ -520,7 +519,7 @@ function groupadd($group,$systemgroup = 0)
 		return $worked;
 	}
 
-	global $mysqli_object; global $worked; $worked = false;
+	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	global $settings_database_auth_table; global $settings_database_groups_table;
 	global $settings_database_name;
 	global $settings_default_home_after_login;
@@ -550,7 +549,8 @@ function groupadd($group,$systemgroup = 0)
 	}
 	else
 	{
-		return error("function groupadd: group allready exists.");
+		$output = "function groupadd: group allready exists.";
+		return error($output);
 	}
 
 	return $group;
@@ -565,7 +565,7 @@ function groupedit($UpdatedGroup,$uniqueKey = "id") // $groupID, $requested_grou
 {
 	// check if group with this groupname allready exists -> warn
 
-	global $mysqli_object; global $worked; $worked = false;
+	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	global $settings_database_auth_table; global $settings_database_groups_table;
 	global $settings_database_name;
 	global $settings_default_home_after_login;
@@ -601,7 +601,7 @@ function groupget($group = null,$uniqueKey = "id")
 {
 	$result = null;
 
-	global $mysqli_object; global $worked; $worked = false;
+	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	global $settings_database_name;
 	global $settings_database_auth_table; global $settings_database_groups_table;
 	$query = "";
@@ -669,7 +669,7 @@ function groupdel($group,$identifyByKey = "id")
 	{
 		return error("function groupdel: expected input \$group to be an object");
 	}
-	global $mysqli_object; global $worked; $worked = false;
+	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	global $settings_database_name; global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames; global $settings_lastDatabase; global $settings_lastTable; global $settings_lastColumn;
 	$worked = false;
 
@@ -733,7 +733,7 @@ function groupdel($group,$identifyByKey = "id")
 function getGroups($option = "as object")
 {
 	$result = null;
-	global $mysqli_object; global $worked; $worked = false;
+	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	global $settings_database_name; global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames; global $settings_lastDatabase; global $settings_lastTable; global $settings_lastColumn;
 	$result = $mysqli_object->query("SELECT * FROM `".$settings_database_groups_table."`");
 
@@ -779,7 +779,7 @@ function groupexist($group,$uniqueKey = "id")
 	}
 
 	$result = false; // default result value
-	global $mysqli_object; global $worked; $worked = false;
+	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	global $settings_database_name; global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames; global $settings_lastDatabase; global $settings_lastTable; global $settings_lastColumn;
 
 	$query = "SELECT * FROM `".$settings_database_groups_table."` WHERE `".$uniqueKey."` = '".$group->$uniqueKey."'";
@@ -869,7 +869,7 @@ function getGroupsOfUser($user = null,$result_mode = "objects")
 {
 	$result = Array();
 	$query = "";
-	global $mysqli_object; global $worked; $worked = false;
+	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	global $settings_database_name; global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames; global $settings_lastDatabase; global $settings_lastTable; global $settings_lastColumn;
 	
 	$users = users($user); // in case we got no $user->groups info
@@ -1007,7 +1007,7 @@ function groupdeluser($user,$group)
 function recordadd($record,$table = null) // $requested_recordname = "",$requested_password = "",$groups = "",$data = ""
 {
 	/* -----defaults------ */
-	global $mysqli_object; global $worked; $worked = false;
+	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	global $settings_database_name; global $settings_database_auth_table; global $settings_lastDatabase; global $settings_lastTable; global $settings_lastColumn;
 	
 	if(is_null($table))
@@ -1043,7 +1043,7 @@ function recordadd($record,$table = null) // $requested_recordname = "",$request
 function recordedit($UpdatedRecord,$uniqueKey = "id",$table = null)
 {
 	/* -----defaults------ */
-	global $mysqli_object; global $worked; $worked = false;
+	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	global $settings_database_name; global $settings_database_auth_table; global $settings_lastDatabase; global $settings_lastTable; global $settings_lastColumn;
 	
 	if(is_null($table))
@@ -1092,7 +1092,7 @@ function recorddel($record,$identifyByKey = "id",$table = null)
 
 	/* -----defaults------ */
 	$query = "";
-	global $mysqli_object; global $worked; $worked = false;
+	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	global $settings_database_name; global $settings_lastDatabase; global $settings_lastTable; global $settings_lastColumn;
 	
 	if(is_null($table))
@@ -1127,7 +1127,7 @@ function records($record = null,$uniqueKey = "id",$where = "",$table = null)
 	$result = null;
 
 	/* -----defaults------ */
-	global $mysqli_object; global $worked; $worked = false;
+	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	global $settings_database_name; global $settings_database_auth_table; global $settings_lastDatabase; global $settings_lastTable; global $settings_lastColumn;
 	
 	if(is_null($table))
@@ -1201,32 +1201,32 @@ function records($record = null,$uniqueKey = "id",$where = "",$table = null)
 
 function getDevices($where = "")
 {
-global $mysqli_object; global $worked; $worked = false;
+global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 // global $settings_database_name;
 return $mysqli_object->query("SELECT * FROM `devices` ".$where);
 }
 function getDeviceByMac($mac = "")
 {
-global $mysqli_object; global $worked; $worked = false;
+global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 // global $settings_database_name;
 return $mysqli_object->query("SELECT * FROM `devices` WHERE `mac` = '".$mac."';");
 }
 function getButtons($where = "")
 {
-global $mysqli_object; global $worked; $worked = false;
+global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 global $settings_database_name;
 return $mysqli_object->query("SELECT * FROM `buttons` ".$where);
 }
 function getOutputs($where = "")
 {
-global $mysqli_object; global $worked; $worked = false;
+global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 global $settings_database_name;
 
 return $mysqli_object->query("SELECT * FROM `outputs` ".$where);
 }
 function getInputs($where = "")
 {
-global $mysqli_object; global $worked; $worked = false;
+global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 global $settings_database_name;
 
 return $mysqli_object->query("SELECT * FROM `inputs` ".$where);
@@ -1240,7 +1240,7 @@ function loadSQLFromFile($url)
 	// set_time_limit ( 0 );
 
 	global $settings_database_name;
-	global $mysqli_object; global $worked; $worked = false;
+	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	
 	$sql_query = "";
 	

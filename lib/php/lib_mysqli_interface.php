@@ -8,7 +8,10 @@ $mysqli_object = null;
 global $mysqli_object; // this class, which contains functions and objects such as $mysqli_link
 
 $id_last = null;
-global $id_last; // the auto-increment id of the last record inserted 
+global $id_last; // the auto-increment id of the last record inserted
+
+global $output;
+$output = ""; // contains the last error message
 
 /* mysqli.php
  * 1. loads config.php (database credentials) per default
@@ -38,6 +41,7 @@ class class_mysqli_interface {
 	/* constructor */
 	function __construct()
 	{
+		global $output;
 		global $mysqli_link;
 		global $settings_database_server;
 		global $settings_database_name;
@@ -56,7 +60,8 @@ class class_mysqli_interface {
 		{
 			// something went wrong, find out what and send back details to jquery-ajax-request
 			$error_details = mysqli_connect_errno().":".mysqli_connect_error();
-			exit('type:error,id:mysqli_connect failed,details:'.$error_details);
+			$output = 'type:error,id:mysqli_connect failed,details:'.$error_details;
+			exit($output);
 		}
 	}
 
@@ -80,6 +85,7 @@ class class_mysqli_interface {
 	*/
 	public static function query($query,$return_data = true)
 	{
+		global $output;
 		global $worked;
 		global $id_last;
 		global $mysqli_link;
@@ -112,7 +118,8 @@ class class_mysqli_interface {
 			$result = mysqli_query($query);
 			// $id_last = mysqli_insert_id($mysqli_link);
 
-			trigger_error("type:error,id:select_db failed,details:"." Selecting database failed: ".mysqli_connect_error());
+			$output = "type:error,id:select_db failed,details:"." Selecting database failed: ".mysqli_connect_error();
+			trigger_error($output);
 		}
 		else
 		{
@@ -128,8 +135,9 @@ class class_mysqli_interface {
 				$error = str_replace(":", " ", $error);
 				$settings_datasource = str_replace(",", " ", $settings_datasource);
 				$settings_datasource = str_replace(":", " ", $settings_datasource);
-				
-				trigger_error('type:error,id:database error,details:'.$error.',datasource:'.$settings_datasource);
+
+				$output = 'type:error,id:database error,details:'.$error.',datasource:'.$settings_datasource;
+				trigger_error($output);
 			}
 
 			if($return_data)

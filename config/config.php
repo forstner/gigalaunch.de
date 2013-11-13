@@ -30,7 +30,7 @@ $settings_lastColumn = "";
 /* ================ DEFAULTS */
 
 // $settings_default_home_after_login = "frontend_template.php"; // redirect all users, that have no home:somefile.php set in data field of passwd table, to this file after login
-$settings_default_home_after_login = "frontend_UserManagement.php"; // redirect all users, that have no home:somefile.php set in data field of passwd table, to this file after login
+$settings_default_home_after_login = "UserManagement_frontend.php"; // redirect all users, that have no home:somefile.php set in data field of passwd table, to this file after login
 require_once('./lib/php/lib_detectLang.php'); // will detect the currently used language
 $settings_lang = detectLang();
 
