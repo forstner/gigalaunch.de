@@ -25,6 +25,7 @@ $settings_database_groups_table = "groups"; // what the table is called, where t
 $settings_lastDatabase = "";
 $settings_lastTable = "";
 $settings_lastColumn = "";
+$settings_database_charset = "utf8"; // if you want special chars to be properly displayed in the database/phpmyadmin etc.
 
 /* ======================= USERS */
 /* ================ DEFAULTS */

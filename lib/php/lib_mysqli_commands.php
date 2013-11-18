@@ -1280,4 +1280,26 @@ function loadSQLFromFile($url)
 
 	return $worked;
 }
+
+/* check if a given database exists */
+function databaseExists($settings_database_name)
+{
+	$result = false;
+	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
+	global $settings_database_name; global $settings_lastDatabase;
+	
+	$query = "SHOW DATABASES;";
+	$allDatabaseNames = $mysqli_object->query($query);
+	
+	$target = count($allDatabaseNames);
+	for($i=0;$i<$target;$i++)
+	{
+		if($settings_database_name == $allDatabaseNames[$i])
+		{
+			$result = true;
+		}
+	}
+	
+	return $result;
+}
 ?>

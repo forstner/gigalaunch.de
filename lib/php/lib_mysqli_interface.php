@@ -47,6 +47,7 @@ class class_mysqli_interface {
 		global $settings_database_name;
 		global $settings_database_user;
 		global $settings_database_pass;
+		global $settings_database_charset;
 
 		/* this is how flash player / AIR apps needs it's xml data
 		 $output = "<?xml version=\"1.0\" encoding=\"utf-8\"?><sqlxml>";
@@ -55,6 +56,7 @@ class class_mysqli_interface {
 		*/
 
 		$mysqli_link = mysqli_connect($settings_database_server, $settings_database_user, $settings_database_pass, $settings_database_name);
+		$mysqli_link->set_charset($settings_database_charset);
 
 		if (!$mysqli_link)
 		{

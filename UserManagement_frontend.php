@@ -51,7 +51,7 @@ o test profile picture upload :-D
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li><a href="#">Home</a></li>
-					<li><a login_frontend.phphref="#about">About</a></li>
+					<li><a href="#about">About</a></li>
 					<li><a href="#contact">Contact</a></li>
 				</ul>
 			</div>
@@ -97,7 +97,7 @@ o test profile picture upload :-D
 
 		<!-- user add/edit form -->
 		<h4>Edit User:</h4>
-		<form id="form-userEdit" class="form-userEdit" action="UserManagement_backend.php" onsubmit="javascript: return false;">
+		<form id="form-userEdit" class="form-userEdit" action="lib/php/lib_users_and_groups.php" onsubmit="javascript: return false;">
 			<p>
 				<img id="profilepicture" class="profilepicture" src="" alt="profile Picture">
 			</p>
@@ -129,18 +129,31 @@ o test profile picture upload :-D
 		<!-- controls -->
 		<div class="row">
 			<div class="col-6 col-sm-6 col-lg-4">
-				<button id="clear" class="btn btn-lg btn-warning btn-block">clear</button>
+				<button id="add" class="btn btn-lg btn-warning btn-block">add</button>
 			</div>
 			<div class="col-6 col-sm-6 col-lg-4">
 				<button id="save" class="btn btn-lg btn-warning btn-block">save</button>
 			</div>
+			<div class="col-6 col-sm-6 col-lg-4">
+				<button id="delete" class="btn btn-lg btn-danger btn-block">delete</button>
+			</div>
 			<!-- where errors are displayed (put it directly next to the interactive element, that can produce an error) -->
 			<div class="error_div col-6 col-sm-6 col-lg-4"></div>
+		</div>
+		<!-- confirm delete dialog -->
+		<div id="confirm_deletion" class="row" style="display: none;">
+			<div class="col-6 col-sm-6 col-lg-4">
+				<div class="well">Are you shure?</div>
+			</div>
+			<div class="col-6 col-sm-6 col-lg-4">
+				<button id="delete_confirm" class="btn btn-lg btn-danger btn-block">confirm deletion</button>
+				<button id="delete_cancel" class="btn btn-lg btn-primary btn-block">cancel deletion</button>
+			</div>
 		</div>
 	</div>
 
 	<footer>
-		<p>&copy; Company 2013</p>
+		<!-- <p>&copy; Company 2013</p>  -->
 	</footer>
 
 	</div>
@@ -235,14 +248,53 @@ o test profile picture upload :-D
 		$("#save").click(function() {
 			$('.form-userEdit').submit();
 		});
-		
+
+    	// delete user
+		$("#delete").click(function() {
+			$("#action").val("delete");
+			$("#confirm_deletion").fadeIn(400);
+			$("#confirm_deletion").css("display","block");
+		});
+
+    	// confirm deletion user
+		$("#delete_confirm").click(function() {
+
+			var UserID = $("#UserID").val(); // read selected user id
+			var data = {"UserID":UserID,"action":"delete"};
+			var url = "lib/php/lib_users_and_groups.php?";
+			submitUrl(url,data,function(result)
+		    	    {
+						ServerStatusMessage(result,$(".error_div")); // visualize the response
+
+						$("#confirm_deletion").fadeOut(400); // hide the confirm dialog
+						$("#action").val(""); // reset action
+
+						if(result["resultType"] == "success")
+						{
+							// after a successful deletion -> what now?
+							$('.form-userEdit').clearForm();
+						}
+		    	    }
+			);
+		});
+
+    	// cancel deletion user
+		$("#delete_cancel").click(function() {
+
+			$("#confirm_deletion").fadeOut(400);
+			$("#action").val("");
+		});
+
     	// when hitting save trigger submit
-		$("#clear").click(function() {
+		$("#add").click(function() {
+			$("#firstname").focus(); // will bring focus
+			$("#firstname").addClass("focusedInput"); // will give it the boostraped focus style
 			$('.form-userEdit').clearForm();
 			$("#profilepicture").attr("src");
 			$('.group').removeClass("btn-primary"); // disable all group buttons
 			$("#UserID").val(""); // reset selected user id
 			$("#action").val("new");
+			scrollTo("#firstname");
 		});
 
     	// this is executed when user hits enter on input fields or touches down on the save button

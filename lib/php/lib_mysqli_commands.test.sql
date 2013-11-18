@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `groups` (
 --
 
 INSERT INTO `groups` (`id`, `groupname`, `system`, `mail`) VALUES
-(1, 'admins', 1, ''),
+(1, 'root', 1, ''),
 (37, 'username2', 0, ''),
 (36, 'username1', 0, ''),
 (340, 'user', 0, ''),

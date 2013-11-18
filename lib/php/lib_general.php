@@ -6,7 +6,7 @@ require_once('lib_convert.php');
  * so that it is available to all files */
 
 /* when a group of checkboxes is transmitted via form
- * name="checkbox_group_admins"
+ * name="checkbox_group_root"
  * name="checkbox_group_users"
  * ... one wants to extract all this group info into one array/object
  */
