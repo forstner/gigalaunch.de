@@ -123,7 +123,7 @@ o test profile picture upload :-D
 		<!-- groups -->
 		<label>belongs to these Groups:</label>
 		<p>tip on one of these buttons to make the user belong to this group
-			(active button) or remove user from group (disabled button).</p>
+			(blue) or remove user from group (grey).</p>
 		<div class="row groups"></div>
 
 		<!-- controls -->
@@ -254,6 +254,7 @@ o test profile picture upload :-D
 			$("#action").val("delete");
 			$("#confirm_deletion").fadeIn(400);
 			$("#confirm_deletion").css("display","block");
+			scrollTo("#confirm_deletion");
 		});
 
     	// confirm deletion user
@@ -272,7 +273,9 @@ o test profile picture upload :-D
 						if(result["resultType"] == "success")
 						{
 							// after a successful deletion -> what now?
-							$('.form-userEdit').clearForm();
+							// $('.form-userEdit').clearForm();
+							// $("#profilepicture").attr("src","");
+							document.location.reload(true); // reload the page, will probably also clear and reset form but also update the user-list
 						}
 		    	    }
 			);
@@ -290,7 +293,7 @@ o test profile picture upload :-D
 			$("#firstname").focus(); // will bring focus
 			$("#firstname").addClass("focusedInput"); // will give it the boostraped focus style
 			$('.form-userEdit').clearForm();
-			$("#profilepicture").attr("src");
+			$("#profilepicture").attr("src","");
 			$('.group').removeClass("btn-primary"); // disable all group buttons
 			$("#UserID").val(""); // reset selected user id
 			$("#action").val("new");
@@ -350,9 +353,10 @@ o test profile picture upload :-D
 		        submitForm(this,function(result)
 			    	    	    {
 			    					ServerStatusMessage(result,$(".error_div")); // visualize the response
-			
+
 			    					if(result["resultType"] == "success")
 			    					{
+			    						document.location.reload(true); // reload the page, will probably also clear and reset form but also update the user-list
 			    						// after a successful save -> what now?
 			    					}
 			    	    	    },

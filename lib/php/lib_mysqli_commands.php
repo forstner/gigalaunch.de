@@ -1294,9 +1294,10 @@ function databaseExists($settings_database_name)
 	$target = count($allDatabaseNames);
 	for($i=0;$i<$target;$i++)
 	{
-		if($settings_database_name == $allDatabaseNames[$i])
+		if($settings_database_name == $allDatabaseNames[$i]->Database)
 		{
 			$result = true;
+			break;
 		}
 	}
 	
