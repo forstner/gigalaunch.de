@@ -121,7 +121,7 @@ class class_mysqli_interface {
 			// $id_last = mysqli_insert_id($mysqli_link);
 
 			$output = "type:error,id:select_db failed,details:"." Selecting database failed: ".mysqli_connect_error();
-			trigger_error($output);
+			return error("function query",$output);
 		}
 		else
 		{
@@ -139,7 +139,7 @@ class class_mysqli_interface {
 				$settings_datasource = str_replace(":", " ", $settings_datasource);
 
 				$output = 'type:error,id:database error,details:'.$error.',datasource:'.$settings_datasource;
-				trigger_error($output);
+				error("function query",$output);
 			}
 
 			if($return_data)

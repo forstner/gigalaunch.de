@@ -62,7 +62,10 @@ function answer($result = null,$action = "",$resultType = "",$resultValue = "",$
 	$result["details"] = $details;
 	
 	// give answer to client
-	echo json_encode($result);
+	$result = json_encode($result);
+
+	echo $result;
+	return $result;
 }
 
 
@@ -128,10 +131,14 @@ function logError($error)
 	file_put_contents($settings_errorLog, $error."\n", FILE_APPEND);
 }
 
-/* outputs a warning and if $settings_log_errors == true, outputs to error.log */
-function error($message)
+/* outputs a warning and if $settings_log_errors == true, outputs to error.log
+ * 
+ * $action -> what function was executed
+ * $message -> what the error/result/problem is (that happened during execution of $action)
+ */
+function error($action,$message)
 {
-	trigger_error($message);
+	// trigger_error($message);
 
 	global $settings_log_errors;
 	global $worked;
@@ -140,7 +147,7 @@ function error($message)
 		log2file($settings_log_errors,$message);
 	}
 	
-	return false;
+	return answer(null,$action,$message, "failed");
 }
 
 /* outputs a warning and if $settings_log_errors == true, outputs to error.log */

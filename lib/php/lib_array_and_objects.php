@@ -43,23 +43,23 @@ function haspropertyandvalue($objectOrArray,$property,$caller,$displayErrors = f
 				}
 				else
 				{
-					if($displayErrors) error("function ".$caller.": \$objectOrArray has property ".$property." but without value. Argh!");
+					if($displayErrors) error("function ".$caller," \$objectOrArray has property ".$property." but without value. Argh!");
 				}
 			}
 			else
 			{
-				if($displayErrors) error("function ".$caller.": \$objectOrArray has no property ".$property.". Argh!");
+				if($displayErrors) error("function ".$caller," \$objectOrArray has no property ".$property.". Argh!");
 			}
 		}
 		else
 		{
-			if($displayErrors) error("function ".$caller.": is null. Argh!");
+			if($displayErrors) error("function ".$caller," is null. Argh!");
 		}
 	}
 	else
 	{
 		$caller = "haspropertyandvalue";
-		if($displayErrors) error("function ".$caller.": input \$objectOrArray is of type ".gettype($objectOrArray)." but i need object or array. Argh!");
+		if($displayErrors) error("function ".$caller,"input \$objectOrArray is of type ".gettype($objectOrArray)." but i need object or array. Argh!");
 	}
 
 	return $result;
@@ -190,7 +190,7 @@ function arrayobject2sqlvalues($ArrayOrObject,$mode)
 	}
 	else
 	{
-		return error("function arrayobject2sqlvalues: input is of type ".gettype($ArrayOrObject)." array or object expected.");
+		return error("function arrayobject2sqlvalues","input is of type ".gettype($ArrayOrObject)." array or object expected.");
 	}
 
 	$target = count($ArrayOrObject);

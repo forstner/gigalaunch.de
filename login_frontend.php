@@ -37,12 +37,12 @@
 			<h2 class="form-signin-heading">Please sign in</h2>
 			<!-- credentials -->
 			<!-- username input -->
-			<input id="username" name="username" type="text" class="form-control" placeholder="Email address" required autofocus>
+			<input id="username" name="username" type="text" class="form-control" placeholder="username" required autofocus value="username">
 			<!-- password input -->
 			<!-- should not be submitted, because it has no name -->
-			<input id="password" type="password" class="form-control" placeholder="Password" required>
+			<input id="password" type="password" class="form-control" placeholder="Password" required value="5f4dcc3b5aa765d61d8327deb882cf99">
 			<!-- onkeypress this hidden field is updated and transmitted  type="hidden" -->
-			<input id="password_encrypted" name="password_encrypted" type="text" class="form-control" placeholder="encrypted Password" required>
+			<input id="password_encrypted" name="password_encrypted" type="text" class="form-control" placeholder="encrypted Password" required value="5f4dcc3b5aa765d61d8327deb882cf99">
 			<label class="checkbox">
 				<input type="checkbox" value="remember-me"> Remember me
 			</label>

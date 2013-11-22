@@ -1,8 +1,8 @@
 <?php
 /* ======================= ABOUT THE PLATFORM */
 $settings_platform_name = "hausautomation";
-$settings_platform_logo = "images/projectlogo.png";
-$settings_platform_url = "http://gigalaunch.de";
+$settings_platform_logo = "images/dataworx.png";
+$settings_platform_url = "http://dataworx.de/hausautomation";
 $settings_errorLog = $settings_platform_name."_error.log"; // if empty, no errors are logged to file
 
 $settings_log_errors = "log/error.log"; // if errors should be logged to file, if not leave this empty
@@ -31,7 +31,7 @@ $settings_database_charset = "utf8"; // if you want special chars to be properly
 /* ================ DEFAULTS */
 
 // $settings_default_home_after_login = "frontend_template.php"; // redirect all users, that have no home:somefile.php set in data field of passwd table, to this file after login
-$settings_default_home_after_login = "UserManagement_frontend.php"; // redirect all users, that have no home:somefile.php set in data field of passwd table, to this file after login
+$settings_default_home_after_login = "ManagementUser.php"; // redirect all users, that have no home:somefile.php set in data field of passwd table, to this file after login
 require_once('./lib/php/lib_detectLang.php'); // will detect the currently used language
 $settings_lang = detectLang();
 

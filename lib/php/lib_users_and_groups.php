@@ -65,20 +65,6 @@ if(isset($_REQUEST["action"]))
 		$user->groups = $_REQUEST['groups'];
 
 		useradd($user); // returns the user-object from database, containing a new, database generated id, that is important for editing/deleting the user later
-
-		global $output;
-
-		if($output)
-		{
-			// if there is output on edit -> something is bad -> and $output should contain the error message that is forwareded to the client
-			// answer($result = null,$action = "",$resultType = "",$resultValue = "",$details = "")
-			answer(null,"update","failed","failed",$output,"lib_users_and_groups.php: action newUser failed");
-		}
-		else
-		{
-			// if there is no output on edit -> everything is okay
-			answer($result,"update","success","success","successfully added a new user to the database.");
-		}
 	}
 	/* update an existing user */
 	if($_REQUEST['action'] == "update")
@@ -96,20 +82,6 @@ if(isset($_REQUEST["action"]))
 
 		// writing to database, for more examples please check out: lib_mysqli_commands.test.php
 		useredit($user);
-
-		global $output;
-
-		if($output)
-		{
-			// if there is output on edit -> something is bad -> and $output should contain the error message that is forwareded to the client
-			// answer($result = null,$action = "",$resultType = "",$resultValue = "",$details = "")
-			answer(null,"update","failed","failed",$output,"lib_users_and_groups.php: useredit/update failed.");
-		}
-		else
-		{
-			// if there is no output on edit -> everything is okay
-			answer($result,"update","success","success","user updated successfully");
-		}
 	}
 
 	/* delete user */
@@ -118,20 +90,6 @@ if(isset($_REQUEST["action"]))
 		$user = newUser(); // get database layout of an UserObject-Instance (basically all the keys but no values, not a real user record just the layout of it)
 		$user->id = $_REQUEST['UserID']; // set the user id of the UserObject-Instance to 0, so we are looking for a user with id == 0
 		userdel($user);
-
-		global $output;
-
-		if($output)
-		{
-			// if there is output on edit -> something is bad -> and $output should contain the error message that is forwareded to the client
-			// answer($result = null,$action = "",$resultType = "",$resultValue = "",$details = "")
-			answer(null,"update","failed","failed",$output,"lib_users_and_groups.php: action delete User failed");
-		}
-		else
-		{
-			// if there is no output on edit -> everything is okay
-			answer($result,"update","success","success","deleted User successfully");
-		}
 	}
 }
 ?>

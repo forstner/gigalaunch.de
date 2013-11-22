@@ -340,7 +340,7 @@ function userdel($user,$identifyByKey = "id")
 {
 	if(!is_object($user))
 	{
-		return error("function userdel: expected input \$user to be an object");
+		return error("function userdel","expected input \$user to be an object");
 	}
 	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	global $settings_database_name; global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames; global $settings_lastDatabase; global $settings_lastTable; global $settings_lastColumn;
@@ -350,6 +350,18 @@ function userdel($user,$identifyByKey = "id")
 	{
 		$output = $mysqli_object->query("DELETE FROM  `".$settings_database_name."`.`".$settings_database_auth_table."` WHERE `".$settings_database_auth_table."`.`".$identifyByKey."` = '".$user->$identifyByKey."';");
 		$worked = true;
+	}
+	
+	if($output)
+	{
+		// if there is output on edit -> something is bad -> and $output should contain the error message that is forwareded to the client
+		// answer($result = null,$action = "",$resultType = "",$resultValue = "",$details = "")
+		answer(null,"update","failed","failed",$output,"lib_users_and_groups.php: action delete User failed");
+	}
+	else
+	{
+		// if there is no output on edit -> everything is okay
+		answer($result,"update","success","success","deleted User successfully");
 	}
 	
 	return $worked;
@@ -391,7 +403,7 @@ function useradd($user) // $requested_username = "",$requested_password = "",$gr
 	{
 		if(userexist($user,"username"))
 		{
-			return error("function useradd: can not continue, user ".$user->username." is taken and \$settings_uniqueUsernames is set to true.");
+			return error("useradd","can not continue, user ".$user->username." is taken and \$settings_uniqueUsernames is set to true.");
 		}
 	}
 
@@ -472,7 +484,7 @@ function useredit($UpdatedUser,$uniqueKey = "id") // $userID, $requested_usernam
 		{
 			if(userexist($UpdatedUser,"username"))
 			{
-				return error("function useredit: can not rename username from ".$user_database->username." to ".$UpdatedUser->username." because the username is allready in use.");
+				return error("function useredit"," can not rename username from ".$user_database->username." to ".$UpdatedUser->username." because the username is allready in use.");
 			}
 		}
 	}
@@ -486,6 +498,19 @@ function useredit($UpdatedUser,$uniqueKey = "id") // $userID, $requested_usernam
 
 	$output = $mysqli_object -> query($query,false,true);
 
+	/* return errors in json to browser */
+	 if($output)
+	 {
+		// if there is output on edit -> something is bad -> and $output should contain the error message that is forwareded to the client
+		// answer($result = null,$action = "",$resultType = "",$resultValue = "",$details = "")
+		answer(null,"update","failed","failed",$output,"lib_users_and_groups.php: useredit/update failed.");
+	}
+	else
+	{
+		// if there is no output on edit -> everything is okay
+		answer(null,"update","success","success","user updated successfully");
+	}
+	
 	return $output;
 }
 
@@ -579,7 +604,7 @@ function groupedit($UpdatedGroup,$uniqueKey = "id") // $groupID, $requested_grou
 	// if $settings_uniqueGroupnames enabled -> check if groupname is allready in use/exists
 	if(groupexist($UpdatedGroup,"groupname"))
 	{
-		return error("function groupedit: can not rename group from ".$group_database->groupname." to ".$UpdatedGroup->groupname." because the groupname is allready in use.");
+		return error("function groupedit","can not rename group from ".$group_database->groupname." to ".$UpdatedGroup->groupname." because the groupname is allready in use.");
 	}
 
 	$values = arrayobject2sqlvalues($UpdatedGroup,"UPDATE");
@@ -667,7 +692,7 @@ function groupdel($group,$identifyByKey = "id")
 
 	if(!is_object($group))
 	{
-		return error("function groupdel: expected input \$group to be an object");
+		return error("function groupdel","expected input \$group to be an object");
 	}
 	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	global $settings_database_name; global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames; global $settings_lastDatabase; global $settings_lastTable; global $settings_lastColumn;
@@ -707,7 +732,7 @@ function groupdel($group,$identifyByKey = "id")
 
 		if($group_in_use)
 		{
-			error("function groupdel: can not delete group with name: ".$groupname." - the group is still in use by group ".$groupname);
+			error("function groupdel","can not delete group with name: ".$groupname." - the group is still in use by group ".$groupname);
 			$worked = false;
 			return $worked;
 		}
@@ -1087,7 +1112,7 @@ function recorddel($record,$identifyByKey = "id",$table = null)
 {
 	if(!is_object($record))
 	{
-		return error("function recorddel: expected input \$record to be an object");
+		return error("function recorddel"," expected input \$record to be an object");
 	}
 
 	/* -----defaults------ */
