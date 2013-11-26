@@ -259,6 +259,8 @@ function setSession($username,$password)
 	global $mysqli_object; global $worked; $worked = false; global $output; $output = "";
 	global $settings_database_name; global $settings_database_auth_table; global $settings_database_groups_table; global $settings_uniqueUsernames; global $settings_lastDatabase; global $settings_lastTable; global $settings_lastColumn;
 	global $settings_login_session_timeout;
+	global $settings_login_session_timeout;
+	
 
 	// the ip that the user had during login
 	$ip_login = $_SERVER['REMOTE_ADDR'];
@@ -273,6 +275,8 @@ function setSession($username,$password)
 
 	$valid_until = time(); // get current time
 	$valid_until = $valid_until+($settings_login_session_timeout*1000);
+	
+	$settings_user_loggedInUser_session_time_left = $valid_until;
 
 	$mysqli_object -> query("UPDATE `".$settings_database_name."`.`".$settings_database_auth_table."` SET `logintime` = '".$logintime."', `ip_login` = '".$ip_login."', `loginexpires` = '".$valid_until."', `session` = '".$_SESSION['session']."' WHERE `".$settings_database_auth_table."`.`username` = '".$username."' AND `".$settings_database_auth_table."`.`password` = '".$password."';");
 
@@ -370,7 +374,7 @@ function userdel($user,$identifyByKey = "id")
 /* add/register a new user
  * 
  * the properties a $user-array-object can have is defined through the database
- * (table defined in config/config.php -> $settings_database_auth_table e.g. passwd)
+ * (table defined in config.php -> $settings_database_auth_table e.g. passwd)
  * 
  * add a column there, and you have a new property attached to $user.
  * 
@@ -520,7 +524,7 @@ function useredit($UpdatedUser,$uniqueKey = "id") // $userID, $requested_usernam
  * $systemgroup = 1 -> this group is a system-group (like admin, guest... that can not/should not be deleted, even if there are no users anymore using it)
 *
 * the properties a group-array-object can have is defined through the database
-* (table defined in config/config.php -> $settings_database_auth_table e.g. passwd)
+* (table defined in config.php -> $settings_database_auth_table e.g. passwd)
 *
 * add a column there, and you have a new property attached to group.
 *
@@ -1014,7 +1018,7 @@ function groupdeluser($user,$group)
 /* add/register a new record
  *
 * the properties a $record-array-object can have is defined through the database
-* (table defined in config/config.php -> $settings_database_auth_table e.g. passwd)
+* (table defined in config.php -> $settings_database_auth_table e.g. passwd)
 *
 * add a column there, and you have a new property attached to $record.
 *

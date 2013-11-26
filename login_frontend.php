@@ -42,7 +42,7 @@
 			<!-- should not be submitted, because it has no name -->
 			<input id="password" type="password" class="form-control" placeholder="Password" required value="5f4dcc3b5aa765d61d8327deb882cf99">
 			<!-- onkeypress this hidden field is updated and transmitted  type="hidden" -->
-			<input id="password_encrypted" name="password_encrypted" type="text" class="form-control" placeholder="encrypted Password" required value="5f4dcc3b5aa765d61d8327deb882cf99">
+			<input id="password_encrypted" style="display: none;" name="password_encrypted" type="text" class="form-control" placeholder="encrypted Password" required value="5f4dcc3b5aa765d61d8327deb882cf99">
 			<label class="checkbox">
 				<input type="checkbox" value="remember-me"> Remember me
 			</label>

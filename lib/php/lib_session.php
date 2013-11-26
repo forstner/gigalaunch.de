@@ -10,8 +10,10 @@
  */
 
 // 0. init database
-require_once("config/config.php");
+require_once("config.php");
 global $settings_datasource;
+
+global $user;
 if($settings_datasource == "mysql")
 {
 	require_once('./lib/php/lib_mysqli_commands.php');
@@ -36,7 +38,9 @@ if(!isset($allowed_users))
 {
 	// echo('type:error,id:allowed_users not defined,details:the called php file did not have an $allowed_users variable defined. can not determine what logged in user is allowed to access this page.');
 	// sleep(3);
-	header("Location: servermessages/allowed_users_missing.php"); // redirect or exit();
+	// header("Location: servermessages/allowed_users_missing.php"); // redirect or exit();
+	answer(null,"lib_session","failed","failed","session expired - please reloggin","session expired - please reloggin");
+	
 }
 else
 {
@@ -55,7 +59,8 @@ if(!isset($allowed_groups))
 {
 	// echo('type:error,id:allowed_users not defined,details:the called php file did not have an $allowed_users variable defined. can not determine what logged in user is allowed to access this page.');
 	// sleep(3);
-	header("Location: servermessages/allowed_groups_missing.php"); // redirect or exit();
+	answer(null,"lib_session","failed","failed","session expired - please reloggin","session expired - please reloggin");
+	// header("Location: servermessages/allowed_groups_missing.php"); // redirect or exit();
 }
 else
 {
@@ -68,11 +73,14 @@ else
 // 2. check for valid session
 if(!$open_to_all) // no further check if you shall pass 
 {
-	session_start();
+	if (session_status() == PHP_SESSION_NONE) {
+		session_start(); // if not start
+	}
 	if (!isset($_SESSION['session']))
 	{
 		// no session is set, redirect to login
-		header("Location: frontend_login.php");
+		answer(null,"lib_session","failed","failed","session expired - please reloggin","session expired - please reloggin");
+		// header("Location: frontend_login.php");
 		exit;
 	}
 	else
@@ -83,7 +91,8 @@ if(!$open_to_all) // no further check if you shall pass
 		if(!$user)
 		{
 			// no session set
-			header("Location: servermessages/session_expired.php");
+			answer(null,"lib_session","failed","failed","session expired - please reloggin","session expired - please reloggin");
+			// header("Location: servermessages/session_expired.php");
 		}
 
 		$valid_until = getSessionExpiration($_SESSION['session'],$user);
@@ -107,7 +116,8 @@ if(!$open_to_all) // no further check if you shall pass
 			$_SESSION['session'] = "";
 			// exit('type:error,id:session expired,details:Please re-login!. ');
 			// sleep(3);
-			header("Location: servermessages/session_expired.php");
+			answer(null,"lib_session","failed","failed","session expired - please reloggin","session expired - please reloggin");
+			// header("Location: servermessages/session_expired.php");
 		}
 	}
 	else
@@ -115,7 +125,8 @@ if(!$open_to_all) // no further check if you shall pass
 		$session_valid = false;
 		// exit('type:error,id:session expired,details:Please re-login!. ');
 		// sleep(3);
-		header("Location: servermessages/session_expired.php");
+		answer(null,"lib_session","failed","failed","session expired - please reloggin","session expired - please reloggin");
+		// header("Location: servermessages/session_expired.php");
 	}
 	
 	if($session_valid == true)
@@ -146,7 +157,7 @@ if(!$open_to_all) // no further check if you shall pass
 	
 			foreach ($groups as $key => $group)
 			{
-				if(in_array($group, $allowed_groups_array))
+				if(in_array($group->groupname, $allowed_groups_array))
 				{
 					// all ok
 					$group_valid = true;
@@ -162,8 +173,9 @@ if(!$open_to_all) // no further check if you shall pass
 		}
 		else
 		{
-			if(!$user_valid) header("Location: servermessages/user_not_allowed.php");
-			if(!$group_valid) header("Location: servermessages/group_not_allowed.php");
+			// if(!$user_valid) header("Location: ../../login_frontend.php");
+			// if(!$group_valid) header("Location: ../../login_frontend.php");
+			answer(null,"lib_session","failed","failed","session expired - please reloggin","session expired - please reloggin");
 			// exit('type:error,id:session expired,details:you are not allowed to view this page');
 		}
 	}

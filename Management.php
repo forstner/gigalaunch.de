@@ -17,7 +17,7 @@ o test profile picture upload :-D
 <meta name="author" content="">
 <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png">
 
-<title>usermanagement</title>
+<title>Management</title>
 
 <!-- Bootstrap core CSS -->
 <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -33,6 +33,40 @@ o test profile picture upload :-D
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
+    
+<style>
+.fitToContent {
+	display: inline-block;
+}
+.relative {
+	position: relative;
+}
+.Admins {
+	background: red;
+	min-width:300px;
+	min-height:300px;
+}
+.profilepicture {
+    height: 150px;
+    width: 150px;
+}
+.GroupAdmins {
+	background: blue;
+}
+.User {
+	background: yellow;
+}
+.Device {
+	background: fuchsia;
+}
+.Module {
+	background: orange;
+}
+.fullSize {
+	min-width:300px;
+	min-height:300px;
+}
+</style>
 </head>
 
 <body>
@@ -50,10 +84,7 @@ o test profile picture upload :-D
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li><a href="login_frontend.php">Login</a></li>
-					<li class="active"><a href="Management.php">UserManagement</a></li>
-					<li><a href="ManagementDevice.php">DeviceManagement</a></li>
-					<li><a href="#">Home</a></li>
-					<li><a href="#about">About</a></li>
+					<li class="active"><a href="Management.php">Management</a></li>
 					<li><a href="#Support">Support</a></li>
 				</ul>
 			</div>
@@ -73,11 +104,12 @@ o test profile picture upload :-D
 						data-toggle="offcanvas">Toggle nav</button>
 				</p>
 				<div class="jumbotron">
-					<h1>UserManagement</h1>
+					<h1>Management</h1>
 					<p>Here you can edit or delete existing or add new Users. To delete
 						a user, please hit the edit button first.</p>
 				</div>
-				<div class="listOfusers row"></div>
+				<div id="container1" class="container relative container1 row">
+				</div>
 				<!--/row-->
 			</div>
 			<!--/span-->
@@ -174,14 +206,239 @@ o test profile picture upload :-D
 	<script>
 	var users_store = null; // save for later use
 	var groups_store = null; // save for later use
-    $(document).ready(function() {
-        // get users from server and display them via template
-        users(function(data)
-		{
-        	users_store = data; // save for later use
+	$(document).ready(function() {
+	
+		// execute this after settings loaded
+		$(document).bind('settingsLoaded', function () {
+	        // get users from server and display them via template
+	        users(function(users)
+			{
+	        	users_store = users; // save for later use
+	
+	        	// filter out admins
+	        	// iterate over object
+	        	var Admins = [];
+	        	var GroupAdmins = [];
+	        	var Users = [];
+	
+				$.each(users, function(index, value) {
+					var user = users[index];
+					if(user.hasOwnProperty("username"))
+					{
+		        		var groups = user["groups"]
+		        		var groups_array = groups.split(',');
+		
+		        		if(jQuery.inArray( "Admin", groups_array ) != -1)
+		        		{
+		            		Admins.push(this);
+		        		}
+		        		if(jQuery.inArray( "GroupAdmin", groups_array ) != -1)
+		        		{
+		        			GroupAdmins.push(this);
+		        		}
+		        		if(jQuery.inArray( "User", groups_array ) != -1)
+		        		{
+		            		Users.push(this);
+		        		}
+					}
+				});
 
-			$(".listOfusers").fillTemplate(data,'<div class="col-6 col-sm-6 col-lg-4"><div class="thumbnail"><img class="profilepicture" src="$profilepicture" alt="profile Picture"><div class="caption"><h3>$firstname $lastname</h3><p>Username: $username</p><p>mail: <a href="mailto:$mail">$mail</a></p><button class="edit btn btn-lg btn-block">Edit</button><div class="UserID hidden">$id</div></div></div></div>');
+				settings_user_loggedInUserGroups_array = $settings["settings_user_loggedInUserGroups"].split(',');
+				
+				// only if currently logged in user belongs to Group Admin...
+	        	if(jQuery.inArray( "Admin", settings_user_loggedInUserGroups_array) != -1)
+	        	{
+					// display/generate all admins
+					$("#container1").fillTemplate(Admins,'<div id="Admin-$id" class="Admins relative"><img class="profilepicture" src="$profilepicture" alt="profile Picture"><h3>Admin: $firstname $lastname</h3><p>UserID: $id</p><p>Username: $username</p><p>mail: <a href="mailto:$mail">$mail</a></p><div class="UserID hidden">$id</div></div>');
 
+	    			$.each(Admins, function(index, Admin) {
+	    				var owns = Admin["owns"];
+	    				var result = getAllUserIDsFromOwns(owns);
+	    				var GroupAdminIDs = result["GroupAdminIDs"];
+	
+	    				// iterate over UserIDs of owns and generate html code for every element
+	    				$.each(GroupAdminIDs, function(index, GroupAdminID) {
+	        				var GroupAdmin = array_findObject_byKeyValue(GroupAdmins,"id",GroupAdminID);
+	        				if(!jQuery.isEmptyObject( GroupAdmin ))
+	        				{
+		    					$("#Admin-"+Admin["id"]).fillTemplate({0:GroupAdmin},'<div id="GroupAdmin-$id" class="GroupAdmins thumbnail relative fitToContent"><h2>GroupAdmin: $firstname $lastname</h2><img class="profilepicture" src="$profilepicture" alt="profile Picture"><p>Username: $username</p><p>mail: <a href="mailto:$mail">$mail</a></p><div class="GroupAdminID hidden">$id</div>');
+	        				}
+		    			});
+	    			});
+
+	    			$.each(GroupAdmins, function(index, GroupAdmin) {
+	    				var owns = GroupAdmin["owns"];
+	    				var result = getAllUserIDsFromOwns(owns);
+	    				var UserIDs = result["UserIDs"];
+	
+	    				// iterate over UserIDs of owns and generate html code for every element
+	    				$.each(UserIDs, function(index, value) {
+	        				var currentUserID = UserIDs[index];
+	        				var user = array_findObject_byKeyValue(Users,"id",currentUserID);
+		    				$("#GroupAdmin-"+GroupAdmin["id"]).fillTemplate({0:user},'<div id="User-$id" class="Admins relative"><h1>$firstname $lastname</h1><img class="profilepicture" src="$profilepicture" alt="profile Picture"><h3>$firstname $lastname</h3><p>Username: $username</p><p>mail: <a href="mailto:$mail">$mail</a></p><div class="UserID hidden">$id</div></div>');
+		    			});
+	    			});
+	    			
+					// check on array groupAdmin, where "owns" has UserID of Admin(1) add to that Adminbox.
+	    			$.each(Users, function(index, value) {
+	    			});
+	        	}
+	        	else if(jQuery.inArray( "GroupAdmin", $settings["settings_user_loggedInUserGroups"]) != -1) // only if currently logged in user belongs to Group "GroupAdmin"...
+	        	{
+					$("#container1").fillTemplate(GroupAdmin,'<div id="GroupAdmin-$id" class="Admins relative"><h1>$firstname $lastname</h1><img class="profilepicture" src="$profilepicture" alt="profile Picture"><h3>$firstname $lastname</h3><p>Username: $username</p><p>mail: <a href="mailto:$mail">$mail</a></p><div class="UserID hidden">$id</div></div>');
+					// ... show the GroupAdmin boxes
+					/*
+					<div id="GroupAdmin2" class="GroupAdmins thumbnail relative fitToContent">
+						<h1>GroupAdmin2</h1>
+					</div>
+					*/
+	
+	        	}
+	        	else
+	        	{
+					// ... show the User boxes
+					$("#container1").fillTemplate(Admins,'<div id="$firstname" class="Admins relative"><h1>$firstname $lastname</h1><img class="profilepicture" src="$profilepicture" alt="profile Picture"><h3>$firstname $lastname</h3><p>Username: $username</p><p>mail: <a href="mailto:$mail">$mail</a></p><div class="UserID hidden">$id</div></div>');
+	        	}
+			});
+
+			// get groups from server and display them via template
+	        groups(function(data)
+			{
+	        	groups_store = data; // save for later use
+
+				$(".groups").fillTemplate(data,'<div class="col-6 col-sm-6 col-lg-4"><button class="group toggle btn btn-lg btn-block">$groupname</button></div>');
+
+				// make button-groups toggle-able
+				$(".toggle").click(function(){
+					if($(this).hasClass("btn-primary"))
+					{
+						$(this).removeClass("btn-primary");
+					}
+					else
+					{
+						$(this).addClass("btn-primary");
+					}
+				});
+			});
+
+			// get groups from server and display them via template
+			/*
+	        devices(function(devices)
+			{
+	        	var Modules = [];
+	    		
+	        	groups_store = data; // save for later use
+
+				$(".groups").fillTemplate(data,'<div class="col-6 col-sm-6 col-lg-4"><button class="group toggle btn btn-lg btn-block">$groupname</button></div>');
+
+				// make button-groups toggle-able
+				$(".toggle").click(function(){
+					if($(this).hasClass("btn-primary"))
+					{
+						$(this).removeClass("btn-primary");
+					}
+					else
+					{
+						$(this).addClass("btn-primary");
+					}
+				});
+			}); */
+
+			// get groups from server and display them via template
+			/*
+	        modules(function(devices)
+			{
+	        	var Modules = [];
+	    		
+	        	groups_store = data; // save for later use
+
+				$(".groups").fillTemplate(data,'<div class="col-6 col-sm-6 col-lg-4"><button class="group toggle btn btn-lg btn-block">$groupname</button></div>');
+
+				// make button-groups toggle-able
+				$(".toggle").click(function(){
+					if($(this).hasClass("btn-primary"))
+					{
+						$(this).removeClass("btn-primary");
+					}
+					else
+					{
+						$(this).addClass("btn-primary");
+					}
+				});
+			}); */
+
+			/* iterate over array, return the element where key matches value */
+			function array_findObject_byKeyValue(array,key,value)
+			{
+				var result = new Object();
+				$.each(array, function(index, element) {
+					if(element[key] == value)
+					{
+						result = element;
+    					return;
+					}
+				});
+
+				return result;
+			}
+			/* return a object that holds 3x arrays
+				1.result["UserIDs"] ->all the user id's that can be extracted from the "owns" UserID:1,UserID:2, field of a user (admin or groupadmin
+				2.result["DeviceIDs"] ->all the DeviceIDs that can be extracted from the "owns" DeviceIDs:1,DeviceIDs:2, field of a user
+				3.result["ModuleIDs"] ->all the ModuleIDs that can be extracted from the "owns" ModuleIDs:1,ModuleIDs:2, field of a device
+			*/
+			function getAllUserIDsFromOwns(owns)
+			{
+				var owns_array = owns.split(',');
+				var GroupAdminIDs = [];
+				var UserIDs = [];
+				var DeviceIDs = [];
+				var ModuleIDs = [];
+
+				$.each(owns_array, function(index, value) {
+					var owns_element = owns_array[index];
+					var owns_key_value = owns_element.split(":");
+					if(owns_key_value[0] == "GroupAdminID")
+					{
+						GroupAdminIDs.push(owns_key_value[1]);
+					}
+					if(owns_key_value[0] == "UserID")
+					{
+						UserIDs.push(owns_key_value[1]);
+					}
+					else if(owns_key_value[0] == "DeviceID")
+					{
+						DeviceIDs.push(owns_key_value[1]);
+					}
+					else if(owns_key_value[0] == "ModuleID")
+					{
+						ModuleIDs.push(owns_key_value[1]);
+					}
+				});
+
+				var result = new Object();
+				result["GroupAdminIDs"] = GroupAdminIDs;
+				result["UserIDs"] = UserIDs;
+				result["DeviceIDs"] = DeviceIDs;
+				result["ModuleIDs"] = ModuleIDs;
+
+				return result;
+			}
+
+		    // make the boxes resize on click
+			$("#container1 div").click(
+				function()
+				{
+					if($(this).hasClass("fullSize"))
+					{
+						$(this).removeClass("fullSize");					
+					}
+					else
+					{
+						$(this).addClass("fullSize");
+					}
+				}
+			);
+		    		
 			$(".edit").click(function()
 			{
 				scrollTo("#form-userEdit");
@@ -224,26 +481,6 @@ o test profile picture upload :-D
 	   					
 	   					break;
 	   				}
-   				}
-			});
-		});
-
-		// get groups from server and display them via template
-        groups(function(data)
-		{
-        	groups_store = data; // save for later use
-
-			$(".groups").fillTemplate(data,'<div class="col-6 col-sm-6 col-lg-4"><button class="group toggle btn btn-lg btn-block">$groupname</button></div>');
-
-			// make button-groups toggle-able
-			$(".toggle").click(function(){
-				if($(this).hasClass("btn-primary"))
-				{
-					$(this).removeClass("btn-primary");
-				}
-				else
-				{
-					$(this).addClass("btn-primary");
 				}
 			});
 		});
@@ -268,26 +505,25 @@ o test profile picture upload :-D
 			var data = {"UserID":UserID,"action":"delete"};
 			var url = "lib/php/lib_users_and_groups.php?";
 			submitUrl(url,data,function(result)
-		    	    {
-						ServerStatusMessage(result,$(".error_div")); // visualize the response
-
-						$("#confirm_deletion").fadeOut(400); // hide the confirm dialog
-						$("#action").val(""); // reset action
-
-						if(result["resultType"] == "success")
-						{
-							// after a successful deletion -> what now?
-							// $('.form-userEdit').clearForm();
-							// $("#profilepicture").attr("src","");
-							document.location.reload(true); // reload the page, will probably also clear and reset form but also update the user-list
-						}
-		    	    }
+					    	    {
+									ServerStatusMessage(result,$(".error_div")); // visualize the response
+				
+									$("#confirm_deletion").fadeOut(400); // hide the confirm dialog
+									$("#action").val(""); // reset action
+				
+									if(result["resultType"] == "success")
+									{
+										// after a successful deletion -> what now?
+										// $('.form-userEdit').clearForm();
+										// $("#profilepicture").attr("src","");
+										document.location.reload(true); // reload the page, will probably also clear and reset form but also update the user-list
+									}
+					    	    }
 			);
 		});
 
     	// cancel deletion user
 		$("#delete_cancel").click(function() {
-
 			$("#confirm_deletion").fadeOut(400);
 			$("#action").val("");
 		});

@@ -1,5 +1,5 @@
 <?php
-require_once("config/config.php");
+require_once("config.php");
 global $errors;
 $mysqli_link = null;
 global $mysqli_link; // a pointer symbolizing the connection to the mysql database
@@ -16,7 +16,7 @@ $output = ""; // contains the last error message
 /* mysqli.php
  * 1. loads config.php (database credentials) per default
 * 2. establishes a link to the mysql database
-* 3. selects a default database (the one given in config/config.php)
+* 3. selects a default database (the one given in config.php)
 * 4. handles all mysql interaction, databaseresults are returned as Array.
 *
 * return each record as as key=>value element of an array (where key is column-name, and value is corresponding value)

@@ -1,5 +1,5 @@
 <?php
-include_once("config/config.php");
+include_once("config.php");
 include_once("./lib/php/lib_mysqli_commands.php");
 
 global $settings_database_name;

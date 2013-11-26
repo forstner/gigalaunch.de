@@ -2,7 +2,7 @@
 echo "<hr><h1 color='red'>test lib_mysqli_commands database management commands</h1><br>";
 chdir('../../');
 include_once("./lib/php/lib_mysqli_commands.php");
-include_once("config/config.php");
+include_once("config.php");
 
 echo "<hr><h1 color='red'>test database user management commands</h1><br>";
 

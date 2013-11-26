@@ -128,7 +128,7 @@ function generatePassword($length = 8) {
 /* write the error to a log file */
 function logError($error)
 {
-	file_put_contents($settings_errorLog, $error."\n", FILE_APPEND);
+	file_put_contents($settings_log_errors, $error."\n", FILE_APPEND);
 }
 
 /* outputs a warning and if $settings_log_errors == true, outputs to error.log

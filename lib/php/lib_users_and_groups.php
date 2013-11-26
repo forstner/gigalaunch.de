@@ -8,7 +8,7 @@ $allowed_users = "only logged in users"; // a list of userIDs that are allowed t
 $allowed_groups = "root"; // a list of groups, that are allowed to access this page
 require_once('./lib/php/lib_security.php'); // will mysql-real-escape all input
 require_once('./lib/php/lib_mysqli_commands.php');
-require_once("config/config.php"); // load project-config file
+require_once("config.php"); // load project-config file
 // // login needs to be open for all in order to login! require_once('./lib/php/lib_session.php'); // will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
 /* ================= */
 
@@ -24,6 +24,9 @@ if(isset($_REQUEST["action"]))
 		// comment("get definition of user from database");
 		$user = newUser();
 		$users = users($user,$_REQUEST["uniqueKey"],$_REQUEST["uniqueValue"],$_REQUEST["where"]);
+		
+		// remove passwords
+		$users = removePassword($users);
 
 		if($users)
 		{
@@ -91,5 +94,17 @@ if(isset($_REQUEST["action"]))
 		$user->id = $_REQUEST['UserID']; // set the user id of the UserObject-Instance to 0, so we are looking for a user with id == 0
 		userdel($user);
 	}
+}
+
+/* remove passwords */
+function removePassword($users_array)
+{
+	$count = count($users_array);
+	for($i = 0;$i < $count;$i++)
+	{
+		$users_array[$i]->password = "";
+	}
+	
+	return $users_array;
 }
 ?>

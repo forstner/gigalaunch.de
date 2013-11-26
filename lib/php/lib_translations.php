@@ -1,7 +1,7 @@
 <?php
 /* ================= please put this on top of every page, modify the allowed users/groups entries to manage access per page. */
 error_reporting(E_ALL); // turn the reporting of php errors on
-require_once("config/config.php"); // load project-config file
+require_once("config.php"); // load project-config file
 require_once("./lib/php/lib_detectLang.php");
 /* ================= */
 /* get appropriate translation for the $keyword */
