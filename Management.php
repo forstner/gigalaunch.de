@@ -33,24 +33,32 @@ o test profile picture upload :-D
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
-    
+
 <style>
+#container1 div {
+    padding: 4px;
+}
+.resizable {
+	border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    padding: 4px;
+}
 .fitToContent {
 	display: inline-block;
 }
 .relative {
 	position: relative;
+	float: left;
 }
-.Admins {
+.profilePicture {
+	height: 128px;
+}
+
+.Admin {
 	background: red;
-	min-width:300px;
-	min-height:300px;
+	height:50px;
 }
-.profilepicture {
-    height: 150px;
-    width: 150px;
-}
-.GroupAdmins {
+.GroupAdmin {
 	background: blue;
 }
 .User {
@@ -65,6 +73,21 @@ o test profile picture upload :-D
 .fullSize {
 	min-width:300px;
 	min-height:300px;
+}
+.HideDetails {
+	height:82px;
+}
+.ShowDetails {
+	height:auto;
+}
+.details {
+	display: none;
+	width: 100%;
+}
+.owns {
+	position: relative;
+	float: left;
+	width: auto;
 }
 </style>
 </head>
@@ -108,8 +131,7 @@ o test profile picture upload :-D
 					<p>Here you can edit or delete existing or add new Users. To delete
 						a user, please hit the edit button first.</p>
 				</div>
-				<div id="container1" class="container relative container1 row">
-				</div>
+				<div id="container1" class="container relative"></div>
 				<!--/row-->
 			</div>
 			<!--/span-->
@@ -133,27 +155,35 @@ o test profile picture upload :-D
 
 		<!-- user add/edit form -->
 		<h4>Edit User:</h4>
-		<form id="form-userEdit" class="form-userEdit" action="lib/php/lib_users_and_groups.php" onsubmit="javascript: return false;">
+		<form id="form-userEdit" class="form-userEdit"
+			action="lib/php/lib_users_and_groups.php"
+			onsubmit="javascript: return false;">
 			<p>
 				<img id="profilepicture" class="profilepicture" src="" alt="profile Picture">
 			</p>
-			<input id="UserID" name="UserID" type="text" class="hidden form-control">
-			<input id="action" name="action" type="text" class="hidden form-control"> <!-- default-mode: create new user -->
-			<label>firstname:</label>
-			<input id="firstname" name="firstname" type="text" class="form-control">
-			<label>lastname:</label>
-			<input id="lastname" name="lastname" type="text" class="form-control">
+			<input id="UserID" name="UserID" type="text" class="hidden form-control"> <input id="action" name="action"
+				type="text" class="hidden form-control">
+			<!-- default-mode: create new user -->
+			<label>firstname:</label> <input id="firstname" name="firstname"
+				type="text" class="form-control"> <label>lastname:</label> <input
+				id="lastname" name="lastname" type="text" class="form-control">
 
 			<!-- username -->
-			<label>UserName:</label>
-			<input id="username" name="username" type="text" class="form-control">
+			<label>UserName:</label> <input id="username" name="username"
+				type="text" class="form-control">
 			<!-- password -->
 			<label>Password:</label>
 			<!-- should not be submitted, because it has no name -->
-			<input id="password" type="password" placeholder="password" class="form-control" title="something wrong here" data-placement="bottom">
+			<input id="password" type="password" placeholder="password"
+				class="form-control" title="something wrong here"
+				data-placement="bottom">
 			<!-- password check -->
-			<input id="password_check" type="password" placeholder="password Again" class="form-control" title="something wrong here" data-placement="bottom">
-			<input id="password_encrypted" name="password_encrypted" type="text" placeholder="generated encrypted password" class="form-control" type="submit">
+			<input id="password_check" type="password"
+				placeholder="password Again" class="form-control"
+				title="something wrong here" data-placement="bottom"> <input
+				id="password_encrypted" name="password_encrypted" type="text"
+				placeholder="generated encrypted password" class="form-control"
+				type="submit">
 		</form>
 
 		<!-- groups -->
@@ -182,8 +212,10 @@ o test profile picture upload :-D
 				<div class="well">Are you shure?</div>
 			</div>
 			<div class="col-6 col-sm-6 col-lg-4">
-				<button id="delete_confirm" class="btn btn-lg btn-danger btn-block">confirm deletion</button>
-				<button id="delete_cancel" class="btn btn-lg btn-primary btn-block">cancel deletion</button>
+				<button id="delete_confirm" class="btn btn-lg btn-danger btn-block">confirm
+					deletion</button>
+				<button id="delete_cancel" class="btn btn-lg btn-primary btn-block">cancel
+					deletion</button>
 			</div>
 		</div>
 	</div>
@@ -214,34 +246,11 @@ o test profile picture upload :-D
 	        users(function(users)
 			{
 	        	users_store = users; // save for later use
-	
-	        	// filter out admins
-	        	// iterate over object
-	        	var Admins = [];
-	        	var GroupAdmins = [];
-	        	var Users = [];
-	
-				$.each(users, function(index, value) {
-					var user = users[index];
-					if(user.hasOwnProperty("username"))
-					{
-		        		var groups = user["groups"]
-		        		var groups_array = groups.split(',');
-		
-		        		if(jQuery.inArray( "Admin", groups_array ) != -1)
-		        		{
-		            		Admins.push(this);
-		        		}
-		        		if(jQuery.inArray( "GroupAdmin", groups_array ) != -1)
-		        		{
-		        			GroupAdmins.push(this);
-		        		}
-		        		if(jQuery.inArray( "User", groups_array ) != -1)
-		        		{
-		            		Users.push(this);
-		        		}
-					}
-				});
+
+	        	var separated = separateUsersByClass(users);
+	        	var Admins = separated["Admins"];
+	        	var GroupAdmins = separated["GroupAdmins"];
+	        	var Users = separated["Users"];
 
 				settings_user_loggedInUserGroups_array = $settings["settings_user_loggedInUserGroups"].split(',');
 				
@@ -249,7 +258,29 @@ o test profile picture upload :-D
 	        	if(jQuery.inArray( "Admin", settings_user_loggedInUserGroups_array) != -1)
 	        	{
 					// display/generate all admins
-					$("#container1").fillTemplate(Admins,'<div id="Admin-$id" class="Admins relative"><img class="profilepicture" src="$profilepicture" alt="profile Picture"><h3>Admin: $firstname $lastname</h3><p>UserID: $id</p><p>Username: $username</p><p>mail: <a href="mailto:$mail">$mail</a></p><div class="UserID hidden">$id</div></div>');
+					/*
+					<div id="Admin-$id" class="Admin relative resizable HideDetails">
+						<div class="UserID hidden">$id</div>
+						<h1>$username</h1>
+						<div class="details relative fitToContent">
+							<div class="profilePictureContainer relative fitToContent">
+								<img class="profilePicture" src="$profilepicture" alt="profile Picture">
+							</div>
+							<div class="detailsContainer relative fitToContent">
+								<p>mail: <a href="mailto:$mail">$mail</a></p>
+								<p>Name: $firstname $lastname</p>
+								<p>UserID: $id</p>
+								<p>LastLogin: $logintime</p>
+								
+							</div>
+							<div class="owns">
+							</div>
+							<button>Edit</button>
+						</div>
+					</div>
+					*/
+
+					$("#container1").fillTemplate(Admins,'<div id="Admin-$id" class="Admin relative resizable HideDetails"><div class="UserID hidden">$id</div><h1>$username</h1><div class="details relative fitToContent"><div class="profilePictureContainer relative fitToContent"><img class="profilePicture" src="$profilepicture" alt="profile Picture"></div><div class="detailsContainer relative fitToContent"><p>mail: <a href="mailto:$mail">$mail</a></p><p>Name: $firstname $lastname</p><p>UserID: $id</p></div><div class="owns"></div><button>Edit</button></div></div>');
 
 	    			$.each(Admins, function(index, Admin) {
 	    				var owns = Admin["owns"];
@@ -261,7 +292,28 @@ o test profile picture upload :-D
 	        				var GroupAdmin = array_findObject_byKeyValue(GroupAdmins,"id",GroupAdminID);
 	        				if(!jQuery.isEmptyObject( GroupAdmin ))
 	        				{
-		    					$("#Admin-"+Admin["id"]).fillTemplate({0:GroupAdmin},'<div id="GroupAdmin-$id" class="GroupAdmins thumbnail relative fitToContent"><h2>GroupAdmin: $firstname $lastname</h2><img class="profilepicture" src="$profilepicture" alt="profile Picture"><p>Username: $username</p><p>mail: <a href="mailto:$mail">$mail</a></p><div class="GroupAdminID hidden">$id</div>');
+	        					/*
+	        					<div id="GroupAdmin-$id" class="GroupAdmin relative resizable HideDetails">
+	        						<div class="UserID hidden">$id</div>
+	        						<h1>$username</h1>
+	        						<div class="details relative fitToContent">
+	        							<div class="profilePictureContainer relative fitToContent">
+	        								<img class="profilePicture" src="$profilepicture" alt="profile Picture">
+	        							</div>
+	        							<div class="detailsContainer relative fitToContent">
+	        								<p>mail: <a href="mailto:$mail">$mail</a></p>
+	        								<p>Name: $firstname $lastname</p>
+	        								<p>UserID: $id</p>
+	        								<p>LastLogin: $logintime</p>
+	        								
+	        							</div>
+	        							<div class="owns">
+	        							</div>
+	        							<button>Edit</button>
+	        						</div>
+	        					</div>
+	        					*/
+		    					$("#Admin-"+Admin["id"]+" .owns").fillTemplate({0:GroupAdmin},'<div id="GroupAdmin-$id" class="GroupAdmin relative resizable HideDetails"><div class="UserID hidden">$id</div><h1>$username</h1><div class="details relative fitToContent"><div class="profilePictureContainer relative fitToContent"><img class="profilePicture" src="$profilepicture" alt="profile Picture"></div><div class="detailsContainer relative fitToContent"><p>mail: <a href="mailto:$mail">$mail</a></p><p>Name: $firstname $lastname</p><p>UserID: $id</p><p>LastLogin: $logintime</p></div><div class="owns"></div><button>Edit</button></div></div>');
 	        				}
 		    			});
 	    			});
@@ -275,32 +327,110 @@ o test profile picture upload :-D
 	    				$.each(UserIDs, function(index, value) {
 	        				var currentUserID = UserIDs[index];
 	        				var user = array_findObject_byKeyValue(Users,"id",currentUserID);
-		    				$("#GroupAdmin-"+GroupAdmin["id"]).fillTemplate({0:user},'<div id="User-$id" class="Admins relative"><h1>$firstname $lastname</h1><img class="profilepicture" src="$profilepicture" alt="profile Picture"><h3>$firstname $lastname</h3><p>Username: $username</p><p>mail: <a href="mailto:$mail">$mail</a></p><div class="UserID hidden">$id</div></div>');
+
+        					/*
+        					<div id="User-$id" class="User relative resizable HideDetails">
+        						<div class="UserID hidden">$id</div>
+        						<h1>$username</h1>
+        						<div class="details relative fitToContent">
+        							<div class="profilePictureContainer relative fitToContent">
+        								<img class="profilePicture" src="$profilepicture" alt="profile Picture">
+        							</div>
+        							<div class="detailsContainer relative fitToContent">
+        								<p>mail: <a href="mailto:$mail">$mail</a></p>
+        								<p>Name: $firstname $lastname</p>
+        								<p>UserID: $id</p>
+        								<p>LastLogin: $logintime</p>
+        							</div>
+        							<div class="owns">
+        							</div>
+        							<button>Edit</button>
+        						</div>
+        					</div>
+        					*/
+		    				$("#GroupAdmin-"+GroupAdmin["id"]+" .owns").fillTemplate({0:user},'<div id="User-$id" class="User relative resizable HideDetails"><div class="UserID hidden">$id</div><h1>$username</h1><div class="details relative fitToContent"><div class="profilePictureContainer relative fitToContent"><img class="profilePicture" src="$profilepicture" alt="profile Picture"></div><div class="detailsContainer relative fitToContent"><p>mail: <a href="mailto:$mail">$mail</a></p><p>Name: $firstname $lastname</p><p>UserID: $id</p><p>LastLogin: $logintime</p></div><div class="owns"></div><button>Edit</button></div></div>');
 		    			});
 	    			});
-	    			
+
 					// check on array groupAdmin, where "owns" has UserID of Admin(1) add to that Adminbox.
 	    			$.each(Users, function(index, value) {
 	    			});
 	        	}
 	        	else if(jQuery.inArray( "GroupAdmin", $settings["settings_user_loggedInUserGroups"]) != -1) // only if currently logged in user belongs to Group "GroupAdmin"...
 	        	{
-					$("#container1").fillTemplate(GroupAdmin,'<div id="GroupAdmin-$id" class="Admins relative"><h1>$firstname $lastname</h1><img class="profilepicture" src="$profilepicture" alt="profile Picture"><h3>$firstname $lastname</h3><p>Username: $username</p><p>mail: <a href="mailto:$mail">$mail</a></p><div class="UserID hidden">$id</div></div>');
-					// ... show the GroupAdmin boxes
-					/*
-					<div id="GroupAdmin2" class="GroupAdmins thumbnail relative fitToContent">
-						<h1>GroupAdmin2</h1>
-					</div>
-					*/
-	
 	        	}
 	        	else
 	        	{
-					// ... show the User boxes
-					$("#container1").fillTemplate(Admins,'<div id="$firstname" class="Admins relative"><h1>$firstname $lastname</h1><img class="profilepicture" src="$profilepicture" alt="profile Picture"><h3>$firstname $lastname</h3><p>Username: $username</p><p>mail: <a href="mailto:$mail">$mail</a></p><div class="UserID hidden">$id</div></div>');
 	        	}
-			});
 
+			    // make the boxes resize on click
+	    		$(".resizable").click(
+    				function(e)
+    				{
+    					e.stopPropagation();
+    					if($(this).hasClass("ShowDetails"))
+    					{
+    						$(this).removeClass("ShowDetails");
+    						$(this).addClass("HideDetails");
+    						$(this).find(".details:first").fadeOut("slow");
+    					}
+    					else
+    					{
+    						$(this).removeClass("HideDetails");
+    						$(this).addClass("ShowDetails");
+    						$(this).find(".details:first").fadeIn("slow");
+    					}
+    				}
+    			);
+
+				$(".edit").click(
+					function()
+					{
+						scrollTo("#form-userEdit");
+	
+						// what happens if the user clicks on edit button below profile picture
+						var UserID = $(this).next();
+	
+						UserID = $(UserID).text();
+	
+				    	for(var key in users_store)
+				    	{
+				    		var user = users_store[key];
+						
+			   				if(user["id"] == UserID)
+			   				{
+			   					$("#UserID").val(user["id"]);
+			   					$("#action").val("update");
+			   					$("#profilepicture").attr('src',user["profilepicture"]);
+			   					$("#username").val(user["username"]);
+			   					$("#firstname").val(user["firstname"]);
+			   					$("#lastname").val(user["lastname"]);
+			   					$("#password").val(user["password"]);
+			   					$("#password_check").val(user["password"]);
+			   					$("#password_encrypted").val(user["password"]);
+	
+			   					// setting group-buttons
+			   					var groups_array = user["groups"].split(",");
+	
+			   						$('.group').removeClass("btn-primary"); // disable all group buttons
+				   					for(var i=0;i < groups_array.length;i++)
+				   					{
+					   					if(groups_array[i])
+					   					{
+						   					$(".group").thatHaveText(groups_array[i],function(element)
+						   					{
+					   							$(element).addClass("btn-primary"); // find element by text and enable it
+						   					});
+			   							}
+				   					}
+			   					
+			   					break;
+			   				}
+						}
+					});
+				});
+		});
+				
 			// get groups from server and display them via template
 	        groups(function(data)
 			{
@@ -423,67 +553,6 @@ o test profile picture upload :-D
 
 				return result;
 			}
-
-		    // make the boxes resize on click
-			$("#container1 div").click(
-				function()
-				{
-					if($(this).hasClass("fullSize"))
-					{
-						$(this).removeClass("fullSize");					
-					}
-					else
-					{
-						$(this).addClass("fullSize");
-					}
-				}
-			);
-		    		
-			$(".edit").click(function()
-			{
-				scrollTo("#form-userEdit");
-
-				// what happens if the user clicks on edit button below profile picture
-				var UserID = $(this).next();
-
-				UserID = $(UserID).text();
-
-		    	for(var key in users_store)
-		    	{
-		    		var user = users_store[key];
-				
-	   				if(user["id"] == UserID)
-	   				{
-	   					$("#UserID").val(user["id"]);
-	   					$("#action").val("update");
-	   					$("#profilepicture").attr('src',user["profilepicture"]);
-	   					$("#username").val(user["username"]);
-	   					$("#firstname").val(user["firstname"]);
-	   					$("#lastname").val(user["lastname"]);
-	   					$("#password").val(user["password"]);
-	   					$("#password_check").val(user["password"]);
-	   					$("#password_encrypted").val(user["password"]);
-
-	   					// setting group-buttons
-	   					var groups_array = user["groups"].split(",");
-
-	   						$('.group').removeClass("btn-primary"); // disable all group buttons
-		   					for(var i=0;i < groups_array.length;i++)
-		   					{
-			   					if(groups_array[i])
-			   					{
-				   					$(".group").thatHaveText(groups_array[i],function(element)
-				   					{
-			   							$(element).addClass("btn-primary"); // find element by text and enable it
-				   					});
-	   							}
-		   					}
-	   					
-	   					break;
-	   				}
-				}
-			});
-		});
 
     	// when hitting save trigger submit
 		$("#save").click(function() {
@@ -616,6 +685,42 @@ o test profile picture upload :-D
     	    }
     	);
     });
+
+    /* will iterate over a list of users and return an object
+    where users are separated into role Admin, GroupAdmin, User
+    */
+    function separateUsersByClass(users)
+    {
+		// filter out admins
+		// iterate over object
+		var Admins = [];
+		var GroupAdmins = [];
+		var Users = [];
+    	
+    	$.each(users, function(index, value) {
+    		var user = users[index];
+    		if(user.hasOwnProperty("username"))
+    		{
+				var groups = user["groups"]
+				var groups_array = groups.split(',');
+    		
+				if(jQuery.inArray( "Admin", groups_array ) != -1)
+				{
+					Admins.push(this);
+				}
+				if(jQuery.inArray( "GroupAdmin", groups_array ) != -1)
+				{
+    		    	GroupAdmins.push(this);
+				}
+				if(jQuery.inArray( "User", groups_array ) != -1)
+				{
+    				Users.push(this);
+				}
+    		}
+    	});
+
+    	return {"Admins":Admins,"GroupAdmins":GroupAdmins,"Users":Users};
+    }
     </script>
 </body>
 </html>

@@ -18,6 +18,8 @@ if (session_status() == PHP_SESSION_NONE) {
 if (!isset($_SESSION['session'])) // check if session key is set (all logged in users get a random session key, with an expiration time... (stored in database)
 {
 	// no session is set, redirect to login, return stuff that not-logged in users may see (project-logo, project-name)
+	$settings["LOGGEDIN"] = "NO";
+	$settings["MESSAGE"] = "PLEASE LOGIN TO GET ACCESS TO FULL SERVER SIDE SETTINGS!";
 	$settings["settings_platform_name"] = $settings_platform_name;
 	$settings["settings_platform_logo"] = $settings_platform_logo;
 }
@@ -25,6 +27,7 @@ else
 {
 	// session is set, check if user is valid
 	require_once('./lib/php/lib_session.php'); // login needs to be open for all in order to login!, will immediately exit and redirect to login if the session is not valid/has expired/user is not allowed to access the page
+	$settings["LOGGEDIN"] = "YES";
 	$settings["settings_platform_name"] = $settings_platform_name;
 	$settings["settings_platform_logo"] = $settings_platform_logo;
 	$settings["settings_platform_url"] = $settings_platform_url;
